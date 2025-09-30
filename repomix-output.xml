@@ -1,0 +1,4773 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+<additional_info>
+
+</additional_info>
+
+</file_summary>
+
+<directory_structure>
+.cta.json
+.cursorrules
+.gitignore
+components.json
+package.json
+plate-plugins.md
+public/manifest.json
+public/robots.txt
+README.md
+src/components/Header.tsx
+src/components/plate-editor.tsx
+src/components/plugins/badge-plugin.tsx
+src/components/plugins/top-bar.tsx
+src/components/ui/block-draggable.tsx
+src/components/ui/button.tsx
+src/components/ui/editor-static.tsx
+src/components/ui/editor.tsx
+src/components/ui/paragraph-node-static.tsx
+src/components/ui/paragraph-node.tsx
+src/components/ui/tooltip.tsx
+src/lib/utils.ts
+src/logo.svg
+src/router.tsx
+src/routes/__root.tsx
+src/routes/index.tsx
+src/routes/plate.tsx
+src/routeTree.gen.ts
+src/styles.css
+tsconfig.json
+vite.config.ts
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path=".cta.json">
+{
+  "projectName": "plate-revamped",
+  "mode": "file-router",
+  "typescript": true,
+  "tailwind": true,
+  "packageManager": "pnpm",
+  "git": true,
+  "version": 1,
+  "framework": "react-cra",
+  "chosenAddOns": [
+    "start",
+    "shadcn"
+  ]
+}
+</file>
+
+<file path=".cursorrules">
+# shadcn instructions
+
+Use the latest version of Shadcn to install new components, like this command to add a button component:
+
+```bash
+pnpx shadcn@latest add button
+```
+</file>
+
+<file path=".gitignore">
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+count.txt
+.env
+.nitro
+.tanstack
+.output
+.vinxi
+todos.json
+</file>
+
+<file path="components.json">
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "config": "",
+    "css": "src/styles.css",
+    "baseColor": "zinc",
+    "cssVariables": true,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils",
+    "ui": "@/components/ui",
+    "lib": "@/lib",
+    "hooks": "@/hooks"
+  },
+  "iconLibrary": "lucide"
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "plate-revamped",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev --port 3000",
+    "start": "node .output/server/index.mjs",
+    "build": "vite build",
+    "serve": "vite preview",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@platejs/dnd": "^50.3.1",
+    "@platejs/list": "^50.2.0",
+    "@platejs/selection": "^50.2.0",
+    "@radix-ui/react-slot": "^1.2.3",
+    "@radix-ui/react-tooltip": "^1.2.8",
+    "@tailwindcss/vite": "^4.0.6",
+    "@tanstack/react-devtools": "^0.2.2",
+    "@tanstack/react-router": "^1.132.0",
+    "@tanstack/react-router-devtools": "^1.132.0",
+    "@tanstack/react-router-ssr-query": "^1.131.7",
+    "@tanstack/react-start": "^1.132.0",
+    "@tanstack/router-plugin": "^1.132.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.476.0",
+    "platejs": "^49.2.21",
+    "react": "^19.0.0",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss": "^4.0.6",
+    "tw-animate-css": "^1.3.6",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.2.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^26.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^7.1.7",
+    "vitest": "^3.0.5",
+    "web-vitals": "^4.2.4"
+  }
+}
+</file>
+
+<file path="plate-plugins.md">
+Plugin Methods
+Previous
+Next
+Explore the various methods available for extending Plate plugins.
+
+Copy Markdown
+Open
+Configuration Methods
+When extending plugins, all properties are deeply merged by default, with two exceptions: arrays are replaced entirely, and the options object is shallow merged.
+
+.configure
+The .configure method allows you to override the plugin's configuration.
+
+const ConfiguredPlugin = MyPlugin.configure({
+  options: {
+    myOption: 'new value',
+  },
+});
+Copy
+You can also use a function to access the current configuration:
+
+const ConfiguredPlugin = MyPlugin.configure(({ getOptions }) => ({
+  options: {
+    ...getOptions(),
+    myOption: `${getOptions().myOption} + extra`,
+  },
+}));
+Copy
+It's used to modify existing properties of the plugin.
+It doesn't add new properties to the plugin.
+The last configuration applied is the one used by the editor.
+It doesn't return an extended type, maintaining the original plugin type.
+.configurePlugin
+The .configurePlugin method allows you to configure the properties of a nested plugin:
+
+const TablePlugin = createPlatePlugin({
+  key: 'table',
+  plugins: [TableCellPlugin],
+}).configurePlugin(TableCellPlugin, {
+  options: {
+    cellOption: 'modified',
+  },
+});
+Copy
+It's used to configure nested plugins within a parent plugin.
+Like .configure, it modifies existing properties but doesn't add new ones.
+It's useful for adjusting the behavior of sub-plugins without extending their types.
+.extend
+The .extend method allows you to extend the plugin's configuration and functionality.
+
+const ExtendedPlugin = MyPlugin.extend({
+  options: {
+    newOption: 'new value',
+  },
+});
+Copy
+You can also use a function to access the current configuration and editor:
+
+const ExtendedPlugin = MyPlugin.extend(({ editor, plugin }) => ({
+  options: {
+    newOption: 'new value',
+  },
+  handlers: {
+    onKeyDown: () => {
+      // Custom key down logic
+    },
+  },
+}));
+Copy
+It's used to add new properties or modify existing ones in the plugin.
+It returns a new plugin instance with extended types.
+It's chainable, allowing multiple extensions to be applied sequentially.
+.extendPlugin
+The .extendPlugin method allows you to extend the configuration and functionality of a nested plugin:
+
+const TablePlugin = createPlatePlugin({
+  key: 'table',
+  plugins: [TableCellPlugin],
+}).extendPlugin(TableCellPlugin, {
+  options: {
+    newCellOption: 'added',
+  },
+  handlers: {
+    onKeyDown: () => {
+      // Custom key down logic for table cells
+    },
+  },
+});
+Copy
+It's used to extend nested plugins within a parent plugin.
+It can add new properties and modify existing ones in the nested plugin.
+It returns a new parent plugin instance with the extended nested plugin.
+Difference between .configure and .extend
+While both methods can be used to modify plugin configuration, they have some key differences:
+
+Chaining: .extend is chainable, while .configure is not.
+Type extension: .extend returns a new plugin instance with extended types, while .configure maintains the original type.
+New properties: .extend can add new properties to the plugin configuration, while .configure only modifies existing ones.
+Choose the appropriate method based on whether you need to extend the plugin's type and functionality (use .extend) or simply modify existing configuration (use .configure).
+
+.extendSelectors
+The extendSelectors method allows you to add subscribable selectors to your plugin:
+
+const CounterPlugin = createPlatePlugin({
+  key: 'counter',
+  options: {
+    count: 0,
+  },
+}).extendSelectors(({ getOptions }) => ({
+  doubleCount: () => getOptions().count * 2,
+  isEven: () => getOptions().count % 2 === 0,
+}));
+Copy
+You can then use those selectors in your components or other plugin methods:
+
+const CounterComponent = () => {
+  const count = usePluginOption(CounterPlugin, 'count');
+  const doubleCount = usePluginOption(CounterPlugin, 'doubleCount');
+  const isEven = usePluginOption(CounterPlugin, 'isEven');
+ 
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <p>Double Count: {doubleCount}</p>
+      <p>Is Even: {isEven ? 'Yes' : 'No'}</p>
+    </div>
+  );
+};
+Copy
+It allows you to create derived state or computed values from plugin options.
+Read the value using getOption
+Subscribe to the value using usePluginOption, recomputed whenever options change, re-rendering only when the result changes. This is the main difference with .extendApi.
+.withComponent
+The withComponent method allows you to set or replace the component associated with a plugin.
+
+const ParagraphPlugin = createPlatePlugin({
+  key: 'p',
+  node: {
+    isElement: true,
+    type: 'p',
+  },
+}).withComponent(ParagraphElement);
+Copy
+API and Transforms
+Plugins can define their own API methods and transforms that will be merged into the editor's API and transforms. This is done using the extendApi, extendEditorApi, extendTransforms, and extendEditorTransforms methods.
+
+.extendApi
+Use extendApi to add plugin-specific API methods:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+}).extendApi(() => ({
+  pluginMethod: () => 'plugin method result',
+}));
+ 
+// Access the plugin's API
+editor.api.myPlugin.api.pluginMethod();
+Copy
+.extendEditorApi
+Use extendEditorApi to add root-level API methods:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+}).extendEditorApi(({ getOptions }) => ({
+  editorMethod: () => getOptions().someOption,
+}));
+ 
+// Access the plugin's API
+editor.api.editorMethod();
+Copy
+.extendTransforms
+Use extendTransforms to add plugin-specific transform methods:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+}).extendTransforms(() => ({
+  pluginTransform: () => {
+    // Custom transform logic
+  },
+}));
+ 
+// Access the plugin's transform
+editor.tf.myPlugin.pluginTransform();
+ 
+// NOTE: `editor.tf` in a short alias to `editor.transforms`
+editor.transforms.myPlugin.pluginTransform();
+Copy
+.extendEditorTransforms
+Use extendEditorTransforms to add root-level transform methods:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+}).extendEditorTransforms(({ editor }) => ({
+  editorTransform: () => {
+    // Custom editor transform logic
+  },
+}));
+ 
+// Access the plugin's transform
+editor.tf.editorTransform();
+Copy
+.overrideEditor
+The overrideEditor method is used specifically for overriding existing editor methods without altering the plugin's type:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+}).overrideEditor(({ editor, tf: { insertText }, api: { isInline } }) => ({
+  transforms: {
+    insertText(text, options) {
+      // Override insertText behavior
+      insertText(text, options);
+    },
+  },
+  api: {
+    isInline(element) {
+      // Override isInline behavior
+      return isInline(element);
+    },
+  },
+}));
+Copy
+Used specifically for overriding existing editor methods
+Returns the overridden methods wrapped in transforms or api objects
+Cannot add new methods (use extendEditorTransforms or extendEditorApi instead)
+Provides access to original methods through the context
+Difference between API and Transforms
+While there is currently no core difference between API and Transforms in Plate, they serve distinct purposes and are designed with future extensibility in mind:
+
+Transforms:
+
+Store all Slate transforms and editor operations here. Structured to potentially support middlewares in the future, allowing for more complex transform pipelines and devtools.
+Typically used for operations that modify the editor state, such as inserting, deleting, or transforming content.
+Example: editor.tf.toggleBlock(), editor.tf.toggleMark('bold')
+API:
+
+Store all queries, utility functions, and other methods that don't directly modify the editor state.
+Example: editor.api.save(), editor.api.debug.log()
+Chaining Extensions
+You can chain these methods to create a comprehensive plugin:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  options: {
+    baseValue: 5,
+  },
+})
+  .extendApi(() => ({
+    pluginMethod: () => 'plugin method',
+  }))
+  .extendEditorApi(({ getOptions }) => ({
+    multiply: (factor: number) => getOptions().baseValue * factor,
+  }))
+  .extendTransforms(() => ({
+    pluginTransform: () => {
+      // Plugin-specific transform
+    },
+  }))
+  .extendEditorTransforms(({ editor }) => ({
+    editorTransform: () => {
+      // Editor-specific transform
+    },
+  }));
+ 
+editor.api.myPlugin.api.pluginMethod();
+editor.api.multiply(3);
+editor.tf.myPlugin.pluginTransform();
+editor.tf.editorTransform();
+Copy
+Convert a Slate Plugin to a Plate Plugin
+To convert a typed Slate plugin to a Plate plugin, you can use toPlatePlugin:
+
+const CodeBlockPlugin = toPlatePlugin(createSlatePlugin({ key: 'code_block' }), {
+  handlers: {},
+  options: { hotkey: ['mod+opt+8', 'mod+shift+8'] },
+});
+
+
+Plugin Shortcuts
+Previous
+Next
+Learn how to configure keyboard shortcuts.
+
+Copy Markdown
+Open
+Keyboard shortcuts are essential for a fast and productive editing workflow. Plate allows you to easily define and customize shortcuts for your editor plugins.
+
+Defining Shortcuts
+You can add or modify shortcuts for any plugin when you create or configure it (e.g., using createPlatePlugin().extend({...}) or ExistingPlugin.configure({...})). Shortcuts are defined within the shortcuts field of your plugin configuration.
+
+There are two primary ways to define what a shortcut does:
+
+1. Linking to Plugin Methods (Recommended)
+The most straightforward way to create a shortcut is by linking it to an existing method within your plugin. This can be either a transform method or an API method. Transforms are functions that modify the editor's state (e.g., toggling a mark, inserting an element), while API methods provide other functionality.
+
+To do this:
+
+Ensure the name of your shortcut in the shortcuts configuration object matches the name of the method (e.g., a shortcut named toggle will look for a transform named toggle, or if no transform exists, an API method named toggle).
+Provide the keys (the key combination) for the shortcut.
+Plate will automatically find and call the corresponding method when the specified keys are pressed.
+
+plugins/my-document-plugin.ts
+import { createPlatePlugin, Key } from 'platejs/react';
+ 
+// Example: A simplified plugin with both transforms and API
+export const MyDocumentPlugin = createPlatePlugin({
+  key: 'doc',
+})
+// Define editor.tf.doc.format()
+.extendTransforms(({ editor, type }) => ({
+  format: () => {
+    editor.tf.normalize({ force: true });
+  },
+}))
+// Define editor.api.doc.format()
+.extendApi(({ editor, type }) => ({
+  save: async () => {
+    // Save the document
+    // await fetch(...);
+  },
+}))
+.extend({ // Or .configure() if extending an existing plugin
+  shortcuts: {
+    // This will call editor.tf.doc.format()
+    format: {
+      keys: [[Key.Mod, Key.Shift, 'f']], // e.g., Cmd/Ctrl + Shift + F
+    },
+    // This will call editor.api.doc.save()
+    save: {
+      keys: [[Key.Mod, 's']], // e.g., Cmd/Ctrl + S
+    },
+  },
+});
+Copy
+The name of the shortcut (e.g., toggle in the example) is crucial as Plate uses it to locate the matching method on the plugin. It first looks for a transform method, then falls back to an API method if no transform exists with that name.
+
+2. Using a Custom Handler
+For actions that require more complex logic, depends on the keyboard event, or if there isn't a direct one-to-one mapping with an existing transform name, you can provide a custom handler function. This function will be executed when the shortcut is activated.
+
+plugins/custom-logger-plugin.ts
+import { createPlatePlugin, Key } from 'platejs/react';
+ 
+export const CustomLoggerPlugin = createPlatePlugin({
+  key: 'customLogger',
+}).extend({
+  shortcuts: {
+    logEditorState: {
+      keys: [[Key.Mod, Key.Alt, 's']], // e.g., Cmd/Ctrl + Alt + S
+      handler: ({ editor, event, eventDetails }) => {
+        // 'editor' is the PlateEditor instance
+        // 'event' is the raw KeyboardEvent
+        // 'eventDetails' provides more context from the hotkey library
+        console.info('Current editor value:', editor.children);
+        console.info('Pressed keys:', eventDetails.keys);
+        // You might want to prevent other actions or browser defaults
+        // event.preventDefault();
+      },
+    },
+  },
+});
+Copy
+Shortcut Configuration Properties
+When defining or configuring a shortcut, you can use the following properties in its configuration object:
+
+keys: Required. The key combination(s) that trigger the shortcut.
+This can be a string like 'mod+b' or an array using the Key enum for more explicit control (e.g., [[Key.Mod, Key.Shift, 'x']]).
+Key.Mod is a convenient way to specify Cmd on macOS and Ctrl on other operating systems.
+handler: (Optional) A function that is called when the shortcut is activated. Its signature is: ({ editor: PlateEditor; event: KeyboardEvent; eventDetails: HotkeysEvent; }) => void; If you omit the handler, Plate will attempt to call a matching transform based on the shortcut's name. Note: If your transform or handler returns false (e.g. not handled), preventDefault will NOT be called, allowing other handlers or browser defaults to take over. Any other return value will use the default preventDefault behavior.
+preventDefault: (Optional) A boolean. If set to true, it prevents the browser's default action for that key combination (e.g., Mod+B typically bolds text in the browser itself). Defaults to true. This is suitable for most editor-specific shortcuts. Set to false if you need to allow the browser's default action or enable other handlers to process the event, especially if your handler might not always perform an action (e.g., an indent command that doesn't apply in the current context).
+priority: (Optional) A number. If multiple plugins define shortcuts for the exact same keys, the shortcut with the higher priority number will take precedence. This is useful for resolving conflicts.
+(Other options): You can also include other options compatible with the underlying useHotkeys hook from the @udecode/react-hotkeys library, such as enabled, enableOnContentEditable, etc., to fine-tune behavior.
+Default Shortcuts in Plate Plugins
+Many official Plate plugins come with pre-configured shortcuts for their common actions. These defaults typically link to the plugin's internal transform methods. Currently, the following basic mark plugins include default shortcuts:
+
+BoldPlugin: Mod+B
+ItalicPlugin: Mod+I
+UnderlinePlugin: Mod+U
+Other plugins, like CodePlugin, StrikethroughPlugin, etc., provide transforms that can be easily linked to shortcuts (e.g., a toggle shortcut will link to editor.tf.<pluginKey>.toggle()), but you need to define the shortcut keys for them explicitly.
+
+The specific default key combinations for Bold, Italic, and Underline are defined within each plugin's default configuration. You can always override these defaults or define shortcuts for other plugins if they don't fit your needs (see "Overriding and Disabling Shortcuts" below).
+
+Managing Multiple Shortcuts
+A single plugin isn't limited to one shortcut; you can define as many as needed:
+
+plugins/my-formatting-tools.ts
+import { createPlatePlugin, Key } from 'platejs/react';
+ 
+export const MyFormattingTools = createPlatePlugin({
+  key: 'myFormatting',
+  // Assuming transforms like editor.tf.myFormatting.applyHeader
+  // and editor.tf.myFormatting.applyCodeStyle exist.
+})
+.extend({
+  shortcuts: {
+    applyHeader: {
+      keys: [[Key.Mod, Key.Alt, '1']],
+    },
+    applyCodeStyle: {
+      keys: [[Key.Mod, Key.Alt, 'c']],
+    },
+    // A shortcut with a custom handler
+    logSomething: {
+      keys: [[Key.Mod, 'l']],
+      handler: () => console.info('Logging from MyFormattingTools!'),
+    },
+  },
+});
+Copy
+Shortcut Priority
+If multiple shortcuts (potentially from different plugins) are configured to use the exact same key combination (e.g., Mod+Shift+P), the priority property on the shortcut configuration object determines which shortcut's action is executed.
+
+A higher number indicates higher priority. If priority is not explicitly set on a shortcut, the priority of its parent plugin is used as a fallback. This allows fine-grained control over which action takes precedence when key combinations overlap.
+
+const PluginA = createPlatePlugin({ key: 'pluginA', priority: 10 }).extend({
+  shortcuts: {
+    doSomethingImportant: {
+      keys: 'mod+shift+p',
+      handler: () => console.info('Plugin A: Important action on Mod+Shift+P!'),
+      priority: 100, // Explicit, high priority for this specific shortcut
+    }
+  }
+});
+ 
+const PluginB = createPlatePlugin({ key: 'pluginB', priority: 20 }).extend({
+  shortcuts: {
+    doSomethingLessImportant: {
+      keys: 'mod+shift+p', // Same key combination as PluginA's shortcut
+      handler: () => console.info('Plugin B: Less important action on Mod+Shift+P.'),
+      // No explicit shortcut priority, will use PluginB's priority (20)
+    }
+  }
+});
+ 
+// If both plugins are active, pressing Mod+Shift+P will execute PluginA's handler
+// for 'doSomethingImportant' because its shortcut has a higher priority (100 vs 20).
+Copy
+Overriding and Disabling Shortcuts
+You can change or disable shortcuts for a specific plugin when you configure it.
+
+To change a plugin's shortcut: When you configure a plugin (e.g., BoldPlugin.configure({ ... })), you can define a shortcut by its name (like toggle). If the plugin already has a shortcut with that name (perhaps a default one), your new configuration for toggle will be used for that plugin. You can change its keys, provide a new handler, or adjust other properties.
+
+import { BoldPlugin, Key } from '@platejs/basic-nodes/react';
+ 
+// BoldPlugin has a default shortcut named 'toggle' (typically Mod+B).
+// Let's change its key combination to Mod+Shift+B for BoldPlugin.
+const MyCustomBoldPlugin = BoldPlugin.configure({
+  shortcuts: {
+    toggle: { // This re-configures BoldPlugin's 'toggle' shortcut
+      keys: [[Key.Mod, Key.Shift, 'b']], // New key combination
+      // The original handler (linking to the 'toggle' transform) is often preserved
+      // unless a new 'handler' is specified here.
+    },
+  },
+});
+Copy
+To disable a plugin's shortcut: Set the shortcut's configuration to null in that plugin's shortcuts object. This will remove that specific shortcut (e.g., toggle for ItalicPlugin).
+
+import { ItalicPlugin } from '@platejs/basic-nodes/react';
+ 
+// Example: Disable the 'toggle' shortcut for the ItalicPlugin
+const MyCustomItalicPlugin = ItalicPlugin.configure({
+  shortcuts: {
+    toggle: null, // This will remove/disable the ItalicPlugin's 'toggle' shortcut.
+  },
+});
+Copy
+Global Shortcuts (Editor Level)
+In addition to plugin-specific shortcuts, you can define global shortcuts directly on the editor instance when you create it using createPlateEditor. These shortcuts behave similarly to plugin shortcuts.
+
+editor-config.ts
+import { createPlateEditor, Key } from 'platejs/react';
+ 
+const editor = createPlateEditor({
+  plugins: [/* ...your array of plugins... */],
+  shortcuts: {
+    // A global shortcut, perhaps for saving the document
+    saveDocument: {
+      keys: [[Key.Mod, 's']],
+      handler: ({ editor, event }) => {
+        console.info('Attempting to save document content:', editor.children);
+        // Since preventDefault is set to false for this shortcut,
+        // the browser's save dialog will appear by default.
+        // If you want to conditionally prevent the default browser behavior
+        // (for example, only prevent saving if certain conditions are met),
+        // you can call event.preventDefault() inside your handler as needed:
+        // if (shouldPrevent) event.preventDefault();
+      },
+      preventDefault: false,
+    },
+    anotherGlobalAction: {
+      keys: [[Key.Ctrl, Key.Alt, 'g']],
+      handler: () => alert('Global action triggered!'),
+    }
+  },
+});
+Copy
+Editor-level shortcuts generally have a high default priority but can still be influenced by the priority settings of individual plugin shortcuts if there are conflicts.
+
+Best Practices
+Link to Transforms: For clarity and to keep your code DRY, link shortcuts to existing transform methods by matching the shortcut name to the transform name.
+preventDefault: Most editor shortcuts should prevent the browser's default action for the key combination. Plate handles this by defaulting preventDefault to true. You generally don't need to set it explicitly. However, if your shortcut handler conditionally performs an action (e.g., an indent command that only applies if certain conditions are met), and you want other handlers or the browser's default behavior to take over if your action doesn't run, set preventDefault: false for that shortcut.
+Maintain Consistency: Strive for intuitive and consistent key combinations. Consider standard shortcuts found in popular text editors or those that make logical sense within your application's context.
+Manage Priorities for Conflicts: If you anticipate or encounter situations where multiple plugins might try to handle the same key combination, use the priority property to explicitly define which shortcut should take precedence.
+Provide User Feedback: For actions triggered by shortcuts that aren't immediately visible (like a "Save" action), consider providing some form of user feedback, such as a brief toast notification.
+
+Plugin Context
+Previous
+Next
+Understanding and utilizing the Plugin Context in Plate plugins.
+
+Copy Markdown
+Open
+The Plugin Context is an object available in all plugin methods, providing access to the editor instance, plugin configuration, and utility functions.
+
+Accessing Plugin Context
+Plugin Methods
+The Plugin Context is available as the first parameter in all plugin methods:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  handlers: {
+    onKeyDown: (ctx) => {
+      // ctx is the Plugin Context
+      console.info(ctx.editor, ctx.plugin);
+    },
+  },
+});
+Copy
+getEditorPlugin
+This function is particularly useful when you need to access the context of another plugin. It allows for cross-plugin communication and interaction, enabling more complex and interconnected plugin behaviors.
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  handlers: {
+    onKeyDown: ({ editor }) => {
+      const linkCtx = getEditorPlugin(LinkPlugin);
+    },
+  },
+});
+Copy
+useEditorPlugin
+In React components, you can use the useEditorPlugin hook to access the Plugin Context:
+
+const MyComponent = () => {
+  const { editor, plugin, type } = useEditorPlugin(MyPlugin);
+  
+  return <div>{type}</div>;
+};
+Copy
+Plugin Context Properties
+editor
+The current PlateEditor instance:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  handlers: {
+    onChange: ({ editor }) => {
+      console.info('Editor value:', editor.children);
+    },
+  },
+});
+Copy
+plugin
+The current plugin configuration:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  handlers: {
+    onKeyDown: ({ plugin }) => {
+      console.info('Plugin key:', plugin.key);
+    },
+  },
+});
+Copy
+getOption
+A function to get a specific option value for the plugin:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  options: { myOption: 'default' },
+  handlers: {
+    onClick: ({ getOption }) => {
+      const myOption = getOption('myOption');
+      console.info('My option value:', myOption);
+    },
+  },
+});
+Copy
+getOptions
+A function to get all options for the plugin:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  options: { option1: 'value1', option2: 'value2' },
+  handlers: {
+    onClick: ({ getOptions }) => {
+      const options = getOptions();
+      console.info('All options:', options);
+    },
+  },
+});
+Copy
+setOption
+A function to set a specific option value for the plugin:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  options: { count: 0 },
+  handlers: {
+    onClick: ({ setOption }) => {
+      setOption('count', 1);
+    },
+  },
+});
+Copy
+setOptions
+A function to set multiple options for the plugin:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  options: { option1: 'value1', option2: 'value2' },
+  handlers: {
+    onClick: ({ setOptions }) => {
+      setOptions({
+        option1: 'newValue1',
+        option2: 'newValue2',
+      });
+    },
+  },
+});
+Copy
+type
+The node type associated with the plugin:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  node: { type: 'myNodeType' },
+  handlers: {
+    onKeyDown: ({ type }) => {
+      console.info('Node type:', type);
+    },
+  },
+});
+
+Plugin Components
+Previous
+Next
+Learn how to create and style custom components for Plate plugins.
+
+Copy Markdown
+Open
+By default, Plate plugins are headless, meaning all nodes will be rendered as plain text. This guide will show you how to create and style custom components for your editor.
+
+Plate UI
+Unless you prefer to build everything from scratch, we recommend using Plate UI to get started. Plate UI is a collection of components that you can copy into your app and modify to suit your needs.
+
+The process of creating and registering components is similar whether you use Plate UI or build your own from scratch.
+
+Defining Components
+Use PlateElement for element nodes (like paragraphs, headings) and PlateLeaf for text leaf nodes (like bold, italic). These components handle applying the necessary Plate props to your custom HTML elements.
+
+Ensure the children prop is rendered unconditionally for the editor to function correctly, even for void nodes.
+
+Element Component
+import { type PlateElementProps, PlateElement } from 'platejs/react';
+ 
+export function BlockquoteElement(props: PlateElementProps) {
+  // props contains attributes, children, element, editor, etc.
+  // plus any custom props your plugin might pass.
+  return (
+    <PlateElement
+      as="blockquote"
+      className="my-1 border-l-2 pl-6 italic" // Apply custom styles directly
+      {...props} // Pass all original props (attributes, children, element, etc.)
+    />
+  );
+}
+Copy
+This example defines a BlockquoteElement. The as prop on PlateElement specifies that it should render an HTML <blockquote>. PlateElement handles rendering the children passed via {...props}.
+
+Leaf Component
+import { type PlateLeafProps, PlateLeaf } from 'platejs/react';
+ 
+export function CodeLeaf(props: PlateLeafProps) {
+  // props contains attributes, children, leaf, text, editor, etc.
+  // plus any custom props your plugin might pass.
+  return (
+    <PlateLeaf
+      as="code"
+      className="rounded-md bg-muted px-[0.3em] py-[0.2em] font-mono text-sm" // Apply custom styles
+      {...props} // Pass all original props (attributes, children, leaf, text, etc.)
+    />
+  );
+}
+Copy
+Styling
+We recommend styling components using Tailwind CSS, as demonstrated in Plate UI.
+
+Alternatively, Plate generates class names like slate-<node-type> (e.g., slate-p for paragraphs, slate-h1 for H1 headings) which you can target with global CSS:
+
+.slate-p {
+  margin-bottom: 1rem;
+}
+.slate-bold {
+  font-weight: bold;
+}
+Copy
+Register Components
+To use your custom components, register them with the corresponding plugin or directly in the editor configuration.
+
+Method 1: Plugin's withComponent (Recommended)
+The withComponent method is the most straightforward way to associate a component with a plugin.
+
+const plugins = [
+  // This is equivalent to:
+  // ParagraphPlugin.configure({ node: { component: MyParagraphElement }});
+  ParagraphPlugin.withComponent(MyParagraphElement),
+  CodeBlockPlugin.withComponent(MyCodeBlockElement),
+  CodeLinePlugin.withComponent(MyCodeLineElement),
+  CodeSyntaxPlugin.withComponent(MyCodeSyntaxLeaf),
+]
+Copy
+Method 2: Plugin override.components
+For plugins that manage multiple component parts (like CodeBlockPlugin with code_block, code_line, and code_syntax), or when you need to override components for a specific plugin instance, use the override.components option within configure.
+
+const plugins = [
+  CodeBlockPlugin.configure({
+    override: {
+      components: {
+        [CodeBlockPlugin.key]: MyCodeBlockElement,
+        [CodeLinePlugin.key]: MyCodeLineElement,
+        [CodeSyntaxPlugin.key]: MyCodeSyntaxLeaf,
+      },
+    },
+  }),
+];
+Copy
+Method 3: Editor components Option
+You can globally map plugin keys to components in createPlateEditor (or usePlateEditor). This is useful for managing all components in one place, or for plugins composed of multiple plugins.
+
+const editor = createPlateEditor({
+  plugins: [ParagraphPlugin, CodeBlockPlugin /* ...other plugins */],
+  components: {
+    [ParagraphPlugin.key]: MyParagraphElement,
+    [CodeBlockPlugin.key]: MyCodeBlockElement,
+    [CodeLinePlugin.key]: MyCodeLineElement,
+    [CodeSyntaxPlugin.key]: MyCodeSyntaxLeaf,
+    // ...other component overrides
+  },
+});
+
+Plugin Rules
+Previous
+Next
+Configure common editing behaviors.
+
+Copy Markdown
+Open
+Plugin Rules control how editor nodes respond to common user actions. Instead of overriding the editor methods, you can configure these behaviors directly on a plugin's rules property.
+
+This guide shows you how to use rules.break, rules.delete, rules.merge, rules.normalize, rules.selection and rules.match to create intuitive editing experiences.
+
+Preview
+Code
+16
+Plugin Rules
+Plugin rules control how blocks respond to Enter, Backspace, selection, and normalization.
+Break Rules
+Heading splitReset: Press Enter in middle of heading to split and reset new block to paragraph.
+Press Enter after "Press" to see splitReset behavior
+Blockquote with line breaks: Enter adds line breaks, Enter on empty lines resets to paragraph.
+This blockquote uses lineBreak rules. Press Enter here for line breaks.
+Delete Rules
+Code block reset: Backspace in empty code block resets to paragraph.
+console.info('Hello world');
+﻿
+List items: Backspace at start removes list formatting.
+Press Backspace at start to remove list formatting
+Selection Rules
+Hard affinity (code): Use arrow keys around  code marks  - requires two key presses to cross boundaries.
+Directional affinity: Use arrow keys around superscript text - cursor affinity depends on movement direction.
+Link directional: Navigate with arrows around  this link  to test directional behavior.
+Normalize Rules
+Empty link removal: Delete all text from  this link  - the link element will be automatically removed.
+Merge Rules
+Void elements:
+﻿
+Press Backspace at start - void element are selected rather than deleted.
+﻿
+Backspace at start removes empty paragraph above
+﻿
+Actions
+Plugin rules use specific action names to define behavior:
+
+'default': Default Slate behavior.
+'reset': Changes the current block to a default paragraph, keeping content.
+'exit': Exits the current block, inserting a new paragraph after it. See Exit Break to learn more about this behavior.
+'deleteExit': Deletes content then exits the block.
+'lineBreak': Inserts a line break (\n) instead of splitting the block.
+default
+Standard Slate behavior. For rules.break, splits the block. For rules.delete, merges with the previous block.
+
+<p>
+  Hello world|
+</p>
+Copy
+After pressing Enter:
+
+<p>Hello world</p>
+<p>
+  |
+</p>
+Copy
+After pressing Backspace:
+
+<p>Hello world|</p>
+Copy
+reset
+Converts the current block to a default paragraph while preserving content. Custom properties are removed.
+
+<h3 listStyleType="disc">
+  |
+</h3>
+Copy
+After pressing Enter with rules: { break: { empty: 'reset' } }:
+
+<p>
+  |
+</p>
+Copy
+exit
+Exits the current block structure by inserting a new paragraph after it.
+
+<blockquote>
+  |
+</blockquote>
+Copy
+After pressing Enter with rules: { break: { empty: 'exit' } }:
+
+<blockquote>
+  <text />
+</blockquote>
+<p>
+  |
+</p>
+Copy
+deleteExit
+Deletes content then exits the block.
+
+<blockquote>
+  line1
+  |
+</blockquote>
+Copy
+After pressing Enter with rules: { break: { emptyLineEnd: 'deleteExit' } }:
+
+<blockquote>line1</blockquote>
+<p>
+  |
+</p>
+Copy
+lineBreak
+Inserts a soft line break (\n) instead of splitting the block.
+
+<blockquote>
+  Hello|
+</blockquote>
+Copy
+After pressing Enter with rules: { break: { default: 'lineBreak' } }:
+
+<blockquote>
+  Hello
+  |
+</blockquote>
+Copy
+rules.break
+Controls what happens when users press Enter within specific block types.
+
+Configuration
+BlockquotePlugin.configure({
+  rules: {
+    break: {
+      // Action when Enter is pressed normally
+      default: 'default' | 'lineBreak' | 'exit' | 'deleteExit',
+      
+      // Action when Enter is pressed in an empty block
+      empty: 'default' | 'reset' | 'exit' | 'deleteExit',
+      
+      // Action when Enter is pressed at end of empty line
+      emptyLineEnd: 'default' | 'exit' | 'deleteExit',
+ 
+      // If true, the new block after splitting will be reset
+      splitReset: boolean,
+    },
+  },
+});
+Copy
+Each property controls a specific scenario:
+
+default
+
+'default'
+'lineBreak'
+'exit'
+'deleteExit'
+empty
+
+'default'
+'reset'
+'exit'
+'deleteExit'
+emptyLineEnd
+
+'default'
+'exit'
+'deleteExit'
+splitReset: If true, resets the new block to the default type after a split. This is useful for exiting a formatted block like a heading.
+
+Examples
+Reset heading on break:
+
+import { H1Plugin } from '@platejs/heading/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  H1Plugin.configure({
+    rules: {
+      break: {
+        splitReset: true,
+      },
+    },
+  }),
+];
+Copy
+Before pressing Enter:
+
+<h1>
+  Heading|text
+</h1>
+Copy
+After (split and reset):
+
+<h1>
+  Heading
+</h1>
+<p>
+  |text
+</p>
+Copy
+Blockquote with line breaks and smart exits:
+
+import { BlockquotePlugin } from '@platejs/basic-nodes/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  BlockquotePlugin.configure({
+    rules: {
+      break: {
+        default: 'lineBreak',
+        empty: 'reset',
+        emptyLineEnd: 'deleteExit',
+      },
+    },
+  }),
+];
+Copy
+Before pressing Enter in blockquote:
+
+<blockquote>
+  Quote text|
+</blockquote>
+Copy
+After (line break):
+
+<blockquote>
+  Quote text
+  |
+</blockquote>
+Copy
+Code block with custom empty handling:
+
+import { CodeBlockPlugin } from '@platejs/code-block/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  CodeBlockPlugin.configure({
+    rules: {
+      delete: { empty: 'reset' },
+      match: ({ editor, rule }) => {
+        return rule === 'delete.empty' && isCodeBlockEmpty(editor);
+      },
+    },
+  }),
+];
+Copy
+Before pressing Backspace in empty code block:
+
+<code_block>
+  <code_line>
+    |
+  </code_line>
+</code_block>
+Copy
+After (reset):
+
+<p>
+  |
+</p>
+Copy
+rules.delete
+Controls what happens when users press Backspace at specific positions.
+
+Configuration
+HeadingPlugin.configure({
+  rules: {
+    delete: {
+      // Action when Backspace is pressed at block start
+      start: 'default' | 'reset',
+      
+      // Action when Backspace is pressed in empty block
+      empty: 'default' | 'reset',
+    },
+  },
+});
+Copy
+Each property controls a specific scenario:
+
+start
+
+'default'
+'reset'
+empty
+
+'default'
+'reset'
+Examples
+Reset blockquotes at start:
+
+import { BlockquotePlugin } from '@platejs/basic-nodes/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  BlockquotePlugin.configure({
+    rules: {
+      delete: { start: 'reset' },
+    },
+  }),
+];
+Copy
+Before pressing Backspace at start:
+
+<blockquote>
+  |Quote content
+</blockquote>
+Copy
+After (reset):
+
+<p>
+  |Quote content
+</p>
+Copy
+List items with start reset:
+
+import { ListPlugin } from '@platejs/list/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  ListPlugin.configure({
+    rules: {
+      delete: { start: 'reset' },
+      match: ({ rule, node }) => {
+        return rule === 'delete.start' && Boolean(node.listStyleType);
+      },
+    },
+  }),
+];
+Copy
+Before pressing Backspace at start of list item:
+
+<p listStyleType="disc">
+  |List item content
+</p>
+Copy
+After (reset):
+
+<p>
+  |List item content
+</p>
+Copy
+rules.merge
+Controls how blocks behave when merging with previous blocks.
+
+Configuration
+ParagraphPlugin.configure({
+  rules: {
+    merge: {
+      // Whether to remove empty blocks when merging
+      removeEmpty: boolean,
+    },
+  },
+});
+Copy
+Examples
+Only paragraph and heading plugins enable removal by default. Most other plugins use false:
+
+import { H1Plugin, ParagraphPlugin } from 'platejs/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  H1Plugin, // rules.merge: { removeEmpty: true } by default
+  ParagraphPlugin, // rules.merge: { removeEmpty: true } by default
+];
+Copy
+Before pressing Backspace at start:
+
+<p>
+  <text />
+</p>
+<h1>
+  |Heading content
+</h1>
+Copy
+After (empty paragraph removed):
+
+<h1>
+  |Heading content
+</h1>
+Copy
+Blockquote with removal disabled:
+
+import { BlockquotePlugin } from '@platejs/basic-nodes/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  BlockquotePlugin.configure({
+    rules: {
+      merge: { removeEmpty: false }, // Default
+    },
+  }),
+];
+Copy
+Before pressing Backspace at start:
+
+<p>
+  <text />
+</p>
+<blockquote>
+  |Code content
+</blockquote>
+Copy
+After (empty paragraph preserved):
+
+<p>
+  |Code content
+</p>
+Copy
+Table cells preserve structure during merge:
+
+import { TablePlugin } from '@platejs/table/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  TablePlugin, // Table cells have rules.merge: { removeEmpty: false }
+];
+Copy
+Before pressing Delete at end of paragraph:
+
+<p>
+  Content|
+</p>
+<table>
+  <tr>
+    <td>
+      <p>Cell data</p>
+    </td>
+    <td>
+      <p>More data</p>
+    </td>
+  </tr>
+</table>
+Copy
+After (cell content merged, structure preserved):
+
+<p>
+  Content|Cell data
+</p>
+<table>
+  <tr>
+    <td>
+      <p>
+        <text />
+      </p>
+    </td>
+    <td>
+      <p>More data</p>
+    </td>
+  </tr>
+</table>
+Copy
+Slate's default is true since the default block (paragraph) is first-class, while Plate plugins are likely used to define other node behaviors that shouldn't automatically remove empty predecessors.
+
+rules.normalize
+Controls how nodes are normalized during the normalization process.
+
+Configuration
+LinkPlugin.configure({
+  rules: {
+    normalize: {
+      // Whether to remove nodes with empty text
+      removeEmpty: boolean,
+    },
+  },
+});
+Copy
+Examples
+Remove empty link nodes:
+
+import { LinkPlugin } from '@platejs/link/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  LinkPlugin.configure({
+    rules: {
+      normalize: { removeEmpty: true },
+    },
+  }),
+];
+Copy
+Before normalization:
+
+<p>
+  <a href="http://google.com">
+    <text />
+  </a>
+  <cursor />
+</p>
+Copy
+After normalization (empty link removed):
+
+<p>
+  <cursor />
+</p>
+Copy
+rules.match
+The match function in plugin rules allows you to override the default behavior of specific plugins based on node properties beyond just type matching. This is particularly useful when you want to extend existing node types with new behaviors.
+
+Examples
+Code block with custom empty detection:
+
+import { CodeBlockPlugin } from '@platejs/code-block/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  CodeBlockPlugin.configure({
+    rules: {
+      delete: { empty: 'reset' },
+      match: ({ rule, node }) => {
+        return rule === 'delete.empty' && isCodeBlockEmpty(editor);
+      },
+    },
+  }),
+];
+Copy
+Since the list plugin extends existing blocks that already have their own plugin configuration (e.g. ParagraphPlugin), using rules.match allows you to override those behaviors.
+
+List override for paragraphs:
+
+import { ListPlugin } from '@platejs/list/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  ListPlugin.configure({
+    rules: {
+      match: ({ editor, rule }) => {
+        return rule === 'delete.empty' && isCodeBlockEmpty(editor);
+      },
+    },
+  }),
+];
+Copy
+Custom Reset Logic
+Some plugins need special reset behavior beyond the standard paragraph conversion. You can override the resetBlock transform:
+
+List plugin reset (outdents instead of converting to paragraph):
+
+const ListPlugin = createPlatePlugin({
+  key: 'list',
+  // ... other config
+}).overrideEditor(({ editor, tf: { resetBlock } }) => ({
+  transforms: {
+    resetBlock(options) {
+      if (editor.api.block(options)?.[0]?.listStyleType) {
+        outdentList();
+        return;
+      }
+      
+      return resetBlock(options);
+    },
+  },
+}));
+Copy
+Code block reset (unwraps instead of converting):
+
+const CodeBlockPlugin = createPlatePlugin({
+  key: 'code_block',
+  // ... other config
+}).overrideEditor(({ editor, tf: { resetBlock } }) => ({
+  transforms: {
+    resetBlock(options) {
+      if (editor.api.block({
+        at: options?.at,
+        match: { type: 'code_block' },
+      })) {
+        unwrapCodeBlock();
+        return;
+      }
+      
+      return resetBlock(options);
+    },
+  },
+}));
+Copy
+Combining Rules
+You can combine different rules for comprehensive block behavior:
+
+import { H1Plugin } from '@platejs/heading/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  H1Plugin.configure({
+    rules: {
+      break: {
+        empty: 'reset',
+        splitReset: true,
+      },
+      delete: {
+        start: 'reset',
+      },
+    },
+  }),
+];
+Copy
+Line break behavior (default):
+
+<blockquote>
+  Hello|
+</blockquote>
+Copy
+After Enter:
+
+<blockquote>
+  Hello
+  |
+</blockquote>
+Copy
+Empty reset behavior:
+
+<blockquote>
+  |
+</blockquote>
+Copy
+After Enter:
+
+<p>
+  |
+</p>
+Copy
+Start reset behavior:
+
+<blockquote>
+  |Quote content
+</blockquote>
+Copy
+After Backspace:
+
+<p>
+  |Quote content
+</p>
+Copy
+Advanced
+For complex scenarios beyond simple rules, you can override editor transforms directly using .overrideEditor. This gives you complete control over transforms like resetBlock and insertExitBreak:
+
+const CustomPlugin = createPlatePlugin({
+  key: 'custom',
+  // ... other config
+}).overrideEditor(({ editor, tf: { insertBreak, deleteBackward, resetBlock } }) => ({
+  transforms: {
+    insertBreak() {
+      const block = editor.api.block();
+      
+      if (/* Custom condition */) {
+        // Custom behavior
+        return;
+      }
+      
+      // Default behavior
+      insertBreak();
+    },
+    
+    deleteBackward(unit) {
+      const block = editor.api.block();
+      
+      if (/* Custom condition */) {
+        // Custom behavior
+        return;
+      }
+      
+      deleteBackward(unit);
+    },
+    
+    resetBlock(options) {
+      if (/* Custom condition */) {
+        // Custom behavior
+        return true;
+      }
+      
+      return resetBlock(options);
+    },
+  },
+}));
+Copy
+rules.selection
+Controls how cursor positioning and text insertion behave at node boundaries, particularly for marks and inline elements.
+
+Configuration
+BoldPlugin.configure({
+  rules: {
+    selection: {
+      // Define selection behavior at boundaries
+      affinity: 'default' | 'directional' | 'outward' | 'hard',
+    },
+  },
+});
+Copy
+Affinity Options
+The affinity property determines how the cursor behaves when positioned at the boundary between different marks or inline elements:
+
+default
+Uses Slate's default behavior. For marks, the cursor has outward affinity at the start edge (typing before the mark doesn't apply it) and inward affinity at the end edge (typing after the mark extends it).
+
+At end of mark (inward affinity):
+
+<p>
+  <text bold>Bold text|</text><text>Normal text</text>
+</p>
+Copy
+Typing would extend the bold formatting to new text.
+
+At start of mark (outward affinity):
+
+<p>
+  <text>Normal text|</text><text bold>Bold text</text>
+</p>
+Copy
+Typing would not apply bold formatting to new text.
+
+directional
+Selection affinity is determined by the direction of cursor movement. When the cursor moves to a boundary, it maintains the affinity based on where it came from.
+
+import { BoldPlugin } from '@platejs/basic-nodes/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  BoldPlugin.configure({
+    rules: {
+      selection: { affinity: 'directional' },
+    },
+  }),
+];
+Copy
+Movement from right (inward affinity):
+
+<p>
+  <text>Normal</text><text bold>B|old text</text>
+</p>
+Copy
+After pressing ←:
+
+<p>
+  <text>Normal</text><text bold>|Bold text</text>
+</p>
+Copy
+Typing would extend the bold formatting, which is not possible with default affinity.
+
+import { LinkPlugin } from '@platejs/link/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  LinkPlugin.configure({
+    rules: {
+      selection: { affinity: 'directional' },
+    },
+  }),
+];
+Copy
+Movement from right (outward affinity):
+
+<p>
+  Visit <a href="https://example.com">our website</a> |for more information text.
+</p>
+Copy
+After pressing ←:
+
+<p>
+  Visit <a href="https://example.com">our website</a>| for more information text.
+</p>
+Copy
+Cursor movement direction determines whether new text extends the link or creates new text outside it.
+
+outward
+Forces outward affinity, automatically clearing marks when typing at their boundaries. This creates a natural "exit" behavior from formatted text.
+
+import { CommentPlugin } from '@platejs/comment/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  CommentPlugin.configure({
+    rules: {
+      selection: { affinity: 'outward' },
+    },
+  }),
+];
+Copy
+At end of marked text:
+
+<p>
+  <text comment>Commented text|</text><text>Normal</text>
+</p>
+Copy
+After typing:
+
+<p>
+  <text comment>Commented text</text><text>x|Normal</text>
+</p>
+Copy
+Users automatically exit comment formatting by typing at the end of commented text.
+
+hard
+Creates a "hard" edge that requires two key presses to move across. This provides precise cursor control for elements that need exact positioning.
+
+import { CodePlugin } from '@platejs/basic-nodes/react';
+ 
+const plugins = [
+  // ...otherPlugins,
+  CodePlugin.configure({
+    rules: {
+      selection: { affinity: 'hard' },
+    },
+  }),
+];
+Copy
+Moving across hard edges:
+
+<p>
+  <text>Before</text><text code>code|</text><text>After</text>
+</p>
+Copy
+First → press changes affinity:
+
+<p>
+  <text>Before</text><text code>code</text>|<text>After</text>
+</p>
+Copy
+Second → press moves cursor:
+
+<p>
+  <text>Before</text><text code>code</text><text>A|fter</text>
+</p>
+Copy
+This allows users to position the cursor precisely at the boundary and choose whether new text should be inside or outside the code formatting.
+
+Plugin Configuration
+How to configure and customize Plate plugins.
+
+Copy Markdown
+Open
+Plate plugins are highly configurable, allowing you to customize their behavior to suit your needs. This guide will walk you through the most common configuration options and how to use them.
+
+Getting Started: Components - Instructions for adding plugins to your editor
+PlatePlugin API - The complete API reference for creating plugins
+Basic Plugin Configuration
+New Plugin
+The most basic plugin configuration requires only a key:
+
+const MyPlugin = createPlatePlugin({
+  key: 'minimal',
+});
+Copy
+While this plugin doesn't do anything yet, it's a starting point for more complex configurations.
+
+Existing Plugin
+The .configure method allows you to configure an existing plugin:
+
+const ConfiguredPlugin = MyPlugin.configure({
+  options: {
+    myOption: 'new value',
+  },
+});
+Copy
+Node Plugins
+Node plugins are used to define new types of nodes in your editor using the node property. These can be elements (either block or inline) or leaf nodes (for text-level formatting).
+
+Elements
+To create a new type of element, use the node.isElement option:
+
+const ParagraphPlugin = createPlatePlugin({
+  key: 'p',
+  node: {
+    isElement: true,
+    type: 'p',
+  },
+});
+Copy
+You can associate a component with your element. See Plugin Components for more information.
+
+const ParagraphPlugin = createPlatePlugin({
+  key: 'p',
+  node: {
+    isElement: true,
+    type: 'p',
+    component: ParagraphElement,
+  },
+});
+Copy
+Inline, Void, and Leaf Nodes
+For inline elements, void elements, or leaf nodes, use the appropriate node options:
+
+const LinkPlugin = createPlatePlugin({
+  key: 'link',
+  node: {
+    isElement: true,
+    isInline: true,
+    type: 'a',
+  },
+});
+ 
+const ImagePlugin = createPlatePlugin({
+  key: 'image',
+  node: {
+    isElement: true,
+    isVoid: true,
+    type: 'img',
+  },
+});
+ 
+const BoldPlugin = createPlatePlugin({
+  key: 'bold',
+  node: {
+    isLeaf: true,
+  },
+});
+Copy
+Behavioral Plugins
+Rather than render an element or a mark, you may want to customize the behavior of your editor. Various plugin options are available to modify the behavior of Plate.
+
+Plugin Rules
+The rules property allows you to configure common editing behaviors like breaking, deleting, and merging nodes without overriding editor methods. This is a powerful way to define intuitive interactions for your custom elements.
+
+For example, you can define what happens when a user presses Enter in an empty heading, or Backspace at the start of a blockquote.
+
+import { H1Plugin } from '@platejs/heading/react';
+ 
+H1Plugin.configure({
+  rules: {
+    break: { empty: 'reset' },
+  },
+});
+Copy
+See the Plugin Rules guide for a complete list of available rules and actions.
+
+Event Handlers
+The recommended way to respond to user-generated events from inside a plugin is with the handlers plugin option. A handler should be a function that takes a PlatePluginContext & { event } object.
+
+The onChange handler, which is called when the editor value changes, is an exception to this rule; the context object includes the changed value instead of event.
+
+const ExamplePlugin = createPlatePlugin({
+  key: 'example',
+  handlers: {
+    onChange: ({ editor, value })  => {
+      console.info(editor, value);
+    },
+    onKeyDown: ({ editor, event }) => {
+      console.info(`You pressed ${event.key}`);
+    },
+  },
+});
+Copy
+Inject Props
+You may want to inject a class name or CSS property into any node having a certain property. For example, the following plugin sets the textAlign CSS property on paragraphs with an align property.
+
+import { KEYS } from 'platejs';
+ 
+const TextAlignPlugin = createPlatePlugin({
+  key: 'align',
+  inject: {
+    nodeProps: {
+      defaultNodeValue: 'start',
+      nodeKey: 'align',
+      styleKey: 'textAlign',
+      validNodeValues: ['start', 'left', 'center', 'right', 'end', 'justify'],
+    },
+    targetPlugins: [KEYS.p],
+    // This is injected into all `targetPlugins`. In this example, ParagraphPlugin will be able to deserialize `textAlign` style.
+    targetPluginToInject: ({ editor, plugin }) => ({
+      parsers: {
+        html: {
+          deserializer: {
+            parse: ({ element, node }) => {
+              if (element.style.textAlign) {
+                node[editor.getType('align')] = element.style.textAlign;
+              }
+            },
+          },
+        },
+      },
+    }),
+  },
+});
+Copy
+A paragraph node affected by the above plugin would look like this:
+
+{
+  type: 'p',
+  align: 'right',
+  children: [{ text: 'This paragraph is aligned to the right!' }],
+}
+Copy
+Override Editor Methods
+The overrideEditor method provides a way to override existing editor methods while maintaining access to the original implementations. This is particularly useful when you want to modify the behavior of core editor functionality.
+
+const CustomPlugin = createPlatePlugin({
+  key: 'custom',
+}).overrideEditor(({ editor, tf: { deleteForward }, api: { isInline } }) => ({
+  // Override transforms
+  transforms: {
+    deleteForward(options) {
+      // Custom logic before deletion
+      console.info('Deleting forward...');
+      
+      // Call original transform
+      deleteForward(options);
+      
+      // Custom logic after deletion
+      console.info('Deleted forward');
+    },
+  },
+  // Override API methods
+  api: {
+    isInline(element) {
+      // Custom inline element check
+      if (element.type === 'custom-inline') {
+        return true;
+      }
+      
+      // Fall back to original behavior
+      return isInline(element);
+    },
+  },
+}));
+Copy
+Access to original methods via destructured tf (transforms) and api parameters
+Type-safe overrides of existing methods
+Clean separation between transforms and API methods
+Plugin context and options access
+Example with typed options:
+
+type CustomConfig = PluginConfig<
+  'custom',
+  { allowDelete: boolean }
+>;
+ 
+const CustomPlugin = createTPlatePlugin<CustomConfig>({
+  key: 'custom',
+  options: { allowDelete: true },
+}).overrideEditor(({ editor, tf: { deleteForward }, getOptions }) => ({
+  transforms: {
+    deleteForward(options) {
+      // Use typed options to control behavior
+      if (!getOptions().allowDelete) {
+        return;
+      }
+      
+      deleteForward(options);
+    },
+  },
+}));
+Copy
+Extend Editor (Advanced)
+You can extend the editor for complex functionality. To do this, you can use the extendEditor plugin option to directly mutate properties of the editor object after its creation.
+
+const CustomNormalizerPlugin = createPlatePlugin({
+  key: 'customNormalizer',
+  extendEditor: ({ editor }) => {
+    editor.customState = true;
+    
+    return editor;
+  },
+});
+Copy
+Difference between extendEditor and overrideEditor
+
+Use extendEditor when integrating legacy Slate plugins like withYjs that need direct editor mutation. There is only one extendEditor per plugin.
+Prefer using overrideEditor for modifying editor behavior as it has single purpose responsibility and better type safety. It can be called multiple times to layer different overrides.
+Advanced Plugin Configuration
+Plugin Store
+Each plugin has its own store, which can be used to manage plugin-specific state.
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  options: {
+    count: 0,
+  },
+}).extend(({ editor, plugin, setOption }) => ({
+  handlers: {
+    onClick: () => {
+      setOption('count', 1);
+    },
+  },
+}));
+Copy
+You can access and update the store using the following methods:
+
+// Get the current value
+const count = editor.getOption(MyPlugin, 'count');
+ 
+// Set a new value
+editor.setOption(MyPlugin, 'count', 5);
+ 
+// Update the value based on the previous state
+editor.setOption(MyPlugin, 'count', (prev) => prev + 1);
+Copy
+In React components, you can use the usePluginOption or usePluginOptions hook to subscribe to store changes:
+
+const MyComponent = () => {
+  const count = usePluginOption(MyPlugin, 'count');
+  return <div>Count: {count}</div>;
+};
+Copy
+See more in Plugin Context and Editor Methods guides.
+
+Dependencies
+You can specify plugin dependencies using the dependencies property. This ensures that the required plugins are loaded before the current plugin.
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  dependencies: ['paragraphPlugin', 'listPlugin'],
+});
+Copy
+Enabled Flag
+The enabled property allows you to conditionally enable or disable a plugin:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  enabled: true, // or false to disable
+});
+Copy
+Nested Plugins
+Plate supports nested plugins, allowing you to create plugin hierarchies. Use the plugins property to define child plugins:
+
+const ParentPlugin = createPlatePlugin({
+  key: 'parent',
+  plugins: [
+    createPlatePlugin({ key: 'child1' }),
+    createPlatePlugin({ key: 'child2' }),
+  ],
+});
+Copy
+Plugin Priority
+The priority property determines the order in which plugins are registered and executed. Plugins with higher priority values are processed first:
+
+const HighPriorityPlugin = createPlatePlugin({
+  key: 'highPriority',
+  priority: 100,
+});
+ 
+const LowPriorityPlugin = createPlatePlugin({
+  key: 'lowPriority',
+  priority: 50,
+});
+Copy
+This is particularly useful when you need to ensure certain plugins are initialized or run before others.
+
+Custom Parsers
+The parsers property accepts string keys to build your own parsers:
+
+const MyPlugin = createPlatePlugin({
+  key: 'myPlugin',
+  parsers: {
+    myCustomParser: {
+      deserializer: {
+        parse: // ...
+      },
+      serializer: {
+        parse: // ...
+      }
+    },
+  },
+});
+Copy
+Core plugins includes html and htmlReact parsers.
+
+Typed Plugins
+Using above methods, plugin types are automatically inferred from the given configuration.
+
+If you need to pass an explicit type as generic, you can use createTPlatePlugin.
+
+Using createTPlatePlugin
+The createTPlatePlugin function allows you to create a typed plugin:
+
+type CodeBlockConfig = PluginConfig<
+  // key
+  'code_block',
+  // options
+  { syntax: boolean; syntaxPopularFirst: boolean },
+  // api
+  {
+    plugin: {
+      getSyntaxState: () => boolean;
+    };
+    toggleSyntax: () => void;
+  },
+  // transforms
+  {
+    insert: {
+      codeBlock: (options: { language: string }) => void;
+    }
+  }
+>;
+ 
+const CodeBlockPlugin = createTPlatePlugin<CodeBlockConfig>({
+  key: 'code_block',
+  options: { syntax: true, syntaxPopularFirst: false },
+}).extendEditorApi<CodeBlockConfig['api']>(() => ({
+  plugin: {
+    getSyntaxState: () => true,
+  },
+  toggleSyntax: () => {},
+})).extendEditorTransforms<CodeBlockConfig['transforms']>(() => ({
+  insert: {
+    codeBlock: ({ editor, getOptions }) => {
+      editor.tf.insertBlock({ type: 'code_block', language: getOptions().language });
+    },
+  },
+}));
+Copy
+Using Typed Plugins
+When using typed plugins, you get full type checking and autocompletion ✨
+
+const editor = createPlateEditor({
+  plugins: [ExtendedCodeBlockPlugin],
+});
+ 
+// Type-safe access to options
+const options = editor.getOptions(ExtendedCodeBlockPlugin);
+options.syntax;
+options.syntaxPopularFirst;
+options.hotkey;
+ 
+// Type-safe API
+editor.api.toggleSyntax();
+editor.api.plugin.getSyntaxState();
+editor.api.plugin2.setLanguage('python');
+editor.api.plugin.getLanguage();
+ 
+// Type-safe Transforms
+editor.tf.insert.codeBlock({ language: 'typescript' });
+Copy
+See also
+
+Plate Plugin
+Previous
+Next
+API reference for Plate plugins.
+
+Copy Markdown
+Open
+Plate plugins are objects passed to Plate plugins prop.
+
+Plugin Properties
+Attributes
+
+key REQUIRED C['key']
+Unique identifier used by Plate to store the plugins by key in editor.plugins.
+
+
+api Record<string, Function>
+An object of API functions provided by the plugin. These functions are accessible via editor.api[key].
+
+
+transforms Record<string, Function>
+Transform functions provided by the plugin that modify the editor state. These are accessible via editor.tf[key].
+
+
+options Record<string, any>
+Extended properties used by the plugin as options.
+
+
+handlers { onChange?: (editor: PlateEditor) => void } & Record<string, Function>
+Event handlers for various editor events.
+
+Hide child attributes
+handlers.onChange optional (editor: PlateEditor) => void
+Called whenever the editor content changes.
+
+handlers.onNodeChange optional OnNodeChange
+Called whenever a node operation occurs (insert, remove, set, merge, split, move).
+
+type OnNodeChange = (ctx: PlatePluginContext & {
+  node: Descendant;
+  operation: NodeOperation;
+  prevNode: Descendant;
+}) => HandlerReturnType;
+Copy
+Parameters:
+
+node: The node after the operation
+operation: The node operation that occurred
+prevNode: The node before the operation
+Note: For insert_node and remove_node operations, both node and prevNode contain the same value to avoid null cases.
+
+handlers.onTextChange optional OnTextChange
+Called whenever a text operation occurs (insert or remove text).
+
+type OnTextChange = (ctx: PlatePluginContext & {
+  node: Descendant;
+  operation: TextOperation;
+  prevText: string;
+  text: string;
+}) => HandlerReturnType;
+Copy
+Parameters:
+
+node: The parent node containing the text that changed
+operation: The text operation that occurred (insert_text or remove_text)
+prevText: The text content before the operation
+text: The text content after the operation
+
+inject object
+Defines how the plugin injects functionality into other plugins or the editor.
+
+Hide child attributes
+inject.nodeProps optional Record<string, any>
+Properties used by Plate to inject props into any node component.
+
+inject.excludePlugins optional string[]
+An array of plugin keys to exclude from node prop injection.
+
+inject.excludeBelowPlugins optional string[]
+An array of plugin keys. Node prop injection will be excluded for any nodes that are descendants of elements with these plugin types.
+
+inject.isBlock optional boolean
+If true, only matches block elements. Used to restrict prop injection to block-level nodes.
+
+inject.isElement optional boolean
+If true, only matches element nodes. Used to restrict prop injection to element nodes.
+
+inject.isLeaf optional boolean
+If true, only matches leaf nodes. Used to restrict prop injection to leaf nodes.
+
+inject.maxLevel optional number
+Maximum nesting level for node prop injection. Nodes deeper than this level will not receive injected props.
+
+inject.plugins optional Record<string, Partial<PlatePlugin>>
+Property that can be used by a plugin to allow other plugins to inject code.
+
+inject.targetPluginToInject optional function
+A function that returns a plugin config to be injected into other plugins inject.plugins specified by targetPlugins.
+
+inject.targetPlugins optional string[]
+Plugin keys used by InjectNodeProps and the targetPluginToInject function.
+
+Default: [ParagraphPlugin.key]
+
+node object
+Defines the node-specific configuration for the plugin.
+
+Hide child attributes
+node.isDecoration optional boolean
+Indicates if this plugin's nodes can be rendered as decorated leaf. Set to false to render node component only once per text node.
+
+Default: true
+node.isElement optional boolean
+Indicates if this plugin's nodes should be rendered as elements.
+
+node.isInline optional boolean
+Indicates if this plugin's elements should be treated as inline.
+
+node.isLeaf optional boolean
+Indicates if this plugin's nodes should be rendered as leaves.
+
+node.isContainer optional boolean
+When true, indicates that the plugin's elements are primarily containers for other content. This property is typically used by fragment queries to unwrap the container nodes.
+
+rules.selection.affinity optional 'default' | 'directional' | 'outward' | 'hard'
+Defines the selection behavior at the boundaries of nodes. See Plugin Rules.
+
+'default': Uses Slate's default behavior
+
+'directional': Selection affinity is determined by the direction of cursor movement. Maintains inward or outward affinity based on approach
+
+'outward': Forces outward affinity. Typing at the edge of a mark will not apply the mark to new text
+
+'hard': Creates a 'hard' edge that requires two key presses to move across. Uses offset-based navigation
+
+Default: undefined (Slate's default behavior)
+
+node.isMarkableVoid optional boolean
+Indicates if this plugin's void elements should be markable.
+
+node.isSelectable optional boolean
+Indicates if this plugin's nodes should be selectable.
+
+Default: true
+node.isStrictSiblings optional boolean
+Indicates whether this element enforces strict sibling type constraints. Set to true when the element only allows specific siblings (e.g., td can only have td siblings, column can only have column siblings) and prevents standard text blocks like paragraphs from being inserted as siblings.
+
+Used by exit break functionality to determine appropriate exit points in nested structures. See Exit Break.
+
+Default: false
+rules.break.empty optional 'default' | 'deleteExit' | 'exit' | 'reset'
+Action when Enter is pressed in an empty block. See Plugin Rules.
+
+'default': Default behavior
+'reset': Reset block to default paragraph type
+'exit': Exit the current block
+'deleteExit': Delete backward then exit
+rules.break.emptyLineEnd optional 'default' | 'deleteExit' | 'exit'
+Action when Enter is pressed at the end of an empty line. This is typically used with rules.break.default: 'lineBreak'. See Plugin Rules.
+
+'default': Default behavior
+'exit': Exit the current block
+'deleteExit': Delete backward then exit
+rules.break.default optional 'default' | 'deleteExit' | 'exit' | 'lineBreak'
+Default action when Enter is pressed. Defaults to splitting the block. See Plugin Rules.
+
+'default': Default behavior
+'exit': Exit the current block
+'lineBreak': Insert newline character
+'deleteExit': Delete backward then exit
+rules.break.splitReset optional boolean
+If true, the new block after splitting will be reset to the default type. See Plugin Rules.
+
+rules.delete.start optional 'default' | 'reset'
+Action when Backspace is pressed at the start of the block. This applies whether the block is empty or not. See Plugin Rules.
+
+'default': Default behavior
+'reset': Reset block to default paragraph type
+rules.delete.empty optional 'default' | 'reset'
+Action when Backspace is pressed and the block is empty. See Plugin Rules.
+
+'default': Default behavior
+'reset': Reset block to default paragraph type
+rules.match optional MatchRules
+Function to determine if this plugin's rules should apply to a node. Used to override behavior based on node properties beyond just type matching.
+
+Default: type === node.type
+
+Example: matchRules: ({ node }) => Boolean(node.listStyleType)
+
+Example: List plugin sets match: ({ node }) => !!node.listStyleType to override paragraph behavior when the paragraph is a list item.
+
+rules.merge.removeEmpty optional boolean
+Whether to remove the node when it's empty during merge operations. See Plugin Rules.
+
+Default: false
+rules.normalize.removeEmpty optional boolean
+Whether to remove nodes with empty text during normalization. See Plugin Rules.
+
+Default: false
+node.isVoid optional boolean
+Indicates if this plugin's elements should be treated as void.
+
+node.type optional string
+Specifies the type identifier for this plugin's nodes.
+
+Default: plugin.key
+node.component optional NodeComponent | null
+React component used to render this plugin's nodes.
+
+node.leafProps optional LeafNodeProps<WithAnyKey<C>>
+Override data-slate-leaf element attributes.
+
+node.props optional NodeProps<WithAnyKey<C>>
+Override node attributes.
+
+node.textProps optional TextNodeProps<WithAnyKey<C>>
+Override data-slate-node="text" element attributes.
+
+
+override object
+Allows overriding components and plugins by key.
+
+Hide child attributes
+override.components optional Record<string, NodeComponent>
+Replace plugin NodeComponent by key.
+
+override.plugins optional Record<string, Partial<EditorPlatePlugin<AnyPluginConfig>>>
+Extend PlatePlugin by key.
+
+override.enabled optional Partial<Record<string, boolean>>
+Enable or disable plugins.
+
+
+parser Nullable<Parser<WithAnyKey<C>>>
+Defines how the plugin parses content.
+
+
+parsers object
+Defines serializers and deserializers for various formats.
+
+Hide child attributes
+parsers.html optional Nullable<{ deserializer?: HtmlDeserializer<WithAnyKey<C>>; serializer?: HtmlSerializer<WithAnyKey<C>> }>
+HTML parser configuration.
+
+parsers.htmlReact optional Nullable<{ serializer?: HtmlReactSerializer<WithAnyKey<C>> }>
+HTML React serializer configuration.
+
+
+render object
+Defines how the plugin renders components.
+
+Hide child attributes
+render.aboveEditable optional Component
+Component rendered above the Editable component but inside the Slate wrapper.
+
+render.aboveNodes optional RenderNodeWrapper<WithAnyKey<C>>
+Create a function that generates a parent React node for all other plugins' node components.
+
+render.aboveSlate optional Component
+Component rendered above the Slate wrapper.
+
+render.afterEditable optional EditableSiblingComponent
+Renders a component after the Editable component.
+
+render.beforeEditable optional EditableSiblingComponent
+Renders a component before the Editable component.
+
+render.belowNodes optional RenderNodeWrapper<WithAnyKey<C>>
+Create a function that generates a React node below all other plugins' node React node, but above their children.
+
+render.belowRootNodes optional (props: PlateElementProps<TElement, C>) => React.ReactNode
+Renders a component after the direct children of the root element. This differs from belowNodes in that it's the direct child of PlateElement rather than wrapping the children that could be nested. This is useful when you need components relative to the root element.
+
+render.leaf optional NodeComponent
+Renders a component below leaf nodes when isLeaf: true and isDecoration: false. Use render.node instead when isDecoration: true.
+
+render.node optional NodeComponent
+Renders a component for:
+
+Elements nodes if isElement: true
+Below text nodes if isLeaf: true and isDecoration: false
+Below leaf if isLeaf: true and isDecoration: true
+render.as optional keyof HTMLElementTagNameMap
+Specifies the HTML tag name to use when rendering the node component. Only used when no custom component is provided for the plugin.
+
+Default: 'div' for elements, 'span' for leaves
+
+shortcuts Shortcuts
+Defines keyboard shortcuts for the plugin.
+
+
+useOptionsStore StoreApi<C['key'], C['options']>
+Zustand store for managing plugin options.
+
+
+dependencies string[]
+An array of plugin keys that this plugin depends on.
+
+
+enabled optional boolean
+Enables or disables the plugin. Used by Plate to determine if the plugin should be used.
+
+
+plugins any[]
+Recursive plugin support to allow having multiple plugins in a single plugin.
+
+
+priority number
+Defines the order in which plugins are registered and executed.
+
+Default: 100
+
+decorate optional Decorate<WithAnyKey<C>>
+Property used by Plate to decorate editor ranges.
+
+
+extendEditor optional ExtendEditor<WithAnyKey<C>>
+Function to extend the editor instance. Used primarily for integrating legacy Slate plugins that need direct editor mutation. Only one extendEditor is allowed per plugin.
+
+extendEditor: ({ editor }) => {
+  // Example: Integrating a legacy Slate plugin
+  return withYjs(editor);
+}
+Copy
+
+useHooks optional () => void
+Hook called when the editor is initialized.
+
+
+editOnly optional boolean | EditOnlyConfig
+Configures which plugin functionalities should only be active when the editor is not read-only.
+
+Can be either a boolean or an object configuration:
+
+type EditOnlyConfig = {
+  render?: boolean;      // default: true
+  handlers?: boolean;    // default: true
+  inject?: boolean;      // default: true
+  normalizeInitialValue?: boolean;  // default: false
+}
+Copy
+When set to true (boolean):
+
+render, handlers, and inject.nodeProps are only active when editor is not read-only
+normalizeInitialValue remains active regardless of read-only state
+When set to an object:
+
+Each property can be individually configured
+Properties default to being edit-only (true) except normalizeInitialValue which defaults to always active (false)
+Set a property to false to make it always active regardless of read-only state
+For normalizeInitialValue, set to true to make it edit-only
+Examples:
+
+// All features (except normalizeInitialValue) are edit-only
+editOnly: true
+ 
+// normalizeInitialValue is edit-only, others remain edit-only by default
+editOnly: { normalizeInitialValue: true }
+ 
+// render is always active, others follow default behavior
+editOnly: { render: false }
+Copy
+Plugin Methods
+Methods
+
+configure (config: PlatePluginConfig | ((ctx: PlatePluginContext) => PlatePluginConfig)) => PlatePlugin
+Creates a new plugin instance with updated options.
+
+(config: PlatePluginConfig<C['key'], InferOptions<C>, InferApi<C>, InferTransforms<C>> | ((ctx: PlatePluginContext<C>) => PlatePluginConfig<C['key'], InferOptions<C>, InferApi<C>, InferTransforms<C>>)) => PlatePlugin<C>
+Copy
+
+extend (config: Partial<PlatePlugin> | ((ctx: PlatePluginContext) => Partial<PlatePlugin>)) => PlatePlugin
+Creates a new plugin instance with additional configuration.
+
+(extendConfig: Partial<PlatePlugin> | ((ctx: PlatePluginContext<AnyPluginConfig>) => Partial<PlatePlugin>)) => PlatePlugin
+Copy
+
+extendPlugin (key: string, config: Partial<PlatePlugin> | ((ctx: PlatePluginContext) => Partial<PlatePlugin>)) => PlatePlugin
+Extends an existing nested plugin or adds a new one if not found. Supports deep nesting.
+
+(key: string, extendConfig: Partial<PlatePlugin> | ((ctx: PlatePluginContext<AnyPluginConfig>) => Partial<PlatePlugin>)) => PlatePlugin
+Copy
+
+withComponent function
+Sets or replaces the component associated with a plugin.
+
+(component: NodeComponent) => PlatePlugin<C>
+Copy
+
+overrideEditor function
+Creates a new plugin instance with overridden editor methods. Provides access to original methods via tf and api parameters. Can be called multiple times to layer different overrides.
+
+overrideEditor(({ editor, tf: { deleteForward }, api: { isInline } }) => ({
+  transforms: {
+    // Override transforms
+    deleteForward(options) {
+      deleteForward(options);
+    },
+  },
+  api: {
+    // Override API methods
+    isInline(element) {
+      return isInline(element);
+    },
+  },
+})) => PlatePlugin<C>
+Copy
+Preferred method for modifying editor behavior
+Type-safe access to original methods
+Clean separation between transforms and API
+Can be chained multiple times
+
+extendApi (api: (ctx: PlatePluginContext) => Record<string, Function>) => PlatePlugin
+Extends the plugin's API.
+
+(api: (ctx: PlatePluginContext) => Record<string, Function>) => PlatePlugin
+Copy
+
+extendEditorApi (api: (ctx: PlatePluginContext) => Record<string, Function>) => PlatePlugin
+Extends the editor's API with plugin-specific methods.
+
+(api: (ctx: PlatePluginContext) => Record<string, Function>) => PlatePlugin
+Copy
+
+extendTransforms (transforms: (ctx: PlatePluginContext) => Record<string, Function>) => PlatePlugin
+Extends the plugin's transforms.
+
+(transforms: (ctx: PlatePluginContext) => Record<string, Function>) => PlatePlugin
+Copy
+
+extendEditorTransforms (transforms: (ctx: PlatePluginContext) => Record<string, Function>) => PlatePlugin
+Extends the editor's transforms with plugin-specific methods.
+
+(transforms: (ctx: PlatePluginContext) => Record<string, Function>) => PlatePlugin
+Copy
+
+extendSelectors (options: (ctx: PlatePluginContext) => Record<string, any>) => PlatePlugin
+Extends the plugin with selectors.
+
+(options: (ctx: PlatePluginContext) => Record<string, any>) => PlatePlugin
+Copy
+Plugin Context
+Attributes
+
+editor PlateEditor
+The current editor instance.
+
+
+plugin EditorPlatePlugin<C>
+The current plugin instance.
+
+
+getOption function
+Function to get a specific option value.
+
+
+getOptions function
+Function to get all options for the plugin.
+
+
+setOption function
+Function to set a specific option value.
+
+
+setOptions function
+Function to set multiple options.
+
+For more detailed information on specific aspects of Plate plugins, refer to the individual guides on Plugin Configuration, Plugin Methods, Plugin Context, Plugin Components, and Plugin Shortcuts.
+
+Generic Types
+Attributes
+
+C AnyPluginConfig = PluginConfig
+Represents the plugin configuration. This type extends PluginConfig which includes key, options, api, and transforms.
+
+Usage example:
+
+type MyPluginConfig = PluginConfig<
+  'myPlugin',
+  { customOption: boolean },
+  { getData: () => string },
+  { customTransform: () => void }
+>;
+ 
+const MyPlugin = createPlatePlugin<MyPluginConfig>({
+  key: 'myPlugin',
+  // plugin implementation
+});
+</file>
+
+<file path="public/manifest.json">
+{
+  "short_name": "TanStack App",
+  "name": "Create TanStack App Sample",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
+</file>
+
+<file path="public/robots.txt">
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+</file>
+
+<file path="README.md">
+Welcome to your new TanStack app! 
+
+# Getting Started
+
+To run this application:
+
+```bash
+pnpm install
+pnpm start
+```
+
+# Building For Production
+
+To build this application for production:
+
+```bash
+pnpm build
+```
+
+## Testing
+
+This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+
+```bash
+pnpm test
+```
+
+## Styling
+
+This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+
+
+
+## Shadcn
+
+Add components using the latest version of [Shadcn](https://ui.shadcn.com/).
+
+```bash
+pnpx shadcn@latest add button
+```
+
+
+
+## Routing
+This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
+
+### Adding A Route
+
+To add a new route to your application just add another a new file in the `./src/routes` directory.
+
+TanStack will automatically generate the content of the route file for you.
+
+Now that you have two routes you can use a `Link` component to navigate between them.
+
+### Adding Links
+
+To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
+
+```tsx
+import { Link } from "@tanstack/react-router";
+```
+
+Then anywhere in your JSX you can use it like so:
+
+```tsx
+<Link to="/about">About</Link>
+```
+
+This will create a link that will navigate to the `/about` route.
+
+More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
+
+### Using A Layout
+
+In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
+
+Here is an example layout that includes a header:
+
+```tsx
+import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+
+import { Link } from "@tanstack/react-router";
+
+export const Route = createRootRoute({
+  component: () => (
+    <>
+      <header>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+        </nav>
+      </header>
+      <Outlet />
+      <TanStackRouterDevtools />
+    </>
+  ),
+})
+```
+
+The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
+
+More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
+
+
+## Data Fetching
+
+There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
+
+For example:
+
+```tsx
+const peopleRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/people",
+  loader: async () => {
+    const response = await fetch("https://swapi.dev/api/people");
+    return response.json() as Promise<{
+      results: {
+        name: string;
+      }[];
+    }>;
+  },
+  component: () => {
+    const data = peopleRoute.useLoaderData();
+    return (
+      <ul>
+        {data.results.map((person) => (
+          <li key={person.name}>{person.name}</li>
+        ))}
+      </ul>
+    );
+  },
+});
+```
+
+Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
+
+### React-Query
+
+React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
+
+First add your dependencies:
+
+```bash
+pnpm add @tanstack/react-query @tanstack/react-query-devtools
+```
+
+Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
+
+```tsx
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// ...
+
+const queryClient = new QueryClient();
+
+// ...
+
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement);
+
+  root.render(
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  );
+}
+```
+
+You can also add TanStack Query Devtools to the root route (optional).
+
+```tsx
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+const rootRoute = createRootRoute({
+  component: () => (
+    <>
+      <Outlet />
+      <ReactQueryDevtools buttonPosition="top-right" />
+      <TanStackRouterDevtools />
+    </>
+  ),
+});
+```
+
+Now you can use `useQuery` to fetch your data.
+
+```tsx
+import { useQuery } from "@tanstack/react-query";
+
+import "./App.css";
+
+function App() {
+  const { data } = useQuery({
+    queryKey: ["people"],
+    queryFn: () =>
+      fetch("https://swapi.dev/api/people")
+        .then((res) => res.json())
+        .then((data) => data.results as { name: string }[]),
+    initialData: [],
+  });
+
+  return (
+    <div>
+      <ul>
+        {data.map((person) => (
+          <li key={person.name}>{person.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+```
+
+You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
+
+## State Management
+
+Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
+
+First you need to add TanStack Store as a dependency:
+
+```bash
+pnpm add @tanstack/store
+```
+
+Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
+
+```tsx
+import { useStore } from "@tanstack/react-store";
+import { Store } from "@tanstack/store";
+import "./App.css";
+
+const countStore = new Store(0);
+
+function App() {
+  const count = useStore(countStore);
+  return (
+    <div>
+      <button onClick={() => countStore.setState((n) => n + 1)}>
+        Increment - {count}
+      </button>
+    </div>
+  );
+}
+
+export default App;
+```
+
+One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
+
+Let's check this out by doubling the count using derived state.
+
+```tsx
+import { useStore } from "@tanstack/react-store";
+import { Store, Derived } from "@tanstack/store";
+import "./App.css";
+
+const countStore = new Store(0);
+
+const doubledStore = new Derived({
+  fn: () => countStore.state * 2,
+  deps: [countStore],
+});
+doubledStore.mount();
+
+function App() {
+  const count = useStore(countStore);
+  const doubledCount = useStore(doubledStore);
+
+  return (
+    <div>
+      <button onClick={() => countStore.setState((n) => n + 1)}>
+        Increment - {count}
+      </button>
+      <div>Doubled - {doubledCount}</div>
+    </div>
+  );
+}
+
+export default App;
+```
+
+We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
+
+Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
+
+You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
+
+# Demo files
+
+Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
+
+# Learn More
+
+You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+</file>
+
+<file path="src/components/Header.tsx">
+import { Link } from '@tanstack/react-router'
+
+export default function Header() {
+  return (
+    <header className="p-2 flex gap-2 bg-white text-black justify-between">
+      <nav className="flex flex-row">
+        <div className="px-2 font-bold">
+          <Link to="/">Home</Link>
+        </div>
+
+        <div className="px-2 font-bold">
+          <Link to="/demo/start/server-funcs">Start - Server Functions</Link>
+        </div>
+
+        <div className="px-2 font-bold">
+          <Link to="/demo/start/api-request">Start - API Request</Link>
+        </div>
+      </nav>
+    </header>
+  )
+}
+</file>
+
+<file path="src/components/plate-editor.tsx">
+import { Plate, usePlateEditor } from "platejs/react";
+
+import { Editor, EditorContainer } from "@/components/ui/editor";
+import { normalizeNodeId } from "platejs";
+import { NormalizeNodeIdOptions } from "platejs";
+import { ParagraphPlugin } from "platejs/react";
+import { ParagraphElement } from "@/components/ui/paragraph-node";
+import { DndPlugin } from "@platejs/dnd";
+import { BlockDraggable } from "@/components/ui/block-draggable";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { TopBarPlugin } from "@/components/plugins/top-bar";
+import { BadgePlugin } from "@/components/plugins/badge-plugin";
+import { Button } from "./ui/button";
+
+import { TrailingBlockPlugin } from 'platejs';
+
+export function PlateEditor() {
+  const editor = usePlateEditor({
+    plugins: [
+      ParagraphPlugin.withComponent(ParagraphElement),
+      DndPlugin.configure({
+        options: {
+          enableScroller: false,
+        },
+        render: {
+          aboveNodes: BlockDraggable,
+          aboveSlate: ({ children }) => {
+            return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
+          },
+        },
+      }),
+      TopBarPlugin,
+      BadgePlugin,
+      TrailingBlockPlugin.configure({
+        options: {
+          type: "p",
+        }
+      }),
+    ],
+    value,
+  });
+
+  const insertBadge = () => {
+    editor.tf.insert.badge();
+  }
+
+  return (
+    <Plate
+      editor={editor}
+      onChange={(value) => {
+            console.log(value);
+          }}
+    >
+      <Button onClick={insertBadge}>Insert Badge</Button>
+      <EditorContainer>
+        <Editor />
+      </EditorContainer>
+    </Plate>
+  );
+}
+
+const paragraphKey = ParagraphPlugin.key;
+
+const value = normalizeNodeId([
+  {
+    type: "p",
+    id: "1",
+    children: [
+      {
+        text: "Hello, world!",
+      },
+    ],
+  },
+  {
+    type: "badge",
+    id: "3",
+    children: [
+      {
+        text: "",
+      },
+    ],
+  },
+  {
+    type: paragraphKey,
+    id: "2",
+    children: [
+      {
+        text: "Hello, world! 2",
+      },
+    ],
+  },
+  
+]);
+</file>
+
+<file path="src/components/plugins/badge-plugin.tsx">
+// plugins/badge-plugin.tsx
+import {
+  Key,
+  PlateElement,
+  type PlateElementProps,
+  createTPlatePlugin,
+//   type PlateEditor,
+} from "platejs/react";
+import type { PluginConfig } from "platejs";
+// import { Element, Editor, Node, Path, Transforms } from "platejs";
+
+type BadgeOptions = {
+  defaultLabel?: string;
+};
+
+// Declare a typed config so editor.tf.insert.badge() is known
+type BadgeConfig = PluginConfig<
+  "badge",
+  BadgeOptions,
+  {}, // api
+  {
+    // transforms
+    insert: {
+      badge: (opts?: { label?: string; color?: string }) => void;
+    };
+  }
+>;
+
+export const BadgePlugin = createTPlatePlugin<BadgeConfig>({
+  key: "badge",
+  options: { defaultLabel: "Badge" },
+  node: {
+    isElement: true,
+    isVoid: true,
+    isInline: false,
+    isSelectable: true,
+  },
+  rules: {
+    delete: {
+        start: "default",
+        empty: "default",
+    },
+    merge: {
+        removeEmpty: false,
+    }    
+  }
+
+})
+  .withComponent(BadgeElement)
+  .extendEditorTransforms<BadgeConfig["transforms"]>(
+    ({ editor, type, getOptions }) => ({
+      insert: {
+        badge: (opts) => {
+          const { defaultLabel } = getOptions();
+          // Use a block insert helper; void still needs a text child
+          editor.tf.insertNode(
+            {
+              type,
+              label: opts?.label ?? defaultLabel ?? "Badge",
+              color: opts?.color,
+              children: [{ text: "" }],
+            },
+            { select: true, mode: "highest" }
+          );
+        },
+      },
+    })
+  )
+  .extend({
+    // Name the shortcut the same as the transform to auto-wire,
+    // or provide a handler that calls editor.tf.insert.badge()
+    shortcuts: {
+      badge: {
+        keys: [[Key.Mod, Key.Alt, "b"]],
+      },
+      // Or with explicit handler:
+      // badge: {
+      //   keys: [[Key.Mod, Key.Alt, 'b']],
+      //   handler: ({ editor }) => editor.tf.insert.badge(),
+      // },
+    },
+  })
+  .overrideEditor(({ editor, type, tf: { deleteBackward, deleteForward } }) => ({
+    transforms: {
+      deleteBackward(unit) {
+        const selection = editor.selection;
+        
+        if (!selection) {
+          deleteBackward(unit);
+          return;
+        }
+  
+        // Get the current block
+        const blockEntry = editor.api.block({ at: selection });
+        
+        if (blockEntry) {
+          const [block] = blockEntry;
+          
+          // If current block is a badge, prevent deletion
+          if (block.type === type) {
+            return;
+          }
+        }
+  
+        // Check if the previous sibling is a badge when at start of current block
+        const isAtStart = editor.api.isStart(selection.anchor, selection);
+        if (isAtStart && blockEntry) {
+          const [, blockPath] = blockEntry;
+          
+          // Try to get previous sibling
+          if (blockPath[blockPath.length - 1] > 0) {
+            const previousPath = [...blockPath];
+            previousPath[previousPath.length - 1] -= 1;
+            
+            try {
+              const previousNode = editor.api.node({ at: previousPath });
+              if (previousNode) {
+                const [prevBlock] = previousNode;
+                if (prevBlock.type === type) {
+                  // Select the badge instead of deleting
+                  editor.tf.select(previousPath);
+                  return;
+                }
+              }
+            } catch (e) {
+              // Path doesn't exist, continue with normal deletion
+            }
+          }
+        }
+        
+        // Default behavior
+        deleteBackward(unit);
+      },
+      
+      deleteForward(unit) {
+        const selection = editor.selection;
+        
+        if (!selection) {
+          deleteForward(unit);
+          return;
+        }
+  
+        // Get the current block
+        const blockEntry = editor.api.block({ at: selection });
+        
+        if (blockEntry) {
+          const [block] = blockEntry;
+          
+          // If current block is a badge, prevent deletion
+          if (block.type === type) {
+            return;
+          }
+        }
+  
+        // Check if the next sibling is a badge when at end of current block
+        const isAtEnd = editor.api.isEnd(selection.anchor, selection);
+        if (isAtEnd && blockEntry) {
+          const [, blockPath] = blockEntry;
+          
+          // Try to get next sibling
+          const nextPath = [...blockPath];
+          nextPath[nextPath.length - 1] += 1;
+          
+          try {
+            const nextNode = editor.api.node({ at: nextPath });
+            if (nextNode) {
+              const [nextBlock] = nextNode;
+              if (nextBlock.type === type) {
+                // Select the badge instead of deleting
+                editor.tf.select(nextPath);
+                return;
+              }
+            }
+          } catch (e) {
+            // Path doesn't exist, continue with normal deletion
+          }
+        }
+        
+        // Default behavior
+        deleteForward(unit);
+      },
+    },
+  }))
+
+// --- Rendering ---
+
+/* function BadgeElement(props: PlateElementProps) {
+  const { element } = props as PlateElementProps & {
+    element: { label?: string; color?: string };
+  };
+
+  return (
+    <PlateElement as="div" {...props}>
+      <div
+        contentEditable={false}
+        aria-hidden="true"
+        tabIndex={-1}
+        className="my-2 inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
+        // onMouseDown={(e) => e.preventDefault()}
+        suppressContentEditableWarning
+      >
+        <span
+          className="inline-flex items-center rounded px-2 py-0.5 text-sm"
+          style={{
+            background: element.color ?? "var(--muted)",
+            color: "var(--foreground)",
+          }}
+        >
+          {element.label ?? "Badge"}
+        </span>
+      </div>
+
+      {props.children}
+    </PlateElement>
+  );
+} */
+
+function BadgeElement(props: PlateElementProps) {
+  const { element } = props as PlateElementProps & {
+    element: { label?: string; color?: string };
+  };
+
+  return (
+    <PlateElement {...props}>
+      <div
+        contentEditable={false}
+        className="my-2 inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
+      >
+        <span
+          className="inline-flex items-center rounded px-2 py-0.5 text-sm"
+          style={{
+            background: element.color ?? "var(--muted)",
+            color: "var(--foreground)",
+          }}
+        >
+          {element.label ?? "Badge"}
+        </span>
+      </div>
+      <span className="hidden">{props.children}</span>
+    </PlateElement>
+  );
+}
+
+/* function BadgeElement(props: PlateElementProps) {
+  const { element } = props as PlateElementProps & {
+    element: { label?: string; color?: string };
+  };
+
+  // IMPORTANT: spread {...props}, not {...attributes}
+  // Also render {props.children} to keep Slate happy around voids.
+  return (
+    <PlateElement
+      as="div"
+      {...props}
+      className="my-2 inline-flex items-center gap-2 rounded-md border px-2 py-1"
+    >
+      <span
+        className="inline-flex select-none items-center rounded px-2 py-0.5 text-sm"
+        style={{
+          background: element.color ?? "var(--muted)",
+          color: "var(--foreground)",
+        }}
+      >
+        {element.label ?? "Badge"}
+      </span>
+      {props.children}
+    </PlateElement>
+  );
+} */
+</file>
+
+<file path="src/components/plugins/top-bar.tsx">
+import * as React from 'react';
+import { createPlatePlugin, createTPlatePlugin } from 'platejs/react';
+import { PluginConfig } from 'platejs';
+import { Button } from '../ui/button';
+
+type AboveEachNodeConfig = PluginConfig<
+  'aboveEachNode',
+  { excludeTypes: string[] }
+>;
+
+/* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+  key: 'aboveEachNode',
+  options: { excludeTypes: [] }, // default prevents undefined
+}).extend(({ editor, plugin }) => ({
+  render: {
+    // RenderNodeWrapper: (ctx) => RenderNodeWrapperFunction
+    // RenderNodeWrapperFunction: (elementProps) => ReactNode
+    aboveNodes: ({ element }) => (elementProps) => {
+      const { excludeTypes = [] } = editor.getOptions(plugin); // avoid undefined
+      const type = (element)?.type as string | undefined;
+
+      if (type && excludeTypes.includes(type)) {
+        // identity wrapper: do nothing
+        return elementProps.children;
+      }
+
+      return (
+        <>
+          <div className="mb-1 text-xs text-muted-foreground/80 select-none">
+            node: {type ?? 'element'}
+          </div>
+          {elementProps.children}
+        </>
+      );
+    },
+  },
+})); */
+
+export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+    key: 'aboveEachNode',
+    options: { excludeTypes: [] },
+  }).extend(({ editor, plugin }) => ({
+    render: {
+      aboveNodes: ({ element }) => (elementProps) => {
+        const { excludeTypes = [] } = editor.getOptions(plugin);
+        const type = (element as any)?.type as string | undefined;
+  
+        if (type && excludeTypes.includes(type)) {
+          return elementProps.children;
+        }
+  
+        return (
+          <>
+            <div
+              contentEditable={false}
+              aria-hidden="true"
+              role="presentation"
+              tabIndex={-1}
+              className="mb-1 text-xs text-muted-foreground/80 select-none"
+              // suppress React warning when CE=false elements contain children
+            //   suppressContentEditableWarning
+            >
+              node: {type ?? 'element'}
+              <Button onClick={() => { console.log('Hello') }}>
+            Hello
+              </Button>
+            </div>
+            {elementProps.children}
+          </>
+        );
+      },
+    },
+  }));
+</file>
+
+<file path="src/components/ui/block-draggable.tsx">
+'use client';
+
+import * as React from 'react';
+
+import { DndPlugin, useDraggable, useDropLine } from '@platejs/dnd';
+import { expandListItemsWithChildren } from '@platejs/list';
+import { BlockSelectionPlugin } from '@platejs/selection/react';
+import { GripVertical } from 'lucide-react';
+import { type TElement, getPluginByType, isType, KEYS } from 'platejs';
+import {
+  type PlateEditor,
+  type PlateElementProps,
+  type RenderNodeWrapper,
+  MemoizedChildren,
+  useEditorRef,
+  useElement,
+  usePluginOption,
+} from 'platejs/react';
+import { useSelected } from 'platejs/react';
+
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+
+const UNDRAGGABLE_KEYS = [KEYS.column, KEYS.tr, KEYS.td];
+
+export const BlockDraggable: RenderNodeWrapper = (props) => {
+  const { editor, element, path } = props;
+
+  const enabled = React.useMemo(() => {
+    if (editor.dom.readOnly) return false;
+
+    if (path.length === 1 && !isType(editor, element, UNDRAGGABLE_KEYS)) {
+      return true;
+    }
+    if (path.length === 3 && !isType(editor, element, UNDRAGGABLE_KEYS)) {
+      const block = editor.api.some({
+        at: path,
+        match: {
+          type: editor.getType(KEYS.column),
+        },
+      });
+
+      if (block) {
+        return true;
+      }
+    }
+    if (path.length === 4 && !isType(editor, element, UNDRAGGABLE_KEYS)) {
+      const block = editor.api.some({
+        at: path,
+        match: {
+          type: editor.getType(KEYS.table),
+        },
+      });
+
+      if (block) {
+        return true;
+      }
+    }
+
+    return false;
+  }, [editor, element, path]);
+
+  if (!enabled) return;
+
+  return (props) => <Draggable {...props} />;
+};
+
+function Draggable(props: PlateElementProps) {
+  const { children, editor, element, path } = props;
+  const blockSelectionApi = editor.getApi(BlockSelectionPlugin).blockSelection;
+
+  const { isAboutToDrag, isDragging, nodeRef, previewRef, handleRef } =
+    useDraggable({
+      element,
+      onDropHandler: (_, { dragItem }) => {
+        const id = (dragItem as { id: string[] | string }).id;
+
+        if (blockSelectionApi) {
+          blockSelectionApi.add(id);
+        }
+        resetPreview();
+      },
+    });
+
+  const isInColumn = path.length === 3;
+  const isInTable = path.length === 4;
+
+  const [previewTop, setPreviewTop] = React.useState(0);
+
+  const resetPreview = () => {
+    if (previewRef.current) {
+      previewRef.current.replaceChildren();
+      previewRef.current?.classList.add('hidden');
+    }
+  };
+
+  // clear up virtual multiple preview when drag end
+  React.useEffect(() => {
+    if (!isDragging) {
+      resetPreview();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDragging]);
+
+  React.useEffect(() => {
+    if (isAboutToDrag) {
+      previewRef.current?.classList.remove('opacity-0');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAboutToDrag]);
+
+  const [dragButtonTop, setDragButtonTop] = React.useState(0);
+
+  return (
+    <div
+      className={cn(
+        'relative',
+        isDragging && 'opacity-50',
+        getPluginByType(editor, element.type)?.node.isContainer
+          ? 'group/container'
+          : 'group'
+      )}
+      onMouseEnter={() => {
+        if (isDragging) return;
+        setDragButtonTop(calcDragButtonTop(editor, element));
+      }}
+    >
+      {!isInTable && (
+        <Gutter>
+          <div
+            className={cn(
+              'slate-blockToolbarWrapper',
+              'flex h-[1.5em]',
+              isInColumn && 'h-4'
+            )}
+          >
+            <div
+              className={cn(
+                'slate-blockToolbar relative w-4.5',
+                'pointer-events-auto mr-1 flex items-center',
+                isInColumn && 'mr-1.5'
+              )}
+            >
+              <Button
+                ref={handleRef}
+                variant="ghost"
+                className="absolute -left-0 h-6 w-full p-0"
+                style={{ top: `${dragButtonTop + 3}px` }}
+                data-plate-prevent-deselect
+              >
+                <DragHandle
+                  isDragging={isDragging}
+                  previewRef={previewRef}
+                  resetPreview={resetPreview}
+                  setPreviewTop={setPreviewTop}
+                />
+              </Button>
+            </div>
+          </div>
+        </Gutter>
+      )}
+
+      <div
+        ref={previewRef}
+        className={cn('absolute -left-0 hidden w-full')}
+        style={{ top: `${-previewTop}px` }}
+        contentEditable={false}
+      />
+
+      <div
+        ref={nodeRef}
+        className="slate-blockWrapper flow-root"
+        onContextMenu={(event) =>
+          editor
+            .getApi(BlockSelectionPlugin)
+            .blockSelection.addOnContextMenu({ element, event })
+        }
+      >
+        <MemoizedChildren>{children}</MemoizedChildren>
+        <DropLine />
+      </div>
+    </div>
+  );
+}
+
+function Gutter({
+  children,
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  const editor = useEditorRef();
+  const element = useElement();
+  const isSelectionAreaVisible = usePluginOption(
+    BlockSelectionPlugin,
+    'isSelectionAreaVisible'
+  );
+  const selected = useSelected();
+
+  return (
+    <div
+      {...props}
+      className={cn(
+        'slate-gutterLeft',
+        'absolute top-0 z-50 flex h-full -translate-x-full cursor-text hover:opacity-100 sm:opacity-0',
+        getPluginByType(editor, element.type)?.node.isContainer
+          ? 'group-hover/container:opacity-100'
+          : 'group-hover:opacity-100',
+        isSelectionAreaVisible && 'hidden',
+        !selected && 'opacity-0',
+        className
+      )}
+      contentEditable={false}
+    >
+      {children}
+    </div>
+  );
+}
+
+const DragHandle = React.memo(function DragHandle({
+  isDragging,
+  previewRef,
+  resetPreview,
+  setPreviewTop,
+}: {
+  isDragging: boolean;
+  previewRef: React.RefObject<HTMLDivElement | null>;
+  resetPreview: () => void;
+  setPreviewTop: (top: number) => void;
+}) {
+  const editor = useEditorRef();
+  const element = useElement();
+
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <div
+          className="flex size-full items-center justify-center"
+          onClick={(e) => {
+            e.preventDefault();
+            editor.getApi(BlockSelectionPlugin).blockSelection.focus();
+          }}
+          onMouseDown={(e) => {
+            resetPreview();
+
+            if ((e.button !== 0 && e.button !== 2) || e.shiftKey) return;
+
+            const blockSelection = editor
+              .getApi(BlockSelectionPlugin)
+              .blockSelection.getNodes({ sort: true });
+
+            let selectionNodes =
+              blockSelection.length > 0
+                ? blockSelection
+                : editor.api.blocks({ mode: 'highest' });
+
+            // If current block is not in selection, use it as the starting point
+            if (!selectionNodes.some(([node]) => node.id === element.id)) {
+              selectionNodes = [[element, editor.api.findPath(element)!]];
+            }
+
+            // Process selection nodes to include list children
+            const blocks = expandListItemsWithChildren(
+              editor,
+              selectionNodes
+            ).map(([node]) => node);
+
+            if (blockSelection.length === 0) {
+              editor.tf.blur();
+              editor.tf.collapse();
+            }
+
+            const elements = createDragPreviewElements(editor, blocks);
+            previewRef.current?.append(...elements);
+            previewRef.current?.classList.remove('hidden');
+            previewRef.current?.classList.add('opacity-0');
+            editor.setOption(DndPlugin, 'multiplePreviewRef', previewRef);
+
+            editor
+              .getApi(BlockSelectionPlugin)
+              .blockSelection.set(blocks.map((block) => block.id as string));
+          }}
+          onMouseEnter={() => {
+            if (isDragging) return;
+
+            const blockSelection = editor
+              .getApi(BlockSelectionPlugin)
+              .blockSelection.getNodes({ sort: true });
+
+            let selectedBlocks =
+              blockSelection.length > 0
+                ? blockSelection
+                : editor.api.blocks({ mode: 'highest' });
+
+            // If current block is not in selection, use it as the starting point
+            if (!selectedBlocks.some(([node]) => node.id === element.id)) {
+              selectedBlocks = [[element, editor.api.findPath(element)!]];
+            }
+
+            // Process selection to include list children
+            const processedBlocks = expandListItemsWithChildren(
+              editor,
+              selectedBlocks
+            );
+
+            const ids = processedBlocks.map((block) => block[0].id as string);
+
+            if (ids.length > 1 && ids.includes(element.id as string)) {
+              const previewTop = calculatePreviewTop(editor, {
+                blocks: processedBlocks.map((block) => block[0]),
+                element,
+              });
+              setPreviewTop(previewTop);
+            } else {
+              setPreviewTop(0);
+            }
+          }}
+          onMouseUp={() => {
+            resetPreview();
+          }}
+          data-plate-prevent-deselect
+          role="button"
+        >
+          <GripVertical className="text-muted-foreground" />
+        </div>
+      </TooltipTrigger>
+      <TooltipContent>Drag to move</TooltipContent>
+    </Tooltip>
+  );
+});
+
+const DropLine = React.memo(function DropLine({
+  className,
+  ...props
+}: React.ComponentProps<'div'>) {
+  const { dropLine } = useDropLine();
+
+  if (!dropLine) return null;
+
+  return (
+    <div
+      {...props}
+      className={cn(
+        'slate-dropLine',
+        'absolute inset-x-0 h-0.5 opacity-100 transition-opacity',
+        'bg-sky-200',
+        dropLine === 'top' && '-top-px',
+        dropLine === 'bottom' && '-bottom-px',
+        className
+      )}
+    />
+  );
+});
+
+const createDragPreviewElements = (
+  editor: PlateEditor,
+  blocks: TElement[]
+): HTMLElement[] => {
+  const elements: HTMLElement[] = [];
+  const ids: string[] = [];
+
+  /**
+   * Remove data attributes from the element to avoid recognized as slate
+   * elements incorrectly.
+   */
+  const removeDataAttributes = (element: HTMLElement) => {
+    Array.from(element.attributes).forEach((attr) => {
+      if (
+        attr.name.startsWith('data-slate') ||
+        attr.name.startsWith('data-block-id')
+      ) {
+        element.removeAttribute(attr.name);
+      }
+    });
+
+    Array.from(element.children).forEach((child) => {
+      removeDataAttributes(child as HTMLElement);
+    });
+  };
+
+  const resolveElement = (node: TElement, index: number) => {
+    const domNode = editor.api.toDOMNode(node)!;
+    const newDomNode = domNode.cloneNode(true) as HTMLElement;
+
+    // Apply visual compensation for horizontal scroll
+    const applyScrollCompensation = (
+      original: Element,
+      cloned: HTMLElement
+    ) => {
+      const scrollLeft = original.scrollLeft;
+
+      if (scrollLeft > 0) {
+        // Create a wrapper to handle the scroll offset
+        const scrollWrapper = document.createElement('div');
+        scrollWrapper.style.overflow = 'hidden';
+        scrollWrapper.style.width = `${original.clientWidth}px`;
+
+        // Create inner container with the full content
+        const innerContainer = document.createElement('div');
+        innerContainer.style.transform = `translateX(-${scrollLeft}px)`;
+        innerContainer.style.width = `${original.scrollWidth}px`;
+
+        // Move all children to the inner container
+        while (cloned.firstChild) {
+          innerContainer.append(cloned.firstChild);
+        }
+
+        // Apply the original element's styles to maintain appearance
+        const originalStyles = window.getComputedStyle(original);
+        cloned.style.padding = '0';
+        innerContainer.style.padding = originalStyles.padding;
+
+        scrollWrapper.append(innerContainer);
+        cloned.append(scrollWrapper);
+      }
+    };
+
+    applyScrollCompensation(domNode, newDomNode);
+
+    ids.push(node.id as string);
+    const wrapper = document.createElement('div');
+    wrapper.append(newDomNode);
+    wrapper.style.display = 'flow-root';
+
+    const lastDomNode = blocks[index - 1];
+
+    if (lastDomNode) {
+      const lastDomNodeRect = editor.api
+        .toDOMNode(lastDomNode)!
+        .parentElement!.getBoundingClientRect();
+
+      const domNodeRect = domNode.parentElement!.getBoundingClientRect();
+
+      const distance = domNodeRect.top - lastDomNodeRect.bottom;
+
+      // Check if the two elements are adjacent (touching each other)
+      if (distance > 15) {
+        wrapper.style.marginTop = `${distance}px`;
+      }
+    }
+
+    removeDataAttributes(newDomNode);
+    elements.push(wrapper);
+  };
+
+  blocks.forEach((node, index) => resolveElement(node, index));
+
+  editor.setOption(DndPlugin, 'draggingId', ids);
+
+  return elements;
+};
+
+const calculatePreviewTop = (
+  editor: PlateEditor,
+  {
+    blocks,
+    element,
+  }: {
+    blocks: TElement[];
+    element: TElement;
+  }
+): number => {
+  const child = editor.api.toDOMNode(element)!;
+  const editable = editor.api.toDOMNode(editor)!;
+  const firstSelectedChild = blocks[0];
+
+  const firstDomNode = editor.api.toDOMNode(firstSelectedChild)!;
+  // Get editor's top padding
+  const editorPaddingTop = Number(
+    window.getComputedStyle(editable).paddingTop.replace('px', '')
+  );
+
+  // Calculate distance from first selected node to editor top
+  const firstNodeToEditorDistance =
+    firstDomNode.getBoundingClientRect().top -
+    editable.getBoundingClientRect().top -
+    editorPaddingTop;
+
+  // Get margin top of first selected node
+  const firstMarginTopString = window.getComputedStyle(firstDomNode).marginTop;
+  const marginTop = Number(firstMarginTopString.replace('px', ''));
+
+  // Calculate distance from current node to editor top
+  const currentToEditorDistance =
+    child.getBoundingClientRect().top -
+    editable.getBoundingClientRect().top -
+    editorPaddingTop;
+
+  const currentMarginTopString = window.getComputedStyle(child).marginTop;
+  const currentMarginTop = Number(currentMarginTopString.replace('px', ''));
+
+  const previewElementsTopDistance =
+    currentToEditorDistance -
+    firstNodeToEditorDistance +
+    marginTop -
+    currentMarginTop;
+
+  return previewElementsTopDistance;
+};
+
+const calcDragButtonTop = (editor: PlateEditor, element: TElement): number => {
+  const child = editor.api.toDOMNode(element)!;
+
+  const currentMarginTopString = window.getComputedStyle(child).marginTop;
+  const currentMarginTop = Number(currentMarginTopString.replace('px', ''));
+
+  return currentMarginTop;
+};
+</file>
+
+<file path="src/components/ui/button.tsx">
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva, type VariantProps } from "class-variance-authority"
+
+import { cn } from "@/lib/utils"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+        outline:
+          "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost:
+          "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-9 px-4 py-2 has-[>svg]:px-3",
+        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
+        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+        icon: "size-9",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+
+function Button({
+  className,
+  variant,
+  size,
+  asChild = false,
+  ...props
+}: React.ComponentProps<"button"> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  }) {
+  const Comp = asChild ? Slot : "button"
+
+  return (
+    <Comp
+      data-slot="button"
+      className={cn(buttonVariants({ variant, size, className }))}
+      {...props}
+    />
+  )
+}
+
+export { Button, buttonVariants }
+</file>
+
+<file path="src/components/ui/editor-static.tsx">
+import * as React from 'react';
+
+import type { VariantProps } from 'class-variance-authority';
+
+import { cva } from 'class-variance-authority';
+import { type PlateStaticProps, PlateStatic } from 'platejs';
+
+import { cn } from '@/lib/utils';
+
+export const editorVariants = cva(
+  cn(
+    'group/editor',
+    'relative w-full cursor-text overflow-x-hidden break-words whitespace-pre-wrap select-text',
+    'rounded-md ring-offset-background focus-visible:outline-none',
+    'placeholder:text-muted-foreground/80 **:data-slate-placeholder:top-[auto_!important] **:data-slate-placeholder:text-muted-foreground/80 **:data-slate-placeholder:opacity-100!',
+    '[&_strong]:font-bold'
+  ),
+  {
+    defaultVariants: {
+      variant: 'none',
+    },
+    variants: {
+      disabled: {
+        true: 'cursor-not-allowed opacity-50',
+      },
+      focused: {
+        true: 'ring-2 ring-ring ring-offset-2',
+      },
+      variant: {
+        ai: 'w-full px-0 text-base md:text-sm',
+        aiChat:
+          'max-h-[min(70vh,320px)] w-full max-w-[700px] overflow-y-auto px-5 py-3 text-base md:text-sm',
+        default:
+          'size-full px-16 pt-4 pb-72 text-base sm:px-[max(64px,calc(50%-350px))]',
+        demo: 'size-full px-16 pt-4 pb-72 text-base sm:px-[max(64px,calc(50%-350px))]',
+        fullWidth: 'size-full px-16 pt-4 pb-72 text-base sm:px-24',
+        none: '',
+        select: 'px-3 py-2 text-base data-readonly:w-fit',
+      },
+    },
+  }
+);
+
+export function EditorStatic({
+  className,
+  variant,
+  ...props
+}: PlateStaticProps & VariantProps<typeof editorVariants>) {
+  return (
+    <PlateStatic
+      className={cn(editorVariants({ variant }), className)}
+      {...props}
+    />
+  );
+}
+</file>
+
+<file path="src/components/ui/editor.tsx">
+'use client';
+
+import * as React from 'react';
+
+import type { VariantProps } from 'class-variance-authority';
+import type { PlateContentProps, PlateViewProps } from 'platejs/react';
+
+import { cva } from 'class-variance-authority';
+import { PlateContainer, PlateContent, PlateView } from 'platejs/react';
+
+import { cn } from '@/lib/utils';
+
+const editorContainerVariants = cva(
+  'relative w-full cursor-text overflow-y-auto caret-primary select-text selection:bg-brand/25 focus-visible:outline-none [&_.slate-selection-area]:z-50 [&_.slate-selection-area]:border [&_.slate-selection-area]:border-brand/25 [&_.slate-selection-area]:bg-brand/15',
+  {
+    defaultVariants: {
+      variant: 'default',
+    },
+    variants: {
+      variant: {
+        comment: cn(
+          'flex flex-wrap justify-between gap-1 px-1 py-0.5 text-sm',
+          'rounded-md border-[1.5px] border-transparent bg-transparent',
+          'has-[[data-slate-editor]:focus]:border-brand/50 has-[[data-slate-editor]:focus]:ring-2 has-[[data-slate-editor]:focus]:ring-brand/30',
+          'has-aria-disabled:border-input has-aria-disabled:bg-muted'
+        ),
+        default: 'h-full',
+        demo: 'h-[650px]',
+        select: cn(
+          'group rounded-md border border-input ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+          'has-data-readonly:w-fit has-data-readonly:cursor-default has-data-readonly:border-transparent has-data-readonly:focus-within:[box-shadow:none]'
+        ),
+      },
+    },
+  }
+);
+
+export function EditorContainer({
+  className,
+  variant,
+  ...props
+}: React.ComponentProps<'div'> & VariantProps<typeof editorContainerVariants>) {
+  return (
+    <PlateContainer
+      className={cn(
+        'ignore-click-outside/toolbar',
+        editorContainerVariants({ variant }),
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
+const editorVariants = cva(
+  cn(
+    'group/editor',
+    'relative w-full cursor-text overflow-x-hidden break-words whitespace-pre-wrap select-text',
+    'rounded-md ring-offset-background focus-visible:outline-none',
+    'placeholder:text-muted-foreground/80 **:data-slate-placeholder:!top-1/2 **:data-slate-placeholder:-translate-y-1/2 **:data-slate-placeholder:text-muted-foreground/80 **:data-slate-placeholder:opacity-100!',
+    '[&_strong]:font-bold'
+  ),
+  {
+    defaultVariants: {
+      variant: 'default',
+    },
+    variants: {
+      disabled: {
+        true: 'cursor-not-allowed opacity-50',
+      },
+      focused: {
+        true: 'ring-2 ring-ring ring-offset-2',
+      },
+      variant: {
+        ai: 'w-full px-0 text-base md:text-sm',
+        aiChat:
+          'max-h-[min(70vh,320px)] w-full max-w-[700px] overflow-y-auto px-3 py-2 text-base md:text-sm',
+        comment: cn('rounded-none border-none bg-transparent text-sm'),
+        default:
+          'size-full px-16 pt-4 pb-72 text-base sm:px-[max(64px,calc(50%-350px))]',
+        demo: 'size-full px-16 pt-4 pb-72 text-base sm:px-[max(64px,calc(50%-350px))]',
+        fullWidth: 'size-full px-16 pt-4 pb-72 text-base sm:px-24',
+        none: '',
+        select: 'px-3 py-2 text-base data-readonly:w-fit',
+      },
+    },
+  }
+);
+
+export type EditorProps = PlateContentProps &
+  VariantProps<typeof editorVariants>;
+
+export const Editor = React.forwardRef<HTMLDivElement, EditorProps>(
+  ({ className, disabled, focused, variant, ...props }, ref) => {
+    return (
+      <PlateContent
+        ref={ref}
+        className={cn(
+          editorVariants({
+            disabled,
+            focused,
+            variant,
+          }),
+          className
+        )}
+        disabled={disabled}
+        disableDefaultStyles
+        {...props}
+      />
+    );
+  }
+);
+
+Editor.displayName = 'Editor';
+
+export function EditorView({
+  className,
+  variant,
+  ...props
+}: PlateViewProps & VariantProps<typeof editorVariants>) {
+  return (
+    <PlateView
+      {...props}
+      className={cn(editorVariants({ variant }), className)}
+    />
+  );
+}
+
+EditorView.displayName = 'EditorView';
+</file>
+
+<file path="src/components/ui/paragraph-node-static.tsx">
+import * as React from 'react';
+
+import type { SlateElementProps } from 'platejs';
+
+import { SlateElement } from 'platejs';
+
+import { cn } from '@/lib/utils';
+
+export function ParagraphElementStatic(props: SlateElementProps) {
+  return (
+    <SlateElement {...props} className={cn('m-0 px-0 py-1')}>
+      {props.children}
+    </SlateElement>
+  );
+}
+</file>
+
+<file path="src/components/ui/paragraph-node.tsx">
+'use client';
+
+import * as React from 'react';
+
+import type { PlateElementProps } from 'platejs/react';
+
+import { PlateElement } from 'platejs/react';
+
+import { cn } from '@/lib/utils';
+
+export function ParagraphElement(props: PlateElementProps) {
+  return (
+    <PlateElement {...props} className={cn('m-0 px-0 py-1')}>
+      {props.children}
+    </PlateElement>
+  );
+}
+</file>
+
+<file path="src/components/ui/tooltip.tsx">
+import * as React from "react"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+
+import { cn } from "@/lib/utils"
+
+function TooltipProvider({
+  delayDuration = 0,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
+  return (
+    <TooltipPrimitive.Provider
+      data-slot="tooltip-provider"
+      delayDuration={delayDuration}
+      {...props}
+    />
+  )
+}
+
+function Tooltip({
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+  return (
+    <TooltipProvider>
+      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
+    </TooltipProvider>
+  )
+}
+
+function TooltipTrigger({
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
+}
+
+function TooltipContent({
+  className,
+  sideOffset = 0,
+  children,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  return (
+    <TooltipPrimitive.Portal>
+      <TooltipPrimitive.Content
+        data-slot="tooltip-content"
+        sideOffset={sideOffset}
+        className={cn(
+          "bg-foreground text-background animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) rounded-md px-3 py-1.5 text-xs text-balance",
+          className
+        )}
+        {...props}
+      >
+        {children}
+        <TooltipPrimitive.Arrow className="bg-foreground fill-foreground z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px]" />
+      </TooltipPrimitive.Content>
+    </TooltipPrimitive.Portal>
+  )
+}
+
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+</file>
+
+<file path="src/lib/utils.ts">
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
+</file>
+
+<file path="src/logo.svg">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="5355px" height="3786px" viewBox="0 0 5355 3786" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>logo</title>
+    <g id="logo" stroke="none" fill="none" transform="translate(0.9778, 0)" fill-rule="evenodd" stroke-width="1">
+        <g id="Layer_1" transform="translate(1117.351, 496.0658)" fill="#61DAFB">
+            <g id="Group" fill-rule="nonzero">
+                <path d="M3119.93396,1389.62036 C3119.93396,1182.92626 2861.10536,987.043843 2464.27723,865.571309 C2555.85295,461.086847 2515.15263,139.280027 2335.81684,36.2509659 C2294.48058,12.0836553 2246.14895,0.635981858 2193.36572,0.635981858 L2193.36572,142.459936 C2222.61908,142.459936 2246.14895,148.183773 2265.86317,158.995464 C2352.35135,208.602049 2389.87196,397.488661 2360.6186,640.433731 C2353.62323,700.216026 2342.17627,763.178229 2328.18553,827.412397 C2203.5408,796.885268 2067.4491,773.353939 1924.36204,758.090375 C1838.5098,640.433731 1749.47785,533.588779 1659.80995,440.099446 C1867.12721,247.396943 2061.72562,141.823954 2194.00166,141.823954 L2194.00166,0 C2019.11747,0 1790.17817,124.652444 1558.69509,340.886276 C1327.21202,125.924408 1098.27272,2.54392743 923.388526,2.54392743 L923.388526,144.367882 C1055.02863,144.367882 1250.26298,249.304888 1457.58024,440.735428 C1368.54828,534.224761 1279.51633,640.433731 1194.93598,758.090375 C1051.21297,773.353939 915.121273,796.885268 790.476541,828.048379 C775.849863,764.450193 765.038841,702.759953 757.407531,643.61364 C727.518233,400.66857 764.402898,211.781959 850.255137,161.539392 C869.333413,150.091718 894.13517,145.003864 923.388526,145.003864 L923.388526,3.17990929 C869.969355,3.17990929 821.637724,14.6275827 779.665518,38.7948933 C600.965673,141.823954 560.901295,462.994793 653.112959,866.20729 C257.556717,988.315807 0,1183.56224 0,1389.62036 C0,1595.67848 258.828602,1792.19688 655.656729,1913.66941 C564.081007,2318.15387 604.781328,2639.96069 784.117116,2742.98975 C825.453379,2767.15706 873.78501,2778.60474 927.204181,2778.60474 C1102.08837,2778.60474 1331.02768,2653.95229 1562.51075,2437.71846 C1793.99382,2652.68033 2022.93313,2776.06081 2197.81732,2776.06081 C2251.23649,2776.06081 2299.56812,2764.61314 2341.54033,2740.44583 C2520.24017,2637.41676 2560.30455,2316.24593 2468.09289,1913.03343 C2862.37724,1791.56089 3119.93396,1595.67848 3119.93396,1389.62036 L3119.93396,1389.62036 Z M2291.93681,965.42046 C2268.40694,1047.46212 2239.15358,1132.04771 2206.08457,1216.63329 C2180.01093,1165.75475 2152.6654,1114.8762 2122.7761,1063.99765 C2093.52275,1013.1191 2062.36156,963.512515 2031.20038,915.177893 C2121.50422,928.533513 2208.62834,945.069041 2291.93681,965.42046 Z M2000.67514,1642.74114 C1951.07162,1728.59869 1900.19622,1810.00437 1847.41299,1885.68621 C1752.65756,1893.95397 1656.63024,1898.40585 1559.96698,1898.40585 C1463.30372,1898.40585 1367.91234,1893.95397 1273.79285,1886.32219 C1221.00962,1810.64035 1169.49828,1729.87065 1119.89476,1644.64908 C1071.56313,1561.33546 1027.6831,1476.74987 987.61872,1391.52831 C1027.04716,1306.30674 1071.56313,1221.08517 1119.25882,1137.77154 C1168.86234,1051.91399 1219.73774,970.508315 1272.52096,894.826474 C1367.2764,886.55871 1463.30372,882.106837 1559.96698,882.106837 C1656.63024,882.106837 1752.02162,886.55871 1846.14111,894.190492 C1898.92434,969.872333 1950.43568,1050.64203 2000.0392,1135.8636 C2048.37083,1219.17722 2092.25086,1303.76281 2132.31524,1388.98438 C2092.25086,1474.20595 2048.37083,1559.42752 2000.67514,1642.74114 Z M2206.08457,1560.0635 C2240.42547,1645.28507 2269.67882,1730.50664 2293.84464,1813.18428 C2210.53617,1833.5357 2122.7761,1850.70721 2031.83632,1864.06283 C2062.99751,1815.09222 2094.15869,1764.84966 2123.41204,1713.33513 C2152.6654,1662.45658 2180.01093,1610.94205 2206.08457,1560.0635 Z M1561.23886,2238.65614 C1502.09621,2177.60188 1442.95356,2109.55182 1384.44685,2035.14195 C1441.68167,2037.68587 1500.18838,2039.59382 1559.33104,2039.59382 C1618.47369,2039.59382 1678.25229,2038.32185 1736.12305,2035.14195 C1678.88823,2109.55182 1619.74558,2177.60188 1561.23886,2238.65614 Z M1088.09764,1864.06283 C997.7938,1850.70721 910.669676,1834.17168 827.361207,1813.82026 C850.89108,1731.7786 880.144435,1647.19301 913.213446,1562.60742 C939.287089,1613.48597 966.632617,1664.36452 996.521915,1715.24307 C1026.41121,1766.12162 1056.93645,1815.7282 1088.09764,1864.06283 Z M1558.05915,540.584579 C1617.20181,601.638838 1676.34446,669.688896 1734.85117,744.098774 C1677.61634,741.554846 1619.10963,739.646901 1559.96698,739.646901 C1500.82433,739.646901 1441.04573,740.918864 1383.17496,744.098774 C1440.40979,669.688896 1499.55244,601.638838 1558.05915,540.584579 Z M1087.46169,915.177893 C1056.30051,964.148497 1025.13933,1014.39106 995.885972,1065.90559 C966.632617,1116.78414 939.287089,1167.66269 913.213446,1218.54124 C878.87255,1133.31967 849.619195,1048.0981 825.453379,965.42046 C908.761848,945.705023 996.521915,928.533513 1087.46169,915.177893 Z M511.933721,1711.42718 C286.810072,1615.39392 141.179237,1489.46951 141.179237,1389.62036 C141.179237,1289.77121 286.810072,1163.21082 511.933721,1067.81354 C566.624777,1044.28221 626.403373,1023.29481 688.089797,1003.57937 C724.33852,1128.23182 772.034208,1257.97211 831.176862,1390.89232 C772.670151,1523.17655 725.610405,1652.28087 689.997624,1776.29733 C627.039316,1756.58189 567.26072,1734.95851 511.933721,1711.42718 Z M854.070792,2620.24525 C767.582611,2570.63867 730.062003,2381.75206 759.315358,2138.80699 C766.310726,2079.02469 777.757691,2016.06249 791.748426,1951.82832 C916.393158,1982.35545 1052.48486,2005.88678 1195.57192,2021.15034 C1281.42416,2138.80699 1370.45611,2245.65194 1460.12401,2339.14127 C1252.80675,2531.84378 1058.20834,2637.41676 925.932296,2637.41676 C897.314883,2636.78078 873.149068,2631.05695 854.070792,2620.24525 L854.070792,2620.24525 Z M2362.52643,2135.62708 C2392.41573,2378.57215 2355.53106,2567.45876 2269.67882,2617.70133 C2250.60055,2629.149 2225.79879,2634.23686 2196.54543,2634.23686 C2064.90533,2634.23686 1869.67098,2529.29985 1662.35372,2337.86931 C1751.38568,2244.37998 1840.41763,2138.17101 1924.99798,2020.51436 C2068.72099,2005.2508 2204.81269,1981.71947 2329.45742,1950.55636 C2344.0841,2014.79053 2355.53106,2076.48077 2362.52643,2135.62708 L2362.52643,2135.62708 Z M2607.3643,1711.42718 C2552.67324,1734.95851 2492.89464,1755.94591 2431.20822,1775.66135 C2394.9595,1651.0089 2347.26381,1521.2686 2288.12115,1388.3484 C2346.62787,1256.06417 2393.68761,1126.95985 2429.30039,1002.94339 C2492.2587,1022.65883 2552.0373,1044.28221 2608.00024,1067.81354 C2833.12389,1163.8468 2978.75472,1289.77121 2978.75472,1389.62036 C2978.75472,1489.46951 2832.48794,1616.0299 2607.3643,1711.42718 L2607.3643,1711.42718 Z" id="Shape"></path>
+            </g>
+            <path d="M1537.37834,1099.4829 C1545.02735,1098.47702 1553.10731,1099.16174 1560.81604,1099.16174 C1589.37451,1099.16174 1617.41357,1103.60261 1644.73816,1112.01928 C1679.60968,1122.76128 1712.08981,1139.93545 1740.75715,1162.52987 C1775.89405,1190.22336 1805.00822,1226.54711 1823.68958,1267.31325 C1858.64201,1343.58359 1858.38571,1436.01692 1822.57667,1511.96611 C1799.42324,1561.07316 1762.27826,1602.17408 1717.31944,1632.14671 C1680.63641,1656.60215 1637.73331,1671.57142 1594.08247,1676.87122 C1538.52074,1683.61849 1478.45443,1673.7589 1428.50641,1648.10898 C1334.7397,1599.95554 1270.99292,1503.04196 1269.73182,1396.83535 C1269.48913,1376.35874 1269.80743,1355.76018 1273.85459,1335.48277 C1280.44663,1302.45918 1291.94018,1270.53691 1309.20168,1241.56031 C1327.87397,1210.21369 1351.99288,1182.55201 1380.87494,1160.24997 C1414.74469,1134.09636 1454.10946,1115.2846 1495.79531,1105.71435 C1505.55336,1103.47438 1515.35011,1102.20236 1525.19388,1100.99838 L1528.67012,1100.57481 C1531.56864,1100.22174 1534.47131,1099.86541 1537.37834,1099.4829 Z M1440.28829,1582.05277 C1427.38628,1583.43854 1413.77812,1585.79095 1402.70469,1593.0505 C1405.19749,1593.65093 1408.05457,1593.05485 1410.65507,1593.0505 C1416.90117,1593.04035 1423.20727,1592.80467 1429.44687,1593.07878 C1445.06719,1593.76551 1461.34234,1596.26875 1476.42637,1600.4123 C1488.01412,1603.59545 1498.77315,1608.6274 1509.54524,1613.66442 L1512.23902,1614.92271 C1518.52742,1617.854 1524.84413,1620.73472 1531.35625,1623.19891 C1550.98501,1630.62598 1570.52415,1632.93415 1591.34546,1632.93415 L1593.25225,1632.93318 C1603.09908,1632.91995 1612.8672,1632.72906 1622.42421,1630.03352 C1617.1148,1627.20106 1609.51424,1627.7326 1603.63241,1626.55277 C1590.87061,1623.99224 1578.32347,1620.86608 1566.04881,1616.47888 C1546.68964,1609.55943 1528.85694,1599.16793 1509.6734,1591.90838 C1487.81565,1583.63651 1463.59446,1579.54953 1440.28829,1582.05277 Z M1459.80285,1527.06119 C1434.23516,1527.06119 1408.3762,1531.57312 1385.35841,1543.19449 C1379.78158,1546.01028 1374.48085,1549.36485 1369.45766,1553.08274 C1367.92685,1554.21616 1365.21288,1555.67227 1364.64696,1557.64252 C1364.07308,1559.64106 1366.125,1561.31545 1367.28937,1562.5939 C1373.04255,1559.52213 1378.5088,1556.27053 1384.63565,1553.93842 C1424.26105,1538.85878 1472.29796,1542.01974 1511.84169,1555.84631 C1531.56224,1562.74183 1549.73174,1573.05357 1568.93985,1581.14052 C1590.42177,1590.18468 1612.36265,1596.04903 1635.43392,1599.05625 C1662.64806,1602.60227 1693.67549,1599.72848 1718.5515,1587.42618 C1727.29258,1583.10352 1739.42919,1576.51619 1743.1254,1566.94484 C1738.56043,1567.3444 1734.45298,1569.30378 1730.11569,1570.65475 C1723.2191,1572.80266 1716.24011,1574.62426 1709.1556,1576.04629 C1685.14474,1580.86496 1659.61174,1581.85988 1635.43392,1577.48645 C1610.81165,1573.03264 1588.07413,1563.72547 1565.31061,1554.26664 L1562.27515,1553.00498 C1550.63735,1548.16833 1538.97057,1543.34664 1527.01968,1539.16769 C1505.55366,1531.66159 1482.54816,1527.06119 1459.80285,1527.06119 Z M1504.61407,1133.60828 C1473.96537,1140.39067 1446.50982,1153.59796 1420.05097,1170.24757 C1404.69012,1179.91319 1389.99637,1189.81522 1376.68527,1202.25529 C1356.89028,1220.75623 1341.76143,1243.24263 1328.5667,1266.72974 C1314.97155,1290.92897 1306.25505,1319.13178 1302.04207,1346.49704 C1297.90932,1373.34381 1297.22848,1401.57056 1301.96257,1428.43981 C1307.88054,1462.03199 1319.14478,1493.55458 1336.93339,1522.71025 C1342.91135,1519.91332 1347.1554,1513.53629 1352.11138,1509.24045 C1362.11874,1500.56685 1372.62552,1492.52776 1383.91289,1485.59018 C1388.09117,1483.02239 1392.38365,1481.02821 1396.9226,1479.20082 C1398.63482,1478.51119 1401.43407,1477.88103 1402.23995,1475.99707 C1403.52069,1473.00507 1401.1522,1467.79772 1400.74528,1464.69767 C1399.58381,1455.83117 1398.88273,1446.81384 1399.10172,1437.86685 C1399.73775,1411.80978 1404.59833,1385.3894 1413.85256,1361.00019 C1420.82649,1342.62325 1431.48,1325.93811 1444.10086,1310.96434 C1448.38322,1305.88316 1452.9359,1301.15368 1457.63457,1296.46192 C1458.21308,1295.88421 1458.82064,1295.32387 1459.43565,1294.76658 L1460.17587,1294.09838 C1462.27545,1292.20409 1464.36137,1290.27877 1465.58495,1287.7593 C1456.52296,1287.76511 1447.45953,1290.38292 1438.84277,1293.04062 C1420.27936,1298.76647 1402.19587,1307.26241 1386.80393,1319.24926 C1379.78303,1324.71767 1374.6413,1331.88512 1368.00129,1337.63997 C1365.96455,1339.40573 1362.31605,1341.77192 1359.50162,1340.4398 C1355.24961,1338.42822 1355.90588,1330.0454 1355.41874,1326.19264 C1353.54534,1311.37332 1359.14891,1292.62874 1366.27028,1279.78257 C1377.7022,1259.16128 1398.84008,1241.55301 1423.66478,1242.16794 C1434.3855,1242.43335 1443.77128,1246.16501 1454.02076,1248.60081 C1451.42171,1244.90179 1447.93728,1242.20565 1444.62486,1239.17377 C1436.50897,1231.74453 1427.63201,1224.95924 1417.88268,1219.82657 C1415.26773,1218.45023 1412.51915,1217.43388 1409.75022,1216.45975 L1408.08733,1215.8778 C1407.25557,1215.58681 1406.42402,1215.29391 1405.59574,1214.9905 C1403.51346,1214.22836 1400.89128,1213.17906 1400.10781,1210.86073 C1398.65722,1206.56707 1406.37487,1202.59031 1409.20954,1200.77959 C1420.16806,1193.78038 1433.60492,1188.02263 1446.79315,1187.69848 C1467.40342,1187.1916 1487.541,1198.64836 1496.03056,1218.14421 C1499.41855,1225.92354 1500.09804,1234.21057 1500.70889,1242.5268 L1500.82326,1244.08631 C1500.88069,1244.86613 1500.93897,1245.64593 1501.00027,1246.42534 C1507.47332,1241.13895 1512.02599,1233.35946 1518.34654,1227.69743 C1533.12846,1214.45461 1553.35856,1208.57576 1572.55366,1214.53728 C1589.90066,1219.92375 1604.97747,1231.9164 1613.85081,1247.87566 C1616.17232,1252.05111 1622.64899,1262.25625 1617.96983,1266.41503 C1614.3076,1269.67098 1609.66313,1267.13366 1605.80069,1265.78341 C1601.8125,1264.38966 1597.64361,1263.69061 1593.51375,1262.86103 C1583.01058,1260.75155 1570.79301,1260.97055 1560.26672,1262.82477 C1553.46119,1264.02346 1546.81034,1266.44983 1540.02939,1267.4549 L1540.02939,1268.90522 C1558.57112,1269.05895 1576.50717,1279.65567 1585.65516,1295.73603 C1589.44532,1302.39805 1591.33824,1310.02308 1592.79026,1317.49075 C1594.5856,1326.72055 1593.32366,1336.77631 1590.80628,1345.77188 C1589.9621,1348.78781 1588.42984,1353.9009 1584.82977,1354.5956 C1582.28492,1355.08653 1580.12387,1352.54848 1578.67112,1350.83711 C1574.86289,1346.35128 1571.2404,1342.08663 1566.77157,1338.21284 C1555.46613,1328.41379 1543.51238,1319.37471 1531.35625,1310.65904 C1524.90199,1306.03109 1517.83266,1300.01446 1510.39617,1297.18635 C1512.48712,1302.23199 1514.53542,1306.92303 1515.24662,1312.41465 C1517.33829,1328.56825 1510.5877,1343.77263 1500.4553,1355.92409 C1497.36333,1359.63254 1494.05597,1363.36782 1490.15884,1366.24887 C1488.54275,1367.44393 1486.51468,1369.00447 1484.37675,1368.66655 C1477.67386,1367.60564 1476.87593,1357.4839 1475.84816,1352.2983 C1472.36734,1334.73427 1473.76516,1317.28988 1478.59466,1300.08698 C1474.29784,1302.2697 1471.19213,1307.04631 1468.49406,1310.96434 C1462.55802,1319.58573 1457.40762,1328.70458 1453.71431,1338.52031 C1439.00539,1377.62006 1439.14705,1423.41664 1458.20194,1461.05811 C1460.32975,1465.26184 1463.55905,1464.69767 1467.75323,1464.69767 C1472.80895,1464.69767 1477.91309,1464.44387 1482.93123,1465.11536 C1484.88413,1465.37642 1487.59593,1465.14364 1489.14192,1466.58526 C1490.99291,1468.31258 1490.00634,1471.27412 1489.57991,1473.39956 C1488.3888,1479.3415 1487.99056,1484.74174 1487.99056,1490.80333 C1495.9019,1489.57492 1498.09476,1476.86871 1500.89908,1470.49893 C1504.07706,1463.28289 1507.3107,1456.0596 1510.25089,1448.74421 C1511.69641,1445.14888 1513.6298,1441.12861 1513.12242,1437.1417 C1512.55289,1432.66095 1509.32142,1427.91044 1507.06929,1424.08887 C1502.80645,1416.85687 1497.96105,1409.41458 1494.82282,1401.60899 C1492.31412,1395.36901 1494.65008,1387.5714 1501.72375,1385.34226 C1505.62522,1384.1124 1509.7876,1386.52427 1512.32666,1389.34948 C1515.93315,1393.3614 1518.67364,1398.69976 1521.26801,1403.88732 L1522.0059,1405.3641 C1522.98612,1407.32427 1523.95508,1409.24214 1524.95258,1411.03604 L1555.1062,1465.42283 C1557.66694,1470.0283 1560.23347,1474.6287 1562.85348,1479.20082 C1563.87546,1480.9847 1564.91552,1483.73885 1567.00936,1484.49954 C1568.87408,1485.17684 1571.42182,1484.21383 1573.27642,1483.84182 C1578.09146,1482.87591 1582.89927,1481.83314 1587.73166,1480.9586 C1593.52242,1479.91074 1602.34951,1480.10726 1606.52346,1475.57503 C1600.41901,1473.63813 1593.36269,1473.75271 1587.00889,1474.18925 C1586.22321,1474.2433 1585.41997,1474.34419 1584.60911,1474.45086 L1583.91244,1474.54275 C1581.00382,1474.92353 1578.03411,1475.22838 1575.45555,1473.58665 C1570.23649,1470.26398 1566.76723,1462.58891 1563.57407,1457.4461 C1555.70103,1444.76455 1548.28333,1431.89228 1540.7442,1419.01276 C1538.34102,1414.90692 1535.86628,1410.83299 1533.5361,1406.68509 C1532.63554,1405.08104 1531.3006,1402.96721 1532.59073,1401.19855 C1533.93235,1399.36006 1536.8405,1399.23436 1539.486,1399.22865 L1540.63853,1399.22883 C1541.48104,1399.22712 1542.26426,1399.21253 1542.92044,1399.12605 C1553.68091,1397.70765 1564.591,1396.53289 1575.44471,1396.53289 C1574.5998,1393.58875 1572.18361,1390.26101 1572.95624,1387.10875 C1574.68509,1380.05587 1584.81459,1377.84921 1589.52555,1382.91009 C1592.68835,1386.30745 1594.52634,1390.98326 1596.58404,1395.08258 C1599.29945,1400.49442 1602.39143,1405.72571 1605.2991,1411.03604 C1610.38879,1420.33328 1615.94754,1429.37526 1621.18178,1438.59201 C1621.64941,1439.41555 1622.13242,1440.23451 1622.62001,1441.05306 L1623.35349,1442.2811 C1625.55616,1445.9674 1627.74247,1449.68746 1628.92907,1453.82031 C1610.75017,1452.98711 1597.1037,1431.84732 1589.17718,1417.56245 C1588.54476,1419.8496 1589.57253,1421.89091 1590.39431,1424.08887 C1592.10219,1428.65373 1594.14327,1433.00105 1596.71197,1437.1417 C1600.38071,1443.05463 1604.58646,1449.14377 1610.13726,1453.4367 C1619.98778,1461.05448 1632.97725,1461.09654 1644.82982,1460.28219 C1652.43038,1459.75935 1661.92747,1456.2931 1669.40371,1458.64478 C1676.86767,1460.99284 1679.87219,1469.23933 1675.4395,1475.5743 C1672.11913,1480.31973 1667.68716,1482.1116 1662.1761,1482.8266 C1666.07323,1491.20144 1671.17882,1498.97368 1674.87936,1507.48195 C1676.42101,1511.02652 1678.02771,1516.45867 1681.72174,1518.32885 C1684.1813,1519.57322 1687.70476,1518.41442 1690.3638,1518.35931 C1687.69536,1511.28612 1682.69891,1505.284 1680.24514,1498.0549 C1687.72644,1498.3979 1694.96201,1502.30868 1701.92799,1504.80467 C1717.73912,1510.4696 1733.32041,1516.74438 1748.90749,1523.00031 C1754.4648,1525.23017 1760.05536,1527.43755 1765.53101,1529.86175 C1767.5345,1530.74862 1770.30846,1532.82184 1772.523,1531.54557 C1774.3299,1530.50352 1775.49861,1528.01913 1776.61311,1526.33604 C1779.73038,1521.62687 1782.55349,1516.73786 1785.34985,1511.83289 C1796.54904,1492.18983 1804.76323,1470.66644 1810.25043,1448.74421 C1828.34983,1376.44313 1812.82274,1296.66786 1769.32912,1236.27314 C1752.61815,1213.06883 1731.60241,1193.00808 1708.43284,1176.39473 C1650.44929,1134.82074 1574.37719,1118.17113 1504.61407,1133.60828 Z M1623.14697,1494.16008 C1607.776,1498.17456 1591.93524,1501.81339 1576.16747,1503.85616 C1578.24107,1510.92862 1583.30835,1517.80819 1587.01757,1524.16056 C1588.45153,1526.61667 1589.98595,1529.90599 1592.8199,1530.97197 C1596.02101,1532.17573 1599.88923,1530.22215 1602.90965,1529.23667 C1601.5111,1525.40348 1599.15779,1521.95391 1597.23163,1518.35931 C1596.43804,1516.87709 1595.21007,1515.1222 1595.86417,1513.36225 C1597.10081,1510.03668 1602.23459,1510.23247 1605.07793,1509.65452 C1612.5708,1508.13169 1619.98561,1506.23105 1627.48354,1504.72635 C1630.24594,1504.17161 1634.09247,1502.66908 1636.8686,1503.59728 C1640.50626,1504.81337 1641.61498,1509.15561 1644.25884,1511.54718 C1647.2901,1514.289 1651.82326,1514.71032 1655.67124,1515.45868 C1653.32299,1510.16503 1649.42008,1505.53345 1646.91788,1500.23038 C1645.46296,1497.14628 1644.26751,1492.60897 1641.0823,1490.82654 C1636.69442,1488.37115 1627.63243,1492.98823 1623.14697,1494.16008 Z M1526.29692,1458.89641 C1525.57344,1468.08996 1522.75828,1475.56995 1518.34654,1483.55176 C1523.40226,1484.1928 1528.55916,1484.42122 1533.52454,1485.65399 C1537.24604,1486.57784 1540.67554,1488.33997 1544.36596,1489.35302 C1542.39282,1483.94479 1538.73203,1479.1196 1535.89592,1474.12472 C1533.03234,1469.0827 1530.46942,1462.95584 1526.29692,1458.89641 Z" id="Combined-Shape-Copy" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>
+</file>
+
+<file path="src/router.tsx">
+import { createRouter } from '@tanstack/react-router'
+
+// Import the generated route tree
+import { routeTree } from './routeTree.gen'
+
+// Create a new router instance
+export const getRouter = () => {
+  return createRouter({
+    routeTree,
+    scrollRestoration: true,
+    defaultPreloadStaleTime: 0,
+  })
+}
+</file>
+
+<file path="src/routes/__root.tsx">
+import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { TanstackDevtools } from '@tanstack/react-devtools'
+
+import Header from '../components/Header'
+
+import appCss from '../styles.css?url'
+
+export const Route = createRootRoute({
+  head: () => ({
+    meta: [
+      {
+        charSet: 'utf-8',
+      },
+      {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
+      },
+      {
+        title: 'TanStack Start Starter',
+      },
+    ],
+    links: [
+      {
+        rel: 'stylesheet',
+        href: appCss,
+      },
+    ],
+  }),
+
+  shellComponent: RootDocument,
+})
+
+function RootDocument({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <HeadContent />
+      </head>
+      <body>
+        <Header />
+        {children}
+        <TanstackDevtools
+          config={{
+            position: 'bottom-left',
+          }}
+          plugins={[
+            {
+              name: 'Tanstack Router',
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+          ]}
+        />
+        <Scripts />
+      </body>
+    </html>
+  )
+}
+</file>
+
+<file path="src/routes/index.tsx">
+import { createFileRoute } from '@tanstack/react-router'
+import logo from '../logo.svg'
+
+export const Route = createFileRoute('/')({
+  component: App,
+})
+
+function App() {
+  return (
+    <div className="text-center">
+      <header className="min-h-screen flex flex-col items-center justify-center bg-[#282c34] text-white text-[calc(10px+2vmin)]">
+        <img
+          src={logo}
+          className="h-[40vmin] pointer-events-none animate-[spin_20s_linear_infinite]"
+          alt="logo"
+        />
+        <p>
+          Edit <code>src/routes/index.tsx</code> and save to reload.
+        </p>
+        <a
+          className="text-[#61dafb] hover:underline"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+        <a
+          className="text-[#61dafb] hover:underline"
+          href="https://tanstack.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn TanStack
+        </a>
+      </header>
+    </div>
+  )
+}
+</file>
+
+<file path="src/routes/plate.tsx">
+import { createFileRoute } from '@tanstack/react-router'
+import { PlateEditor } from '@/components/plate-editor'
+
+export const Route = createFileRoute('/plate')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <PlateEditor />
+}
+</file>
+
+<file path="src/routeTree.gen.ts">
+/* eslint-disable */
+
+// @ts-nocheck
+
+// noinspection JSUnusedGlobalSymbols
+
+// This file was automatically generated by TanStack Router.
+// You should NOT make any changes in this file as it will be overwritten.
+// Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
+
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as PlateRouteImport } from './routes/plate'
+import { Route as IndexRouteImport } from './routes/index'
+
+const PlateRoute = PlateRouteImport.update({
+  id: '/plate',
+  path: '/plate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '/plate': typeof PlateRoute
+}
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '/plate': typeof PlateRoute
+}
+export interface FileRoutesById {
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/plate': typeof PlateRoute
+}
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | '/plate'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | '/plate'
+  id: '__root__' | '/' | '/plate'
+  fileRoutesById: FileRoutesById
+}
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  PlateRoute: typeof PlateRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/plate': {
+      id: '/plate'
+      path: '/plate'
+      fullPath: '/plate'
+      preLoaderRoute: typeof PlateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  PlateRoute: PlateRoute,
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
+</file>
+
+<file path="src/styles.css">
+@import 'tailwindcss';
+
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+body {
+  @apply m-0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --primary: oklch(0.21 0.006 285.885);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.871 0.006 286.286);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.871 0.006 286.286);
+}
+
+.dark {
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.141 0.005 285.823);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.141 0.005 285.823);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0);
+  --primary-foreground: oklch(0.21 0.006 285.885);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.396 0.141 25.723);
+  --destructive-foreground: oklch(0.637 0.237 25.331);
+  --border: oklch(0.274 0.006 286.033);
+  --input: oklch(0.274 0.006 286.033);
+  --ring: oklch(0.442 0.017 285.786);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.274 0.006 286.033);
+  --sidebar-ring: oklch(0.442 0.017 285.786);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+</file>
+
+<file path="tsconfig.json">
+{
+  "include": ["**/*.ts", "**/*.tsx"],
+  "compilerOptions": {
+    "target": "ES2022",
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "noEmit": true,
+
+    /* Linting */
+    "skipLibCheck": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+    }
+  }
+}
+</file>
+
+<file path="vite.config.ts">
+import { defineConfig } from 'vite'
+import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+import viteReact from '@vitejs/plugin-react'
+import viteTsConfigPaths from 'vite-tsconfig-paths'
+import tailwindcss from '@tailwindcss/vite'
+
+const config = defineConfig({
+  plugins: [
+    // this is the plugin that enables path aliases
+    viteTsConfigPaths({
+      projects: ['./tsconfig.json'],
+    }),
+    tailwindcss(),
+    tanstackStart(),
+    viteReact(),
+  ],
+})
+
+export default config
+</file>
+
+</files>
