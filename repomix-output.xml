@@ -3018,105 +3018,6 @@ export default function Header() {
 }
 </file>
 
-<file path="src/components/plate-editor.tsx">
-import { Plate, usePlateEditor } from "platejs/react";
-
-import { Editor, EditorContainer } from "@/components/ui/editor";
-import { normalizeNodeId } from "platejs";
-import { NormalizeNodeIdOptions } from "platejs";
-import { ParagraphPlugin } from "platejs/react";
-import { ParagraphElement } from "@/components/ui/paragraph-node";
-import { DndPlugin } from "@platejs/dnd";
-import { BlockDraggable } from "@/components/ui/block-draggable";
-
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
-import { TopBarPlugin } from "@/components/plugins/top-bar";
-import { BadgePlugin } from "@/components/plugins/badge-plugin";
-import { Button } from "./ui/button";
-
-import { TrailingBlockPlugin } from 'platejs';
-
-export function PlateEditor() {
-  const editor = usePlateEditor({
-    plugins: [
-      ParagraphPlugin.withComponent(ParagraphElement),
-      DndPlugin.configure({
-        options: {
-          enableScroller: false,
-        },
-        render: {
-          aboveNodes: BlockDraggable,
-          aboveSlate: ({ children }) => {
-            return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
-          },
-        },
-      }),
-      TopBarPlugin,
-      BadgePlugin,
-      TrailingBlockPlugin.configure({
-        options: {
-          type: "p",
-        }
-      }),
-    ],
-    value,
-  });
-
-  const insertBadge = () => {
-    editor.tf.insert.badge();
-  }
-
-  return (
-    <Plate
-      editor={editor}
-      onChange={(value) => {
-            console.log(value);
-          }}
-    >
-      <Button onClick={insertBadge}>Insert Badge</Button>
-      <EditorContainer>
-        <Editor />
-      </EditorContainer>
-    </Plate>
-  );
-}
-
-const paragraphKey = ParagraphPlugin.key;
-
-const value = normalizeNodeId([
-  {
-    type: "p",
-    id: "1",
-    children: [
-      {
-        text: "Hello, world!",
-      },
-    ],
-  },
-  {
-    type: "badge",
-    id: "3",
-    children: [
-      {
-        text: "",
-      },
-    ],
-  },
-  {
-    type: paragraphKey,
-    id: "2",
-    children: [
-      {
-        text: "Hello, world! 2",
-      },
-    ],
-  },
-  
-]);
-</file>
-
 <file path="src/components/plugins/badge-plugin.tsx">
 // plugins/badge-plugin.tsx
 import {
@@ -3124,7 +3025,7 @@ import {
   PlateElement,
   type PlateElementProps,
   createTPlatePlugin,
-//   type PlateEditor,
+  //   type PlateEditor,
 } from "platejs/react";
 import type { PluginConfig } from "platejs";
 // import { Element, Editor, Node, Path, Transforms } from "platejs";
@@ -3157,14 +3058,13 @@ export const BadgePlugin = createTPlatePlugin<BadgeConfig>({
   },
   rules: {
     delete: {
-        start: "default",
-        empty: "default",
+      start: "default",
+      empty: "default",
     },
     merge: {
-        removeEmpty: false,
-    }    
-  }
-
+      removeEmpty: false,
+    },
+  },
 })
   .withComponent(BadgeElement)
   .extendEditorTransforms<BadgeConfig["transforms"]>(
@@ -3200,45 +3100,95 @@ export const BadgePlugin = createTPlatePlugin<BadgeConfig>({
       // },
     },
   })
-  .overrideEditor(({ editor, type, tf: { deleteBackward, deleteForward } }) => ({
-    transforms: {
-      deleteBackward(unit) {
-        const selection = editor.selection;
-        
-        if (!selection) {
-          deleteBackward(unit);
-          return;
-        }
-  
-        // Get the current block
-        const blockEntry = editor.api.block({ at: selection });
-        
-        if (blockEntry) {
-          const [block] = blockEntry;
-          
-          // If current block is a badge, prevent deletion
-          if (block.type === type) {
+  .overrideEditor(
+    ({ editor, type, tf: { deleteBackward, deleteForward } }) => ({
+      transforms: {
+        deleteBackward(unit) {
+          const selection = editor.selection;
+
+          if (!selection) {
+            deleteBackward(unit);
             return;
           }
-        }
-  
-        // Check if the previous sibling is a badge when at start of current block
-        const isAtStart = editor.api.isStart(selection.anchor, selection);
-        if (isAtStart && blockEntry) {
-          const [, blockPath] = blockEntry;
-          
-          // Try to get previous sibling
-          if (blockPath[blockPath.length - 1] > 0) {
-            const previousPath = [...blockPath];
-            previousPath[previousPath.length - 1] -= 1;
-            
+
+          // Get the current block
+          const blockEntry = editor.api.block({ at: selection });
+
+          if (blockEntry) {
+            const [block] = blockEntry;
+
+            // If current block is a badge, prevent deletion
+            if (block.type === type) {
+              return;
+            }
+          }
+
+          // Check if the previous sibling is a badge when at start of current block
+          const isAtStart = editor.api.isStart(selection.anchor, selection);
+          if (isAtStart && blockEntry) {
+            const [, blockPath] = blockEntry;
+
+            // Try to get previous sibling
+            if (blockPath[blockPath.length - 1] > 0) {
+              const previousPath = [...blockPath];
+              previousPath[previousPath.length - 1] -= 1;
+
+              try {
+                const previousNode = editor.api.node({ at: previousPath });
+                if (previousNode) {
+                  const [prevBlock] = previousNode;
+                  if (prevBlock.type === type) {
+                    // Select the badge instead of deleting
+                    editor.tf.select(previousPath);
+                    return;
+                  }
+                }
+              } catch (e) {
+                // Path doesn't exist, continue with normal deletion
+              }
+            }
+          }
+
+          // Default behavior
+          deleteBackward(unit);
+        },
+
+        deleteForward(unit) {
+          const selection = editor.selection;
+
+          if (!selection) {
+            deleteForward(unit);
+            return;
+          }
+
+          // Get the current block
+          const blockEntry = editor.api.block({ at: selection });
+
+          if (blockEntry) {
+            const [block] = blockEntry;
+
+            // If current block is a badge, prevent deletion
+            if (block.type === type) {
+              return;
+            }
+          }
+
+          // Check if the next sibling is a badge when at end of current block
+          const isAtEnd = editor.api.isEnd(selection.anchor, selection);
+          if (isAtEnd && blockEntry) {
+            const [, blockPath] = blockEntry;
+
+            // Try to get next sibling
+            const nextPath = [...blockPath];
+            nextPath[nextPath.length - 1] += 1;
+
             try {
-              const previousNode = editor.api.node({ at: previousPath });
-              if (previousNode) {
-                const [prevBlock] = previousNode;
-                if (prevBlock.type === type) {
+              const nextNode = editor.api.node({ at: nextPath });
+              if (nextNode) {
+                const [nextBlock] = nextNode;
+                if (nextBlock.type === type) {
                   // Select the badge instead of deleting
-                  editor.tf.select(previousPath);
+                  editor.tf.select(nextPath);
                   return;
                 }
               }
@@ -3246,94 +3196,46 @@ export const BadgePlugin = createTPlatePlugin<BadgeConfig>({
               // Path doesn't exist, continue with normal deletion
             }
           }
-        }
-        
-        // Default behavior
-        deleteBackward(unit);
-      },
-      
-      deleteForward(unit) {
-        const selection = editor.selection;
-        
-        if (!selection) {
+
+          // Default behavior
           deleteForward(unit);
-          return;
-        }
-  
-        // Get the current block
-        const blockEntry = editor.api.block({ at: selection });
-        
-        if (blockEntry) {
-          const [block] = blockEntry;
-          
-          // If current block is a badge, prevent deletion
-          if (block.type === type) {
-            return;
-          }
-        }
-  
-        // Check if the next sibling is a badge when at end of current block
-        const isAtEnd = editor.api.isEnd(selection.anchor, selection);
-        if (isAtEnd && blockEntry) {
-          const [, blockPath] = blockEntry;
-          
-          // Try to get next sibling
-          const nextPath = [...blockPath];
-          nextPath[nextPath.length - 1] += 1;
-          
-          try {
-            const nextNode = editor.api.node({ at: nextPath });
-            if (nextNode) {
-              const [nextBlock] = nextNode;
-              if (nextBlock.type === type) {
-                // Select the badge instead of deleting
-                editor.tf.select(nextPath);
-                return;
-              }
-            }
-          } catch (e) {
-            // Path doesn't exist, continue with normal deletion
-          }
-        }
-        
-        // Default behavior
-        deleteForward(unit);
+        },
       },
-    },
-  }))
+    })
+  );
 
 // --- Rendering ---
 
 /* function BadgeElement(props: PlateElementProps) {
-  const { element } = props as PlateElementProps & {
-    element: { label?: string; color?: string };
-  };
-
-  return (
-    <PlateElement as="div" {...props}>
-      <div
-        contentEditable={false}
-        aria-hidden="true"
-        tabIndex={-1}
-        className="my-2 inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
-        // onMouseDown={(e) => e.preventDefault()}
-        suppressContentEditableWarning
-      >
-        <span
-          className="inline-flex items-center rounded px-2 py-0.5 text-sm"
-          style={{
-            background: element.color ?? "var(--muted)",
-            color: "var(--foreground)",
-          }}
+    const { element } = props as PlateElementProps & {
+      element: { label?: string; color?: string };
+    };
+  
+    return (
+      <PlateElement as="div" {...props}>
+        <div
+          contentEditable={false}
+          aria-hidden="true"
+          tabIndex={-1}
+          className="my-2 inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
+          // onMouseDown={(e) => e.preventDefault()}
+          suppressContentEditableWarning
         >
-          {element.label ?? "Badge"}
-        </span>
-      </div>
-
-      {props.children}
-    </PlateElement>
-  );
-} */
+          <span
+            className="inline-flex items-center rounded px-2 py-0.5 text-sm"
+            style={{
+              background: element.color ?? "var(--muted)",
+              color: "var(--foreground)",
+            }}
+          >
+            {element.label ?? "Badge"}
+          </span>
+        </div>
+  
+        {props.children}
+      </PlateElement>
+    );
+  } */
 
 function BadgeElement(props: PlateElementProps) {
   const { element } = props as PlateElementProps & {
@@ -3341,13 +3243,23 @@ function BadgeElement(props: PlateElementProps) {
   };
 
   return (
-    <PlateElement {...props}>
+    <PlateElement {...props} className="m-1">
+      {/* <div
+        contentEditable={false}
+        aria-hidden="true"
+        role="presentation"
+        tabIndex={-1}
+        data-plate-prevent-deselect
+        className="pointer-events-none select-none h-8 w-full bg-gray-200"
+        // suppress React warning when CE=false nodes contain children
+        suppressContentEditableWarning
+      /> */}
       <div
         contentEditable={false}
-        className="my-2 inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
+        className="inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
       >
         <span
-          className="inline-flex items-center rounded px-2 py-0.5 text-sm"
+          className="inline-flex items-center rounded px-2 py-0.5 text-sm bg-gray-200 border"
           style={{
             background: element.color ?? "var(--muted)",
             color: "var(--foreground)",
@@ -3356,48 +3268,53 @@ function BadgeElement(props: PlateElementProps) {
           {element.label ?? "Badge"}
         </span>
       </div>
-      <span className="hidden">{props.children}</span>
+      {/* <span className="hidden">{props.children}</span> */}
+      {props.children}
     </PlateElement>
   );
 }
 
 /* function BadgeElement(props: PlateElementProps) {
-  const { element } = props as PlateElementProps & {
-    element: { label?: string; color?: string };
-  };
-
-  // IMPORTANT: spread {...props}, not {...attributes}
-  // Also render {props.children} to keep Slate happy around voids.
-  return (
-    <PlateElement
-      as="div"
-      {...props}
-      className="my-2 inline-flex items-center gap-2 rounded-md border px-2 py-1"
-    >
-      <span
-        className="inline-flex select-none items-center rounded px-2 py-0.5 text-sm"
-        style={{
-          background: element.color ?? "var(--muted)",
-          color: "var(--foreground)",
-        }}
+    const { element } = props as PlateElementProps & {
+      element: { label?: string; color?: string };
+    };
+  
+    // IMPORTANT: spread {...props}, not {...attributes}
+    // Also render {props.children} to keep Slate happy around voids.
+    return (
+      <PlateElement
+        as="div"
+        {...props}
+        className="my-2 inline-flex items-center gap-2 rounded-md border px-2 py-1"
       >
-        {element.label ?? "Badge"}
-      </span>
-      {props.children}
-    </PlateElement>
-  );
-} */
+        <span
+          className="inline-flex select-none items-center rounded px-2 py-0.5 text-sm"
+          style={{
+            background: element.color ?? "var(--muted)",
+            color: "var(--foreground)",
+          }}
+        >
+          {element.label ?? "Badge"}
+        </span>
+        {props.children}
+      </PlateElement>
+    );
+  } */
 </file>
 
 <file path="src/components/plugins/top-bar.tsx">
-import * as React from 'react';
-import { createPlatePlugin, createTPlatePlugin } from 'platejs/react';
-import { PluginConfig } from 'platejs';
-import { Button } from '../ui/button';
+import * as React from "react";
+import {
+  createPlatePlugin,
+  createTPlatePlugin,
+  usePluginOption,
+} from "platejs/react";
+import { PluginConfig } from "platejs";
+import { Button } from "../ui/button";
 
 type AboveEachNodeConfig = PluginConfig<
-  'aboveEachNode',
-  { excludeTypes: string[] }
+  "aboveEachNode",
+  { excludeTypes: string[]; isVisible: boolean }
 >;
 
 /* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
@@ -3428,53 +3345,171 @@ type AboveEachNodeConfig = PluginConfig<
   },
 })); */
 
-export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
-    key: 'aboveEachNode',
-    options: { excludeTypes: [] },
-  }).extend(({ editor, plugin }) => ({
-    render: {
-      aboveNodes: ({ element }) => (elementProps) => {
+/* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+  key: "aboveEachNode",
+  options: { excludeTypes: [], isVisible: true },
+}).extend(({ editor, plugin }) => ({
+  render: {
+    aboveNodes:
+      ({ element }) =>
+      (elementProps) => {
         const { excludeTypes = [] } = editor.getOptions(plugin);
-        const type = (element as any)?.type as string | undefined;
-  
+        const type = (element)?.type as string | undefined;
+
+        const isVisible = usePluginOption(plugin, 'isVisible');
+
+        if (isVisible === false) {
+          return elementProps.children;
+        }
+
         if (type && excludeTypes.includes(type)) {
           return elementProps.children;
         }
-  
+
         return (
-          <>
+          <div>
             <div
               contentEditable={false}
               aria-hidden="true"
               role="presentation"
               tabIndex={-1}
-              className="mb-1 text-xs text-muted-foreground/80 select-none"
+              // className="mb-1 text-xs text-muted-foreground/80 select-none"
+              className={` h-10 w-full text-xs text-muted-foreground/80 bg-gray-200 border rounded-md select-none ${isVisible ? 'block' : 'hidden'}`}
               // suppress React warning when CE=false elements contain children
-            //   suppressContentEditableWarning
+              //   suppressContentEditableWarning
             >
-              node: {type ?? 'element'}
-              <Button onClick={() => { console.log('Hello') }}>
-            Hello
-              </Button>
+              node: {type ?? "element"}              
             </div>
+            {elementProps.children}
+          </div>
+        );
+      },
+  },
+})); */
+
+export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+  key: "aboveEachNode",
+  options: { excludeTypes: [], isVisible: true },
+})
+.extend(({ editor, plugin }) => ({
+  render: {
+    aboveNodes:
+      ({ element }) =>
+      (elementProps) => {
+        const { excludeTypes = [] } = editor.getOptions(plugin);
+        const type = element?.type as string | undefined;
+        const isVisible = usePluginOption(plugin, "isVisible");
+
+        if (isVisible === false || (type && excludeTypes.includes(type))) {
+          return elementProps.children;
+        }
+
+        return (
+          <>
+            {/* <div
+              contentEditable={false}
+              aria-hidden="true"
+              role="presentation"
+              tabIndex={-1}
+              className="h-10 w-full text-xs text-muted-foreground/80 bg-gray-200 border rounded-md select-none mb-1 pointer-events-none"
+              data-plate-prevent-deselect
+            >
+              node: {type ?? "element"}              
+            </div> */}
+            <div
+              className="h-10 bg-gray-200 w-full"
+              data-plate-dropzone="true"
+              contentEditable={false}
+            ></div>
             {elementProps.children}
           </>
         );
       },
-    },
-  }));
+  },  
+}));
+
+// export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+//   key: "aboveEachNode",
+//   options: { excludeTypes: [], isVisible: true },
+// }).extend(({ editor, plugin }) => ({
+//   render: {
+//     // You can keep `aboveNodes` if you prefer, but we’ll ensure
+//     // it doesn't affect layout or pointer events.
+//     aboveNodes:
+//       ({ element }) =>
+//       (elementProps) => {
+//         const { excludeTypes = [] } = editor.getOptions(plugin);
+//         const type = (element)?.type as string | undefined;
+
+//         const isVisible = usePluginOption(plugin, 'isVisible');
+
+//         if (type && excludeTypes.includes(type)) {
+//           return elementProps.children;
+//         }
+
+//         return (
+//           <div className="relative">
+//             {/* absolutely positioned -> no layout impact; pointer-events-none -> no interference */}
+//             <div
+//               contentEditable={false}
+//               aria-hidden="true"
+//               role="presentation"
+//               tabIndex={-1}
+//               data-plate-prevent-deselect
+//               className={[
+//                 // keep it above node content but below the gutter/handle (z-50)
+//                 "absolute -top-5 left-0 z-40",
+//                 "text-xs text-muted-foreground/80 select-none",
+//                 "pointer-events-none",
+//                 isVisible ? "block" : "hidden",
+//               ].join(" ")}
+//             >
+//               node: {type ?? "element"}
+//             </div>
+
+//             {/* add a little padding so the absolute bar doesn't overlap text (optional) */}
+//             <div className="pt-3">{elementProps.children}</div>
+//           </div>
+//         );
+//       },
+
+//     // Alternative (even safer): render *inside* the element root instead of wrapping it
+//     // so wrappers like BlockDraggable are outermost.
+//     // belowRootNodes: (props) => {
+//     //   const type = (props.element as any)?.type as string | undefined
+//     //   const isVisible = usePluginOption(plugin, 'isVisible')
+//     //   return (
+//     //     <div className="relative">
+//     //       <div
+//     //         contentEditable={false}
+//     //         aria-hidden
+//     //         tabIndex={-1}
+//     //         data-plate-prevent-deselect
+//     //         className={[
+//     //           "absolute -top-5 left-0 z-40 text-xs text-muted-foreground/80 select-none pointer-events-none",
+//     //           isVisible ? "block" : "hidden",
+//     //         ].join(" ")}
+//     //       >
+//     //         node: {type ?? "element"}
+//     //       </div>
+//     //       <div className="pt-5" />
+//     //     </div>
+//     //   )
+//     // },
+//   },
+// }));
 </file>
 
 <file path="src/components/ui/block-draggable.tsx">
-'use client';
+"use client";
 
-import * as React from 'react';
+import * as React from "react";
 
-import { DndPlugin, useDraggable, useDropLine } from '@platejs/dnd';
-import { expandListItemsWithChildren } from '@platejs/list';
-import { BlockSelectionPlugin } from '@platejs/selection/react';
-import { GripVertical } from 'lucide-react';
-import { type TElement, getPluginByType, isType, KEYS } from 'platejs';
+import { DndPlugin, useDraggable, useDropLine } from "@platejs/dnd";
+import { expandListItemsWithChildren } from "@platejs/list";
+import { BlockSelectionPlugin } from "@platejs/selection/react";
+import { GripVertical } from "lucide-react";
+import { type TElement, getPluginByType, isType, KEYS } from "platejs";
 import {
   type PlateEditor,
   type PlateElementProps,
@@ -3483,64 +3518,35 @@ import {
   useEditorRef,
   useElement,
   usePluginOption,
-} from 'platejs/react';
-import { useSelected } from 'platejs/react';
+} from "platejs/react";
+import { useSelected } from "platejs/react";
 
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
+import { ParagraphPlugin } from "platejs/react";
+import { BadgePlugin } from "../plugins/badge-plugin";
 
-const UNDRAGGABLE_KEYS = [KEYS.column, KEYS.tr, KEYS.td];
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export const BlockDraggable: RenderNodeWrapper = (props) => {
-  const { editor, element, path } = props;
-
-  const enabled = React.useMemo(() => {
-    if (editor.dom.readOnly) return false;
-
-    if (path.length === 1 && !isType(editor, element, UNDRAGGABLE_KEYS)) {
-      return true;
-    }
-    if (path.length === 3 && !isType(editor, element, UNDRAGGABLE_KEYS)) {
-      const block = editor.api.some({
-        at: path,
-        match: {
-          type: editor.getType(KEYS.column),
-        },
-      });
-
-      if (block) {
-        return true;
-      }
-    }
-    if (path.length === 4 && !isType(editor, element, UNDRAGGABLE_KEYS)) {
-      const block = editor.api.some({
-        at: path,
-        match: {
-          type: editor.getType(KEYS.table),
-        },
-      });
-
-      if (block) {
-        return true;
-      }
-    }
-
-    return false;
-  }, [editor, element, path]);
-
-  if (!enabled) return;
-
   return (props) => <Draggable {...props} />;
 };
 
 function Draggable(props: PlateElementProps) {
   const { children, editor, element, path } = props;
   const blockSelectionApi = editor.getApi(BlockSelectionPlugin).blockSelection;
+
+  const elementType = element.type;
+  console.log(elementType, " inside block draggable");
+
+  let dragHandlePositioning = "";
+
+  if (elementType === BadgePlugin.key) {
+    dragHandlePositioning = "bottom-[10px]";
+  } else if (elementType === ParagraphPlugin.key) {
+    dragHandlePositioning = "bottom-[8px]";
+  }
+
+  // const dragHandlePositioning = elementType === "badge" ? "bottom-[10px]" : "bottom-[8px]";
 
   const { isAboutToDrag, isDragging, nodeRef, previewRef, handleRef } =
     useDraggable({
@@ -3563,7 +3569,7 @@ function Draggable(props: PlateElementProps) {
   const resetPreview = () => {
     if (previewRef.current) {
       previewRef.current.replaceChildren();
-      previewRef.current?.classList.add('hidden');
+      previewRef.current?.classList.add("hidden");
     }
   };
 
@@ -3577,48 +3583,47 @@ function Draggable(props: PlateElementProps) {
 
   React.useEffect(() => {
     if (isAboutToDrag) {
-      previewRef.current?.classList.remove('opacity-0');
+      previewRef.current?.classList.remove("opacity-0");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAboutToDrag]);
 
-  const [dragButtonTop, setDragButtonTop] = React.useState(0);
-
   return (
     <div
       className={cn(
-        'relative',
-        isDragging && 'opacity-50',
+        "relative",
+        isDragging && "opacity-50",
         getPluginByType(editor, element.type)?.node.isContainer
-          ? 'group/container'
-          : 'group'
+          ? "group/container"
+          : "group"
       )}
       onMouseEnter={() => {
         if (isDragging) return;
-        setDragButtonTop(calcDragButtonTop(editor, element));
+        // setDragButtonTop(calcDragButtonTop(editor, element));
       }}
     >
       {!isInTable && (
         <Gutter>
           <div
             className={cn(
-              'slate-blockToolbarWrapper',
-              'flex h-[1.5em]',
-              isInColumn && 'h-4'
+              "slate-blockToolbarWrapper",
+              // was: 'flex h-[1.5em]'
+              "flex h-full items-end", // ⬅️ fill block height, stick to bottom
+              isInColumn && "h-full" // keep full height in columns too
             )}
           >
             <div
               className={cn(
-                'slate-blockToolbar relative w-4.5',
-                'pointer-events-auto mr-1 flex items-center',
-                isInColumn && 'mr-1.5'
+                "slate-blockToolbar relative w-4.5",
+                "pointer-events-auto mr-1 flex items-end", // ⬅️ bottom align
+                isInColumn && "mr-1.5"
               )}
             >
               <Button
                 ref={handleRef}
                 variant="ghost"
-                className="absolute -left-0 h-6 w-full p-0"
-                style={{ top: `${dragButtonTop + 3}px` }}
+                // className="absolute -left-0 bottom-[8px] h-6 w-full p-0" // ⬅️ bottom instead of top
+                className={`absolute -left-0 ${dragHandlePositioning} h-6 w-full p-0`}
                 data-plate-prevent-deselect
               >
                 <DragHandle
@@ -3635,7 +3640,7 @@ function Draggable(props: PlateElementProps) {
 
       <div
         ref={previewRef}
-        className={cn('absolute -left-0 hidden w-full')}
+        className={cn("absolute -left-0 hidden w-full")}
         style={{ top: `${-previewTop}px` }}
         contentEditable={false}
       />
@@ -3660,12 +3665,12 @@ function Gutter({
   children,
   className,
   ...props
-}: React.ComponentProps<'div'>) {
+}: React.ComponentProps<"div">) {
   const editor = useEditorRef();
   const element = useElement();
   const isSelectionAreaVisible = usePluginOption(
     BlockSelectionPlugin,
-    'isSelectionAreaVisible'
+    "isSelectionAreaVisible"
   );
   const selected = useSelected();
 
@@ -3673,13 +3678,13 @@ function Gutter({
     <div
       {...props}
       className={cn(
-        'slate-gutterLeft',
-        'absolute top-0 z-50 flex h-full -translate-x-full cursor-text hover:opacity-100 sm:opacity-0',
+        "slate-gutterLeft",
+        "absolute top-0 z-50 flex h-full -translate-x-full cursor-text hover:opacity-100 sm:opacity-0",
         getPluginByType(editor, element.type)?.node.isContainer
-          ? 'group-hover/container:opacity-100'
-          : 'group-hover:opacity-100',
-        isSelectionAreaVisible && 'hidden',
-        !selected && 'opacity-0',
+          ? "group-hover/container:opacity-100"
+          : "group-hover:opacity-100",
+        isSelectionAreaVisible && "hidden",
+        !selected && "opacity-0",
         className
       )}
       contentEditable={false}
@@ -3704,107 +3709,34 @@ const DragHandle = React.memo(function DragHandle({
   const element = useElement();
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <div
-          className="flex size-full items-center justify-center"
-          onClick={(e) => {
-            e.preventDefault();
-            editor.getApi(BlockSelectionPlugin).blockSelection.focus();
-          }}
-          onMouseDown={(e) => {
-            resetPreview();
-
-            if ((e.button !== 0 && e.button !== 2) || e.shiftKey) return;
-
-            const blockSelection = editor
-              .getApi(BlockSelectionPlugin)
-              .blockSelection.getNodes({ sort: true });
-
-            let selectionNodes =
-              blockSelection.length > 0
-                ? blockSelection
-                : editor.api.blocks({ mode: 'highest' });
-
-            // If current block is not in selection, use it as the starting point
-            if (!selectionNodes.some(([node]) => node.id === element.id)) {
-              selectionNodes = [[element, editor.api.findPath(element)!]];
-            }
-
-            // Process selection nodes to include list children
-            const blocks = expandListItemsWithChildren(
-              editor,
-              selectionNodes
-            ).map(([node]) => node);
-
-            if (blockSelection.length === 0) {
-              editor.tf.blur();
-              editor.tf.collapse();
-            }
-
-            const elements = createDragPreviewElements(editor, blocks);
-            previewRef.current?.append(...elements);
-            previewRef.current?.classList.remove('hidden');
-            previewRef.current?.classList.add('opacity-0');
-            editor.setOption(DndPlugin, 'multiplePreviewRef', previewRef);
-
-            editor
-              .getApi(BlockSelectionPlugin)
-              .blockSelection.set(blocks.map((block) => block.id as string));
-          }}
-          onMouseEnter={() => {
-            if (isDragging) return;
-
-            const blockSelection = editor
-              .getApi(BlockSelectionPlugin)
-              .blockSelection.getNodes({ sort: true });
-
-            let selectedBlocks =
-              blockSelection.length > 0
-                ? blockSelection
-                : editor.api.blocks({ mode: 'highest' });
-
-            // If current block is not in selection, use it as the starting point
-            if (!selectedBlocks.some(([node]) => node.id === element.id)) {
-              selectedBlocks = [[element, editor.api.findPath(element)!]];
-            }
-
-            // Process selection to include list children
-            const processedBlocks = expandListItemsWithChildren(
-              editor,
-              selectedBlocks
-            );
-
-            const ids = processedBlocks.map((block) => block[0].id as string);
-
-            if (ids.length > 1 && ids.includes(element.id as string)) {
-              const previewTop = calculatePreviewTop(editor, {
-                blocks: processedBlocks.map((block) => block[0]),
-                element,
-              });
-              setPreviewTop(previewTop);
-            } else {
-              setPreviewTop(0);
-            }
-          }}
-          onMouseUp={() => {
-            resetPreview();
-          }}
-          data-plate-prevent-deselect
-          role="button"
-        >
-          <GripVertical className="text-muted-foreground" />
-        </div>
-      </TooltipTrigger>
-      <TooltipContent>Drag to move</TooltipContent>
-    </Tooltip>
+    <div
+      className="flex size-full items-center justify-center"
+      onClick={(e) => {
+        e.preventDefault();
+        editor.getApi(BlockSelectionPlugin).blockSelection.focus();
+      }}
+      onMouseDown={(e) => {
+        resetPreview();
+        if ((e.button !== 0 && e.button !== 2) || e.shiftKey) return;
+      }}
+      onMouseEnter={() => {
+        if (isDragging) return;
+      }}
+      onMouseUp={() => {
+        resetPreview();
+      }}
+      data-plate-prevent-deselect
+      role="button"
+    >
+      <GripVertical className="text-muted-foreground" />
+    </div>
   );
 });
 
 const DropLine = React.memo(function DropLine({
   className,
   ...props
-}: React.ComponentProps<'div'>) {
+}: React.ComponentProps<"div">) {
   const { dropLine } = useDropLine();
 
   if (!dropLine) return null;
@@ -3813,171 +3745,16 @@ const DropLine = React.memo(function DropLine({
     <div
       {...props}
       className={cn(
-        'slate-dropLine',
-        'absolute inset-x-0 h-0.5 opacity-100 transition-opacity',
-        'bg-sky-200',
-        dropLine === 'top' && '-top-px',
-        dropLine === 'bottom' && '-bottom-px',
+        "slate-dropLine",
+        "absolute inset-x-0 h-0.5 opacity-100 transition-opacity",
+        "bg-sky-200",
+        dropLine === "top" && "-top-px",
+        dropLine === "bottom" && "-bottom-px",
         className
       )}
     />
   );
 });
-
-const createDragPreviewElements = (
-  editor: PlateEditor,
-  blocks: TElement[]
-): HTMLElement[] => {
-  const elements: HTMLElement[] = [];
-  const ids: string[] = [];
-
-  /**
-   * Remove data attributes from the element to avoid recognized as slate
-   * elements incorrectly.
-   */
-  const removeDataAttributes = (element: HTMLElement) => {
-    Array.from(element.attributes).forEach((attr) => {
-      if (
-        attr.name.startsWith('data-slate') ||
-        attr.name.startsWith('data-block-id')
-      ) {
-        element.removeAttribute(attr.name);
-      }
-    });
-
-    Array.from(element.children).forEach((child) => {
-      removeDataAttributes(child as HTMLElement);
-    });
-  };
-
-  const resolveElement = (node: TElement, index: number) => {
-    const domNode = editor.api.toDOMNode(node)!;
-    const newDomNode = domNode.cloneNode(true) as HTMLElement;
-
-    // Apply visual compensation for horizontal scroll
-    const applyScrollCompensation = (
-      original: Element,
-      cloned: HTMLElement
-    ) => {
-      const scrollLeft = original.scrollLeft;
-
-      if (scrollLeft > 0) {
-        // Create a wrapper to handle the scroll offset
-        const scrollWrapper = document.createElement('div');
-        scrollWrapper.style.overflow = 'hidden';
-        scrollWrapper.style.width = `${original.clientWidth}px`;
-
-        // Create inner container with the full content
-        const innerContainer = document.createElement('div');
-        innerContainer.style.transform = `translateX(-${scrollLeft}px)`;
-        innerContainer.style.width = `${original.scrollWidth}px`;
-
-        // Move all children to the inner container
-        while (cloned.firstChild) {
-          innerContainer.append(cloned.firstChild);
-        }
-
-        // Apply the original element's styles to maintain appearance
-        const originalStyles = window.getComputedStyle(original);
-        cloned.style.padding = '0';
-        innerContainer.style.padding = originalStyles.padding;
-
-        scrollWrapper.append(innerContainer);
-        cloned.append(scrollWrapper);
-      }
-    };
-
-    applyScrollCompensation(domNode, newDomNode);
-
-    ids.push(node.id as string);
-    const wrapper = document.createElement('div');
-    wrapper.append(newDomNode);
-    wrapper.style.display = 'flow-root';
-
-    const lastDomNode = blocks[index - 1];
-
-    if (lastDomNode) {
-      const lastDomNodeRect = editor.api
-        .toDOMNode(lastDomNode)!
-        .parentElement!.getBoundingClientRect();
-
-      const domNodeRect = domNode.parentElement!.getBoundingClientRect();
-
-      const distance = domNodeRect.top - lastDomNodeRect.bottom;
-
-      // Check if the two elements are adjacent (touching each other)
-      if (distance > 15) {
-        wrapper.style.marginTop = `${distance}px`;
-      }
-    }
-
-    removeDataAttributes(newDomNode);
-    elements.push(wrapper);
-  };
-
-  blocks.forEach((node, index) => resolveElement(node, index));
-
-  editor.setOption(DndPlugin, 'draggingId', ids);
-
-  return elements;
-};
-
-const calculatePreviewTop = (
-  editor: PlateEditor,
-  {
-    blocks,
-    element,
-  }: {
-    blocks: TElement[];
-    element: TElement;
-  }
-): number => {
-  const child = editor.api.toDOMNode(element)!;
-  const editable = editor.api.toDOMNode(editor)!;
-  const firstSelectedChild = blocks[0];
-
-  const firstDomNode = editor.api.toDOMNode(firstSelectedChild)!;
-  // Get editor's top padding
-  const editorPaddingTop = Number(
-    window.getComputedStyle(editable).paddingTop.replace('px', '')
-  );
-
-  // Calculate distance from first selected node to editor top
-  const firstNodeToEditorDistance =
-    firstDomNode.getBoundingClientRect().top -
-    editable.getBoundingClientRect().top -
-    editorPaddingTop;
-
-  // Get margin top of first selected node
-  const firstMarginTopString = window.getComputedStyle(firstDomNode).marginTop;
-  const marginTop = Number(firstMarginTopString.replace('px', ''));
-
-  // Calculate distance from current node to editor top
-  const currentToEditorDistance =
-    child.getBoundingClientRect().top -
-    editable.getBoundingClientRect().top -
-    editorPaddingTop;
-
-  const currentMarginTopString = window.getComputedStyle(child).marginTop;
-  const currentMarginTop = Number(currentMarginTopString.replace('px', ''));
-
-  const previewElementsTopDistance =
-    currentToEditorDistance -
-    firstNodeToEditorDistance +
-    marginTop -
-    currentMarginTop;
-
-  return previewElementsTopDistance;
-};
-
-const calcDragButtonTop = (editor: PlateEditor, element: TElement): number => {
-  const child = editor.api.toDOMNode(element)!;
-
-  const currentMarginTopString = window.getComputedStyle(child).marginTop;
-  const currentMarginTop = Number(currentMarginTopString.replace('px', ''));
-
-  return currentMarginTop;
-};
 </file>
 
 <file path="src/components/ui/button.tsx">
@@ -4250,19 +4027,29 @@ export function ParagraphElementStatic(props: SlateElementProps) {
 </file>
 
 <file path="src/components/ui/paragraph-node.tsx">
-'use client';
+"use client";
 
-import * as React from 'react';
+import * as React from "react";
 
-import type { PlateElementProps } from 'platejs/react';
+import type { PlateElementProps } from "platejs/react";
 
-import { PlateElement } from 'platejs/react';
+import { PlateElement } from "platejs/react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 export function ParagraphElement(props: PlateElementProps) {
   return (
-    <PlateElement {...props} className={cn('m-0 px-0 py-1')}>
+    <PlateElement {...props} className={cn("m-1 px-0 py-1")}>
+      <div
+        contentEditable={false}
+        aria-hidden="true"
+        role="presentation"
+        tabIndex={-1}
+        data-plate-prevent-deselect
+        className="pointer-events-none select-none h-8 w-full bg-gray-200"
+        // suppress React warning when CE=false nodes contain children
+        suppressContentEditableWarning
+      />
       {props.children}
     </PlateElement>
   );
@@ -4768,6 +4555,123 @@ const config = defineConfig({
 })
 
 export default config
+</file>
+
+<file path="src/components/plate-editor.tsx">
+import { Plate, usePlateEditor } from "platejs/react";
+
+import { Editor, EditorContainer } from "@/components/ui/editor";
+import { normalizeNodeId } from "platejs";
+import { NormalizeNodeIdOptions } from "platejs";
+import { ParagraphPlugin } from "platejs/react";
+import { ParagraphElement } from "@/components/ui/paragraph-node";
+import { DndPlugin } from "@platejs/dnd";
+import { BlockDraggable } from "@/components/ui/block-draggable";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { TopBarPlugin } from "@/components/plugins/top-bar";
+import { BadgePlugin } from "@/components/plugins/badge-plugin";
+import { Button } from "./ui/button";
+
+import { TrailingBlockPlugin } from "platejs";
+
+export function PlateEditor() {
+  const editor = usePlateEditor({
+    plugins: [
+      ParagraphPlugin.withComponent(ParagraphElement),
+      DndPlugin.configure({
+        options: {
+          enableScroller: true,
+        },
+        render: {
+          aboveNodes: BlockDraggable,
+          aboveSlate: ({ children }) => {
+            return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
+          },
+        },
+      }),
+      // TopBarPlugin,
+      BadgePlugin,
+      TrailingBlockPlugin.configure({
+        options: {
+          type: "p",
+        },
+      }),
+    ],
+    value,
+  });
+
+  const insertBadge = () => {
+    editor.tf.insert.badge();
+  };
+
+  const disableTopBar = () => {
+    editor.setOption(TopBarPlugin, "isVisible", false);
+  };
+
+  const enableTopBar = () => {
+    editor.setOption(TopBarPlugin, "isVisible", true);
+  };
+
+  return (
+    <Plate
+      editor={editor}
+      onChange={(value) => {
+        console.log(value);
+      }}
+    >
+      <Button onClick={disableTopBar}>Disable Top Bar</Button>
+      <Button onClick={enableTopBar}>Enable Top Bar</Button>
+      <Button onClick={insertBadge}>Insert Badge</Button>
+      <EditorContainer>
+        <Editor />
+      </EditorContainer>
+    </Plate>
+  );
+}
+
+const paragraphKey = ParagraphPlugin.key;
+
+const value = normalizeNodeId([
+  {
+    type: "p",
+    id: "1",
+    children: [
+      {
+        text: "Hello, world!",
+      },
+    ],
+  },
+  {
+    type: "badge",
+    id: "3",
+    children: [
+      {
+        text: "",
+      },
+    ],
+  },
+  {
+    type: paragraphKey,
+    id: "2",
+    children: [
+      {
+        text: "Hello, world! 2",
+      },
+    ],
+  },
+  {
+    type: paragraphKey,
+    id: "4",
+    children: [
+      {
+        text: "Hello, world! 4",
+      },
+    ],
+  },
+]);
 </file>
 
 </files>

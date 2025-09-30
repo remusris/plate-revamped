@@ -15,7 +15,7 @@ import { TopBarPlugin } from "@/components/plugins/top-bar";
 import { BadgePlugin } from "@/components/plugins/badge-plugin";
 import { Button } from "./ui/button";
 
-import { TrailingBlockPlugin } from 'platejs';
+import { TrailingBlockPlugin } from "platejs";
 
 export function PlateEditor() {
   const editor = usePlateEditor({
@@ -32,12 +32,12 @@ export function PlateEditor() {
           },
         },
       }),
-      TopBarPlugin,
+      // TopBarPlugin,
       BadgePlugin,
       TrailingBlockPlugin.configure({
         options: {
           type: "p",
-        }
+        },
       }),
     ],
     value,
@@ -45,15 +45,25 @@ export function PlateEditor() {
 
   const insertBadge = () => {
     editor.tf.insert.badge();
-  }
+  };
+
+  const disableTopBar = () => {
+    editor.setOption(TopBarPlugin, "isVisible", false);
+  };
+
+  const enableTopBar = () => {
+    editor.setOption(TopBarPlugin, "isVisible", true);
+  };
 
   return (
     <Plate
       editor={editor}
       onChange={(value) => {
-            console.log(value);
-          }}
+        console.log(value);
+      }}
     >
+      <Button onClick={disableTopBar}>Disable Top Bar</Button>
+      <Button onClick={enableTopBar}>Enable Top Bar</Button>
       <Button onClick={insertBadge}>Insert Badge</Button>
       <EditorContainer>
         <Editor />
@@ -100,6 +110,5 @@ const value = normalizeNodeId([
         text: "Hello, world! 4",
       },
     ],
-  }
-  
+  },
 ]);
