@@ -32,7 +32,12 @@ export function PlateEditor() {
           },
         },
       }),
-      TopBarPlugin,
+      TopBarPlugin.configure({
+        options: {
+          isVisible: true
+        },
+        enabled: true,
+      }),
       BadgePlugin,
       TrailingBlockPlugin.configure({
         options: {
@@ -47,6 +52,19 @@ export function PlateEditor() {
     editor.tf.insert.badge();
   }
 
+  const disableTopBar = () => { 
+    editor.setOption(TopBarPlugin, 'isVisible', false);
+    const currentOption = editor.getOption(TopBarPlugin, 'isVisible');
+    console.log("currentOption", currentOption);
+
+    // editor.setOption(TopBarPlugin, 'isVisible', true);
+  }
+  const enableTopBar = () => {
+    editor.setOption(TopBarPlugin, 'isVisible', true);
+    const currentOption = editor.getOption(TopBarPlugin, 'isVisible');
+    console.log("currentOption", currentOption);
+  }
+
   return (
     <Plate
       editor={editor}
@@ -55,6 +73,8 @@ export function PlateEditor() {
           }}
     >
       <Button onClick={insertBadge}>Insert Badge</Button>
+      <Button onClick={disableTopBar}>Disable Top Bar</Button>
+      <Button onClick={enableTopBar}>Enable Top Bar</Button>
       <EditorContainer>
         <Editor />
       </EditorContainer>

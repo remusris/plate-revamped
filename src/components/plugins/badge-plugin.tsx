@@ -221,17 +221,18 @@ function BadgeElement(props: PlateElementProps) {
   };
 
   return (
-    <PlateElement {...props}>
+    <PlateElement {...props} className="">
       <div
         contentEditable={false}
         className="inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
       >
         <span
-          className="inline-flex items-center rounded px-2 py-0.5 text-sm"
+          className="inline-flex items-center rounded px-2 py-0.5 text-sm bg-gray-200 border"
           style={{
             background: element.color ?? "var(--muted)",
             color: "var(--foreground)",
           }}
+          
         >
           {element.label ?? "Badge"}
         </span>

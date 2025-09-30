@@ -3018,105 +3018,6 @@ export default function Header() {
 }
 </file>
 
-<file path="src/components/plate-editor.tsx">
-import { Plate, usePlateEditor } from "platejs/react";
-
-import { Editor, EditorContainer } from "@/components/ui/editor";
-import { normalizeNodeId } from "platejs";
-import { NormalizeNodeIdOptions } from "platejs";
-import { ParagraphPlugin } from "platejs/react";
-import { ParagraphElement } from "@/components/ui/paragraph-node";
-import { DndPlugin } from "@platejs/dnd";
-import { BlockDraggable } from "@/components/ui/block-draggable";
-
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
-import { TopBarPlugin } from "@/components/plugins/top-bar";
-import { BadgePlugin } from "@/components/plugins/badge-plugin";
-import { Button } from "./ui/button";
-
-import { TrailingBlockPlugin } from 'platejs';
-
-export function PlateEditor() {
-  const editor = usePlateEditor({
-    plugins: [
-      ParagraphPlugin.withComponent(ParagraphElement),
-      DndPlugin.configure({
-        options: {
-          enableScroller: false,
-        },
-        render: {
-          aboveNodes: BlockDraggable,
-          aboveSlate: ({ children }) => {
-            return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
-          },
-        },
-      }),
-      TopBarPlugin,
-      BadgePlugin,
-      TrailingBlockPlugin.configure({
-        options: {
-          type: "p",
-        }
-      }),
-    ],
-    value,
-  });
-
-  const insertBadge = () => {
-    editor.tf.insert.badge();
-  }
-
-  return (
-    <Plate
-      editor={editor}
-      onChange={(value) => {
-            console.log(value);
-          }}
-    >
-      <Button onClick={insertBadge}>Insert Badge</Button>
-      <EditorContainer>
-        <Editor />
-      </EditorContainer>
-    </Plate>
-  );
-}
-
-const paragraphKey = ParagraphPlugin.key;
-
-const value = normalizeNodeId([
-  {
-    type: "p",
-    id: "1",
-    children: [
-      {
-        text: "Hello, world!",
-      },
-    ],
-  },
-  {
-    type: "badge",
-    id: "3",
-    children: [
-      {
-        text: "",
-      },
-    ],
-  },
-  {
-    type: paragraphKey,
-    id: "2",
-    children: [
-      {
-        text: "Hello, world! 2",
-      },
-    ],
-  },
-  
-]);
-</file>
-
 <file path="src/components/plugins/badge-plugin.tsx">
 // plugins/badge-plugin.tsx
 import {
@@ -3341,13 +3242,14 @@ function BadgeElement(props: PlateElementProps) {
   };
 
   return (
-    <PlateElement {...props}>
+    <PlateElement {...props} className="my-7
+    ">
       <div
         contentEditable={false}
-        className="my-2 inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
+        className="inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
       >
         <span
-          className="inline-flex items-center rounded px-2 py-0.5 text-sm"
+          className="inline-flex items-center rounded px-2 py-0.5 text-sm bg-gray-200 border"
           style={{
             background: element.color ?? "var(--muted)",
             color: "var(--foreground)",
@@ -3390,14 +3292,14 @@ function BadgeElement(props: PlateElementProps) {
 </file>
 
 <file path="src/components/plugins/top-bar.tsx">
-import * as React from 'react';
-import { createPlatePlugin, createTPlatePlugin } from 'platejs/react';
-import { PluginConfig } from 'platejs';
-import { Button } from '../ui/button';
+import * as React from "react";
+import { createPlatePlugin, createTPlatePlugin, useEditorPlugin, usePluginOption, useEditorRef, useElement } from "platejs/react";
+import { PluginConfig } from "platejs";
+import { Button } from "../ui/button";
 
 type AboveEachNodeConfig = PluginConfig<
-  'aboveEachNode',
-  { excludeTypes: string[] }
+  "aboveEachNode",
+  { excludeTypes: string[]; isVisible: boolean }
 >;
 
 /* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
@@ -3428,41 +3330,280 @@ type AboveEachNodeConfig = PluginConfig<
   },
 })); */
 
-export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
-    key: 'aboveEachNode',
-    options: { excludeTypes: [] },
-  }).extend(({ editor, plugin }) => ({
-    render: {
-      aboveNodes: ({ element }) => (elementProps) => {
-        const { excludeTypes = [] } = editor.getOptions(plugin);
-        const type = (element as any)?.type as string | undefined;
-  
-        if (type && excludeTypes.includes(type)) {
-          return elementProps.children;
-        }
-  
-        return (
-          <>
-            <div
-              contentEditable={false}
-              aria-hidden="true"
-              role="presentation"
-              tabIndex={-1}
-              className="mb-1 text-xs text-muted-foreground/80 select-none"
-              // suppress React warning when CE=false elements contain children
-            //   suppressContentEditableWarning
-            >
-              node: {type ?? 'element'}
-              <Button onClick={() => { console.log('Hello') }}>
-            Hello
-              </Button>
-            </div>
-            {elementProps.children}
-          </>
-        );
+
+// not updating in real-time
+// export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+//   key: "aboveEachNode",
+//   options: { excludeTypes: [], enabled: true },
+// }).extend(({ editor, plugin }) => ({
+//   render: {
+//     aboveNodes:
+//       ({ element }) =>
+//       (elementProps) => {
+//         const { excludeTypes = [] } = editor.getOptions(plugin);
+//         const type = (element as any)?.type as string | undefined;
+
+//         const { enabled } = editor.getOptions(plugin);
+        
+//         // If disabled, just render children
+//         if (!enabled) {
+//           return elementProps.children;
+//         }
+
+//         if (type && excludeTypes.includes(type)) {
+//           return elementProps.children;
+//         }
+
+//         return (
+//           <>
+//             <div
+//               contentEditable={false}
+//               aria-hidden="true"
+//               role="presentation"
+//               tabIndex={-1}
+//               className="mb-1 text-xs text-muted-foreground/80 select-none pointer-events-none"
+//               // suppress React warning when CE=false elements contain children
+//               //   suppressContentEditableWarning
+//             >
+//               node: {type ?? "element"}
+//               <Button
+//                 onClick={() => {
+//                   console.log("Hello");
+//                 }}
+//               >
+//                 Hello
+//               </Button>
+//             </div>
+//             {elementProps.children}
+//           </>
+//         );
+//       },
+//   },
+// }));
+
+
+
+// still not working
+// export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+//   key: "aboveEachNode",
+//   options: { excludeTypes: [], enabled: true },
+// }).extend(({ editor, plugin }) => ({
+//   render: {
+//     aboveNodes:
+//       ({ element }) =>
+//       (elementProps) => {
+//         // Move this hook call inside the component that gets returned
+//         const TopBarContent = () => {
+//           const { getOptions } = useEditorPlugin(plugin);
+//           const { excludeTypes = [], enabled = true } = getOptions();
+//           const type = (element as any)?.type as string | undefined;
+
+//           // If disabled, just render children
+//           if (!enabled) {
+//             return elementProps.children;
+//           }
+
+//           if (type && excludeTypes.includes(type)) {
+//             return elementProps.children;
+//           }
+
+//           return (
+//             <>
+//               <div
+//                 contentEditable={false}
+//                 aria-hidden="true"
+//                 role="presentation"
+//                 tabIndex={-1}
+//                 className="mb-1 text-xs text-muted-foreground/80 select-none pointer-events-none"
+//               >
+//                 node: {type ?? "element"}
+//                 <Button
+//                   onClick={() => {
+//                     console.log("Hello");
+//                   }}
+//                 >
+//                   Hello
+//                 </Button>
+//               </div>
+//               {elementProps.children}
+//             </>
+//           );
+//         };
+
+//         return <TopBarContent />;
+//       },
+//   },
+// }));
+
+
+
+// works with the visible options
+/* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+  key: "aboveEachNode",
+  options: { excludeTypes: [], isVisible: true },
+}).extend(({ plugin }) => ({
+  render: {
+    aboveNodes:
+      ({ element }) =>
+      (elementProps) => {
+        const TopBarContent = () => {
+          // Subscribe to the options so this re-renders when they change
+          const isVisible = usePluginOption(plugin, 'isVisible');
+          // const excludeTypes = usePluginOption<string[]>(plugin, 'excludeTypes') ?? [];
+
+          const type = (element as any)?.type as string | undefined;
+
+          if (!isVisible) return elementProps.children;
+          // if (type && excludeTypes.includes(type)) return elementProps.children;
+
+          return (
+            <>
+              <div
+                data-plate-prevent-deselect
+                contentEditable={false}
+                aria-hidden="true"
+                role="presentation"
+                tabIndex={-1}
+                className="text-xs text-muted-foreground/80 select-none pointer-events-none"
+              >
+                node: {type ?? "element"}
+              </div>
+              {elementProps.children}
+            </>
+          );
+        };
+
+        return <TopBarContent />;
       },
-    },
-  }));
+  },
+}));
+ */
+
+
+// text is being inserted backwards
+export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+  key: 'aboveEachNode',
+  options: { excludeTypes: [], isVisible: true },
+})
+.extend(({ plugin }) => ({
+  render: {
+    aboveNodes:
+      ({ element }) =>
+      (elementProps) => {
+        const TopBarContent = () => {
+          const isVisible = usePluginOption(plugin, 'isVisible');
+          const excludeTypes = usePluginOption(plugin, 'excludeTypes') ?? [];
+          const type = (element as any)?.type as string | undefined;
+
+          // Don’t render at all if hidden or excluded
+          /* if (!isVisible || (type && excludeTypes.includes(type))) {
+            return elementProps.children;
+          } */
+
+          return (
+            // Make a positioning context that DOESN'T disable editing
+            <div className="relative">
+              {/* Absolutely positioned overlay; doesn't affect layout or events */}
+              <div
+                contentEditable={false}
+                aria-hidden="true"
+                role="presentation"
+                tabIndex={-1}
+                draggable={false}
+                // className="pointer-events-none select-none absolute -top-2 left-0 text-xs text-muted-foreground/80 bg-gray-200 border rounded-md h-8"
+                className={`select-none absolute -top-2 left-0 text-xs text-muted-foreground/80 bg-gray-200 border rounded-md h-8 w-full ${isVisible ? '' : 'hidden'}`}
+              >
+                node: {type ?? 'element'}
+              </div>
+
+              {/* The actual node content */}
+              {elementProps.children}
+            </div>
+          );
+        };
+
+        return <TopBarContent />;
+      },
+  },
+}));
+
+
+
+// worked but not what we want
+// export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+//   key: "aboveEachNode",
+//   options: { excludeTypes: [], isVisible: true },
+// }).extend(({ plugin }) => ({
+//   render: {
+//     belowRootNodes: (props) => {
+//       const isVisible = usePluginOption(plugin, 'isVisible');
+//       const type = props.element?.type;
+
+//       if (!isVisible) return null;
+
+//       return (
+//         <div
+//           data-plate-prevent-deselect
+//           contentEditable={false}
+//           className="mb-1 text-xs text-muted-foreground/80 select-none pointer-events-none"
+//         >
+//           node: {type ?? "element"}
+//         </div>
+//       );
+//     },
+//   },
+// }));
+
+
+
+// const TopBarWrapper = ({ children }: { children: React.ReactNode }) => {
+//   const editor = useEditorRef();
+//   const element = useElement();
+//   const plugin = useEditorPlugin(TopBarPlugin);
+
+//   // This will properly subscribe and re-render when the option changes
+//   console.log("plugin", plugin);
+
+  
+
+
+//   const isVisible = editor.getOption(TopBarPlugin, 'isVisible');
+//   const type = (element as any)?.type as string | undefined;
+
+//   React.useEffect(() => {    
+//     console.log("isVisible", isVisible);
+//   }, [isVisible]);
+
+//   if (!isVisible) {
+//     return <>{children}</>;
+//   }
+
+//   return (
+//     <>
+//       <div
+//         contentEditable={false}
+//         aria-hidden="true"
+//         role="presentation"
+//         tabIndex={-1}
+//         className="mb-1 text-xs text-muted-foreground/80 select-none pointer-events-none"
+//       >
+//         node: {type ?? "element"}
+//       </div>
+//       {children}
+//     </>
+//   );
+// };
+
+// export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+//   key: "aboveEachNode",
+//   options: { excludeTypes: [], isVisible: true },
+// }).extend(() => ({
+//   render: {
+//     aboveNodes: () => (elementProps) => {
+//       return <TopBarWrapper>{elementProps.children}</TopBarWrapper>;
+//     },
+//   },
+// }));
 </file>
 
 <file path="src/components/ui/block-draggable.tsx">
@@ -3486,6 +3627,8 @@ import {
 } from 'platejs/react';
 import { useSelected } from 'platejs/react';
 
+import { TopBarPlugin } from '../plugins/top-bar';
+
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -3493,6 +3636,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+
+const keys = ["p", "badge"]
 
 const UNDRAGGABLE_KEYS = [KEYS.column, KEYS.tr, KEYS.td];
 
@@ -3544,7 +3689,7 @@ function Draggable(props: PlateElementProps) {
 
   const { isAboutToDrag, isDragging, nodeRef, previewRef, handleRef } =
     useDraggable({
-      element,
+      element,      
       onDropHandler: (_, { dragItem }) => {
         const id = (dragItem as { id: string[] | string }).id;
 
@@ -3552,6 +3697,8 @@ function Draggable(props: PlateElementProps) {
           blockSelectionApi.add(id);
         }
         resetPreview();
+
+        editor.setOption(TopBarPlugin, 'isVisible', true);
       },
     });
 
@@ -3574,6 +3721,18 @@ function Draggable(props: PlateElementProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging]);
+
+  // Add effect to control TopBarPlugin based on drag state
+  /* React.useEffect(() => {
+    if (isDragging) {
+      console.log("isDragging");
+      editor.setOption(TopBarPlugin, 'isVisible', false);
+    } else {
+      console.log("not dragging");
+      editor.setOption(TopBarPlugin, 'isVisible', true);
+    }
+    // editor.setOption(TopBarPlugin, 'enabled', !isDragging);
+  }, [isDragging, editor]); */
 
   React.useEffect(() => {
     if (isAboutToDrag) {
@@ -3715,6 +3874,8 @@ const DragHandle = React.memo(function DragHandle({
           onMouseDown={(e) => {
             resetPreview();
 
+            editor.setOption(TopBarPlugin, 'isVisible', false);
+
             if ((e.button !== 0 && e.button !== 2) || e.shiftKey) return;
 
             const blockSelection = editor
@@ -3788,6 +3949,7 @@ const DragHandle = React.memo(function DragHandle({
             }
           }}
           onMouseUp={() => {
+            editor.setOption(TopBarPlugin, 'isVisible', true);
             resetPreview();
           }}
           data-plate-prevent-deselect
@@ -4242,7 +4404,7 @@ import { cn } from '@/lib/utils';
 
 export function ParagraphElementStatic(props: SlateElementProps) {
   return (
-    <SlateElement {...props} className={cn('m-0 px-0 py-1')}>
+    <SlateElement {...props} className={cn('my-3 px-0 py-1')}>
       {props.children}
     </SlateElement>
   );
@@ -4262,7 +4424,7 @@ import { cn } from '@/lib/utils';
 
 export function ParagraphElement(props: PlateElementProps) {
   return (
-    <PlateElement {...props} className={cn('m-0 px-0 py-1')}>
+    <PlateElement {...props} className={cn('my-4 px-0 py-1')}>
       {props.children}
     </PlateElement>
   );
@@ -4768,6 +4930,134 @@ const config = defineConfig({
 })
 
 export default config
+</file>
+
+<file path="src/components/plate-editor.tsx">
+import { Plate, usePlateEditor } from "platejs/react";
+
+import { Editor, EditorContainer } from "@/components/ui/editor";
+import { normalizeNodeId } from "platejs";
+import { NormalizeNodeIdOptions } from "platejs";
+import { ParagraphPlugin } from "platejs/react";
+import { ParagraphElement } from "@/components/ui/paragraph-node";
+import { DndPlugin } from "@platejs/dnd";
+import { BlockDraggable } from "@/components/ui/block-draggable";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { TopBarPlugin } from "@/components/plugins/top-bar";
+import { BadgePlugin } from "@/components/plugins/badge-plugin";
+import { Button } from "./ui/button";
+
+import { TrailingBlockPlugin } from 'platejs';
+
+export function PlateEditor() {
+  const editor = usePlateEditor({
+    plugins: [
+      ParagraphPlugin.withComponent(ParagraphElement),
+      DndPlugin.configure({
+        options: {
+          enableScroller: true,
+        },
+        render: {
+          aboveNodes: BlockDraggable,
+          aboveSlate: ({ children }) => {
+            return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
+          },
+        },
+      }),
+      TopBarPlugin.configure({
+        options: {
+          isVisible: true
+        },
+        enabled: true,
+      }),
+      BadgePlugin,
+      TrailingBlockPlugin.configure({
+        options: {
+          type: "p",
+        }
+      }),
+    ],
+    value,
+  });
+
+  const insertBadge = () => {
+    editor.tf.insert.badge();
+  }
+
+  const disableTopBar = () => { 
+    editor.setOption(TopBarPlugin, 'isVisible', false);
+    const currentOption = editor.getOption(TopBarPlugin, 'isVisible');
+    console.log("currentOption", currentOption);
+
+    // editor.setOption(TopBarPlugin, 'isVisible', true);
+  }
+  const enableTopBar = () => {
+    editor.setOption(TopBarPlugin, 'isVisible', true);
+    const currentOption = editor.getOption(TopBarPlugin, 'isVisible');
+    console.log("currentOption", currentOption);
+  }
+
+  return (
+    <Plate
+      editor={editor}
+      onChange={(value) => {
+            console.log(value);
+          }}
+    >
+      <Button onClick={insertBadge}>Insert Badge</Button>
+      <Button onClick={disableTopBar}>Disable Top Bar</Button>
+      <Button onClick={enableTopBar}>Enable Top Bar</Button>
+      <EditorContainer>
+        <Editor />
+      </EditorContainer>
+    </Plate>
+  );
+}
+
+const paragraphKey = ParagraphPlugin.key;
+
+const value = normalizeNodeId([
+  {
+    type: "p",
+    id: "1",
+    children: [
+      {
+        text: "Hello, world!",
+      },
+    ],
+  },
+  {
+    type: "badge",
+    id: "3",
+    children: [
+      {
+        text: "",
+      },
+    ],
+  },
+  {
+    type: paragraphKey,
+    id: "2",
+    children: [
+      {
+        text: "Hello, world! 2",
+      },
+    ],
+  },
+  {
+    type: paragraphKey,
+    id: "4",
+    children: [
+      {
+        text: "Hello, world! 4",
+      },
+    ],
+  }
+  
+]);
 </file>
 
 </files>

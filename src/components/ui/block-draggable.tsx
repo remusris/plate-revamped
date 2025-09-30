@@ -18,6 +18,8 @@ import {
 } from 'platejs/react';
 import { useSelected } from 'platejs/react';
 
+import { TopBarPlugin } from '../plugins/top-bar';
+
 import { Button } from '@/components/ui/button';
 import {
   Tooltip,
@@ -78,7 +80,7 @@ function Draggable(props: PlateElementProps) {
 
   const { isAboutToDrag, isDragging, nodeRef, previewRef, handleRef } =
     useDraggable({
-      element,
+      element,      
       onDropHandler: (_, { dragItem }) => {
         const id = (dragItem as { id: string[] | string }).id;
 
@@ -86,6 +88,8 @@ function Draggable(props: PlateElementProps) {
           blockSelectionApi.add(id);
         }
         resetPreview();
+
+        editor.setOption(TopBarPlugin, 'isVisible', true);
       },
     });
 
@@ -108,6 +112,18 @@ function Draggable(props: PlateElementProps) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDragging]);
+
+  // Add effect to control TopBarPlugin based on drag state
+  /* React.useEffect(() => {
+    if (isDragging) {
+      console.log("isDragging");
+      editor.setOption(TopBarPlugin, 'isVisible', false);
+    } else {
+      console.log("not dragging");
+      editor.setOption(TopBarPlugin, 'isVisible', true);
+    }
+    // editor.setOption(TopBarPlugin, 'enabled', !isDragging);
+  }, [isDragging, editor]); */
 
   React.useEffect(() => {
     if (isAboutToDrag) {
@@ -249,6 +265,8 @@ const DragHandle = React.memo(function DragHandle({
           onMouseDown={(e) => {
             resetPreview();
 
+            editor.setOption(TopBarPlugin, 'isVisible', false);
+
             if ((e.button !== 0 && e.button !== 2) || e.shiftKey) return;
 
             const blockSelection = editor
@@ -322,6 +340,7 @@ const DragHandle = React.memo(function DragHandle({
             }
           }}
           onMouseUp={() => {
+            editor.setOption(TopBarPlugin, 'isVisible', true);
             resetPreview();
           }}
           data-plate-prevent-deselect
