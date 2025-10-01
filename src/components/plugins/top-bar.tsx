@@ -59,18 +59,18 @@ export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
               aria-hidden="true"
               role="presentation"
               tabIndex={-1}
-              className="mb-1 text-xs text-muted-foreground/80 select-none"
+              className="mb-1 text-xs text-muted-foreground/80 select-none h-10 bg-gray-200"
               // suppress React warning when CE=false elements contain children
               //   suppressContentEditableWarning
             >
-              node: {type ?? "element"}
+              {/* node: {type ?? "element"}
               <Button
                 onClick={() => {
                   console.log("Hello");
                 }}
               >
                 Hello
-              </Button>
+              </Button> */}
             </div>
             {elementProps.children}
           </div>
