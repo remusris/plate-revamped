@@ -10,6 +10,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.16",
     "@platejs/dnd": "^50.3.1",
     "@platejs/list": "^50.2.0",
     "@platejs/selection": "^50.2.0",

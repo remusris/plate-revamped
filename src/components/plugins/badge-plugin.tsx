@@ -221,7 +221,7 @@ function BadgeElement(props: PlateElementProps) {
   };
 
   return (
-    <PlateElement {...props}>
+    <PlateElement {...props} className="my-1">
       <div
         contentEditable={false}
         className="inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
