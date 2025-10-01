@@ -3018,105 +3018,6 @@ export default function Header() {
 }
 </file>
 
-<file path="src/components/plate-editor.tsx">
-import { Plate, usePlateEditor } from "platejs/react";
-
-import { Editor, EditorContainer } from "@/components/ui/editor";
-import { normalizeNodeId } from "platejs";
-import { NormalizeNodeIdOptions } from "platejs";
-import { ParagraphPlugin } from "platejs/react";
-import { ParagraphElement } from "@/components/ui/paragraph-node";
-import { DndPlugin } from "@platejs/dnd";
-import { BlockDraggable } from "@/components/ui/block-draggable";
-
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
-import { TopBarPlugin } from "@/components/plugins/top-bar";
-import { BadgePlugin } from "@/components/plugins/badge-plugin";
-import { Button } from "./ui/button";
-
-import { TrailingBlockPlugin } from 'platejs';
-
-export function PlateEditor() {
-  const editor = usePlateEditor({
-    plugins: [
-      ParagraphPlugin.withComponent(ParagraphElement),
-      DndPlugin.configure({
-        options: {
-          enableScroller: false,
-        },
-        render: {
-          aboveNodes: BlockDraggable,
-          aboveSlate: ({ children }) => {
-            return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
-          },
-        },
-      }),
-      TopBarPlugin,
-      BadgePlugin,
-      TrailingBlockPlugin.configure({
-        options: {
-          type: "p",
-        }
-      }),
-    ],
-    value,
-  });
-
-  const insertBadge = () => {
-    editor.tf.insert.badge();
-  }
-
-  return (
-    <Plate
-      editor={editor}
-      onChange={(value) => {
-            console.log(value);
-          }}
-    >
-      <Button onClick={insertBadge}>Insert Badge</Button>
-      <EditorContainer>
-        <Editor />
-      </EditorContainer>
-    </Plate>
-  );
-}
-
-const paragraphKey = ParagraphPlugin.key;
-
-const value = normalizeNodeId([
-  {
-    type: "p",
-    id: "1",
-    children: [
-      {
-        text: "Hello, world!",
-      },
-    ],
-  },
-  {
-    type: "badge",
-    id: "3",
-    children: [
-      {
-        text: "",
-      },
-    ],
-  },
-  {
-    type: paragraphKey,
-    id: "2",
-    children: [
-      {
-        text: "Hello, world! 2",
-      },
-    ],
-  },
-  
-]);
-</file>
-
 <file path="src/components/plugins/badge-plugin.tsx">
 // plugins/badge-plugin.tsx
 import {
@@ -3344,7 +3245,7 @@ function BadgeElement(props: PlateElementProps) {
     <PlateElement {...props}>
       <div
         contentEditable={false}
-        className="my-2 inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
+        className="inline-flex select-none items-center gap-2 rounded-md border px-2 py-1"
       >
         <span
           className="inline-flex items-center rounded px-2 py-0.5 text-sm"
@@ -3389,82 +3290,6 @@ function BadgeElement(props: PlateElementProps) {
 } */
 </file>
 
-<file path="src/components/plugins/top-bar.tsx">
-import * as React from 'react';
-import { createPlatePlugin, createTPlatePlugin } from 'platejs/react';
-import { PluginConfig } from 'platejs';
-import { Button } from '../ui/button';
-
-type AboveEachNodeConfig = PluginConfig<
-  'aboveEachNode',
-  { excludeTypes: string[] }
->;
-
-/* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
-  key: 'aboveEachNode',
-  options: { excludeTypes: [] }, // default prevents undefined
-}).extend(({ editor, plugin }) => ({
-  render: {
-    // RenderNodeWrapper: (ctx) => RenderNodeWrapperFunction
-    // RenderNodeWrapperFunction: (elementProps) => ReactNode
-    aboveNodes: ({ element }) => (elementProps) => {
-      const { excludeTypes = [] } = editor.getOptions(plugin); // avoid undefined
-      const type = (element)?.type as string | undefined;
-
-      if (type && excludeTypes.includes(type)) {
-        // identity wrapper: do nothing
-        return elementProps.children;
-      }
-
-      return (
-        <>
-          <div className="mb-1 text-xs text-muted-foreground/80 select-none">
-            node: {type ?? 'element'}
-          </div>
-          {elementProps.children}
-        </>
-      );
-    },
-  },
-})); */
-
-export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
-    key: 'aboveEachNode',
-    options: { excludeTypes: [] },
-  }).extend(({ editor, plugin }) => ({
-    render: {
-      aboveNodes: ({ element }) => (elementProps) => {
-        const { excludeTypes = [] } = editor.getOptions(plugin);
-        const type = (element as any)?.type as string | undefined;
-  
-        if (type && excludeTypes.includes(type)) {
-          return elementProps.children;
-        }
-  
-        return (
-          <>
-            <div
-              contentEditable={false}
-              aria-hidden="true"
-              role="presentation"
-              tabIndex={-1}
-              className="mb-1 text-xs text-muted-foreground/80 select-none"
-              // suppress React warning when CE=false elements contain children
-            //   suppressContentEditableWarning
-            >
-              node: {type ?? 'element'}
-              <Button onClick={() => { console.log('Hello') }}>
-            Hello
-              </Button>
-            </div>
-            {elementProps.children}
-          </>
-        );
-      },
-    },
-  }));
-</file>
-
 <file path="src/components/ui/block-draggable.tsx">
 'use client';
 
@@ -3493,6 +3318,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
+
+const keys = ["p", "badge"]
 
 const UNDRAGGABLE_KEYS = [KEYS.column, KEYS.tr, KEYS.td];
 
@@ -4768,6 +4595,227 @@ const config = defineConfig({
 })
 
 export default config
+</file>
+
+<file path="src/components/plate-editor.tsx">
+import { Plate, usePlateEditor } from "platejs/react";
+
+import { Editor, EditorContainer } from "@/components/ui/editor";
+import { normalizeNodeId } from "platejs";
+import { NormalizeNodeIdOptions } from "platejs";
+import { ParagraphPlugin } from "platejs/react";
+import { ParagraphElement } from "@/components/ui/paragraph-node";
+import { DndPlugin } from "@platejs/dnd";
+import { BlockDraggable } from "@/components/ui/block-draggable";
+
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { TopBarPlugin } from "@/components/plugins/top-bar";
+import { BadgePlugin } from "@/components/plugins/badge-plugin";
+import { Button } from "./ui/button";
+
+import { TrailingBlockPlugin } from 'platejs';
+
+export function PlateEditor() {
+  const editor = usePlateEditor({
+    plugins: [
+      ParagraphPlugin.withComponent(ParagraphElement),
+      DndPlugin.configure({
+        options: {
+          enableScroller: true,
+        },
+        render: {
+          aboveNodes: BlockDraggable,
+          aboveSlate: ({ children }) => {
+            return <DndProvider backend={HTML5Backend}>{children}</DndProvider>;
+          },
+        },
+      }),
+      TopBarPlugin,
+      BadgePlugin,
+      TrailingBlockPlugin.configure({
+        options: {
+          type: "p",
+        }
+      }),
+    ],
+    value,
+  });
+
+  const insertBadge = () => {
+    editor.tf.insert.badge();
+  }
+
+  const disableTopBar = () => { 
+    editor.setOption(TopBarPlugin, 'isVisible', false);    
+  }
+  const enableTopBar = () => {
+    editor.setOption(TopBarPlugin, 'isVisible', true);        
+  }
+
+  return (
+    <Plate
+      editor={editor}
+      onChange={(value) => {
+            console.log(value);
+          }}
+    >
+      <Button onClick={insertBadge}>Insert Badge</Button>
+      <Button onClick={disableTopBar}>Disable Top Bar</Button>
+      <Button onClick={enableTopBar}>Enable Top Bar</Button>
+      <EditorContainer>
+        <Editor />
+      </EditorContainer>
+    </Plate>
+  );
+}
+
+const paragraphKey = ParagraphPlugin.key;
+
+const value = normalizeNodeId([
+  {
+    type: "p",
+    id: "1",
+    children: [
+      {
+        text: "Hello, world!",
+      },
+    ],
+  },
+  {
+    type: "badge",
+    id: "3",
+    children: [
+      {
+        text: "",
+      },
+    ],
+  },
+  {
+    type: paragraphKey,
+    id: "2",
+    children: [
+      {
+        text: "Hello, world! 2",
+      },
+    ],
+  },
+  {
+    type: paragraphKey,
+    id: "4",
+    children: [
+      {
+        text: "Hello, world! 4",
+      },
+    ],
+  },
+  {
+    type: "badge",
+    id: "3",
+    children: [
+      {
+        text: "",
+      },
+    ],
+  },  
+]);
+</file>
+
+<file path="src/components/plugins/top-bar.tsx">
+import * as React from "react";
+import { createPlatePlugin, createTPlatePlugin, useEditorPlugin, usePluginOption, usePluginOptions } from "platejs/react";
+import { PluginConfig } from "platejs";
+import { Button } from "../ui/button";
+
+type AboveEachNodeConfig = PluginConfig<
+  "aboveEachNode",
+  { excludeTypes: string[], isVisible: boolean }
+>;
+
+/* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+  key: 'aboveEachNode',
+  options: { excludeTypes: [] }, // default prevents undefined
+}).extend(({ editor, plugin }) => ({
+  render: {
+    // RenderNodeWrapper: (ctx) => RenderNodeWrapperFunction
+    // RenderNodeWrapperFunction: (elementProps) => ReactNode
+    aboveNodes: ({ element }) => (elementProps) => {
+      const { excludeTypes = [] } = editor.getOptions(plugin); // avoid undefined
+      const type = (element)?.type as string | undefined;
+
+      if (type && excludeTypes.includes(type)) {
+        // identity wrapper: do nothing
+        return elementProps.children;
+      }
+
+      return (
+        <>
+          <div className="mb-1 text-xs text-muted-foreground/80 select-none">
+            node: {type ?? 'element'}
+          </div>
+          {elementProps.children}
+        </>
+      );
+    },
+  },
+})); */
+
+export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
+  key: "aboveEachNode",
+  options: { excludeTypes: [], isVisible: false },
+  node: {
+    isVoid: true,
+    isElement: true
+  }
+}).extend(({ editor, plugin }) => ({
+  render: {
+    aboveNodes:
+      ({ element }) =>
+      (elementProps) => {
+        const { attributes} = elementProps
+        // const { excludeTypes = [], isVisible } = editor.getOptions(plugin);
+        const type = (element)?.type as string | undefined;
+
+        // const { excludeTypes, isVisible } = useEditorPlugin(plugin).getOptions();
+
+        const isVisible = usePluginOption(plugin, "isVisible");
+        const excludeTypes = usePluginOption(plugin, "excludeTypes");
+
+        if (!isVisible) {
+          return elementProps.children;
+        }
+
+        if (type && excludeTypes.includes(type)) {
+          return elementProps.children;
+        }
+
+        return (
+          <div {...attributes} className="">
+            <div
+              contentEditable={false}
+              aria-hidden="true"
+              role="presentation"
+              tabIndex={-1}
+              className="mb-1 text-xs text-muted-foreground/80 select-none h-10 bg-gray-200 flow-root"
+              // suppress React warning when CE=false elements contain children
+              //   suppressContentEditableWarning
+            >
+              {/* node: {type ?? "element"}
+              <Button
+                onClick={() => {
+                  console.log("Hello");
+                }}
+              >
+                Hello
+              </Button> */}
+            </div>
+            {elementProps.children}
+          </div>
+        );
+      },
+  },
+}));
 </file>
 
 </files>

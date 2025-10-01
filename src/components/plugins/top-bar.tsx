@@ -1,11 +1,17 @@
 import * as React from "react";
-import { createPlatePlugin, createTPlatePlugin, useEditorPlugin, usePluginOption, usePluginOptions } from "platejs/react";
+import {
+  createPlatePlugin,
+  createTPlatePlugin,
+  useEditorPlugin,
+  usePluginOption,
+  usePluginOptions,
+} from "platejs/react";
 import { PluginConfig } from "platejs";
 import { Button } from "../ui/button";
 
 type AboveEachNodeConfig = PluginConfig<
   "aboveEachNode",
-  { excludeTypes: string[], isVisible: boolean }
+  { excludeTypes: string[]; isVisible: boolean }
 >;
 
 /* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
@@ -39,14 +45,18 @@ type AboveEachNodeConfig = PluginConfig<
 export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
   key: "aboveEachNode",
   options: { excludeTypes: [], isVisible: false },
+  node: {
+    isVoid: true,
+    isElement: true,
+  },
 }).extend(({ editor, plugin }) => ({
   render: {
     aboveNodes:
       ({ element }) =>
       (elementProps) => {
-        const { attributes} = elementProps
+        const { attributes } = elementProps;
         // const { excludeTypes = [], isVisible } = editor.getOptions(plugin);
-        const type = (element)?.type as string | undefined;
+        const type = element?.type as string | undefined;
 
         // const { excludeTypes, isVisible } = useEditorPlugin(plugin).getOptions();
 
@@ -61,25 +71,35 @@ export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
           return elementProps.children;
         }
 
-        return (
-          <div {...attributes}>
+        /* return (
+          <div {...attributes} className="">
             <div
               contentEditable={false}
               aria-hidden="true"
               role="presentation"
               tabIndex={-1}
-              className="mb-1 text-xs text-muted-foreground/80 select-none h-10 bg-gray-200"
-              // suppress React warning when CE=false elements contain children
-              //   suppressContentEditableWarning
+              className="mb-1 text-xs text-muted-foreground/80 select-none h-10 bg-gray-200 flow-root pointer-events-none"
             >
-              {/* node: {type ?? "element"}
               <Button
+                className="pointer-events-auto" // Re-enable pointer events for interactive elements
                 onClick={() => {
                   console.log("Hello");
                 }}
               >
                 Hello
-              </Button> */}
+              </Button>
+            </div>
+            {elementProps.children}
+          </div>
+        ); */
+
+        return (
+          <div className="relative">
+            <div
+              contentEditable={false}
+              className="absolute -top-10 left-0 right-0 text-xs text-muted-foreground/80 select-none h-7 bg-gray-200 pointer-events-none z-10"
+            >
+              {/* Your top bar content */}
             </div>
             {elementProps.children}
           </div>
@@ -87,3 +107,26 @@ export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
       },
   },
 }));
+
+{
+  /* <div
+  contentEditable={false}
+  aria-hidden="true"
+  role="presentation"
+  tabIndex={-1}
+  className="mb-1 text-xs text-muted-foreground/80 select-none h-10 bg-gray-200 flow-root"
+  // suppress React warning when CE=false elements contain children
+  //   suppressContentEditableWarning
+></div>; */
+}
+
+{
+  /* node: {type ?? "element"}
+              <Button
+                onClick={() => {
+                  console.log("Hello");
+                }}
+              >
+                Hello
+              </Button> */
+}
