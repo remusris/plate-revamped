@@ -47,6 +47,13 @@ export function PlateEditor() {
     editor.tf.insert.badge();
   }
 
+  const disableTopBar = () => { 
+    editor.setOption(TopBarPlugin, 'isVisible', false);    
+  }
+  const enableTopBar = () => {
+    editor.setOption(TopBarPlugin, 'isVisible', true);        
+  }
+
   return (
     <Plate
       editor={editor}
@@ -55,6 +62,8 @@ export function PlateEditor() {
           }}
     >
       <Button onClick={insertBadge}>Insert Badge</Button>
+      <Button onClick={disableTopBar}>Disable Top Bar</Button>
+      <Button onClick={enableTopBar}>Enable Top Bar</Button>
       <EditorContainer>
         <Editor />
       </EditorContainer>
@@ -100,6 +109,14 @@ const value = normalizeNodeId([
         text: "Hello, world! 4",
       },
     ],
-  }
-  
+  },
+  {
+    type: "badge",
+    id: "3",
+    children: [
+      {
+        text: "",
+      },
+    ],
+  },  
 ]);

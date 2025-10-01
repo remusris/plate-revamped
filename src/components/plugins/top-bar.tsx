@@ -1,11 +1,11 @@
 import * as React from "react";
-import { createPlatePlugin, createTPlatePlugin } from "platejs/react";
+import { createPlatePlugin, createTPlatePlugin, useEditorPlugin, usePluginOption, usePluginOptions } from "platejs/react";
 import { PluginConfig } from "platejs";
 import { Button } from "../ui/button";
 
 type AboveEachNodeConfig = PluginConfig<
   "aboveEachNode",
-  { excludeTypes: string[] }
+  { excludeTypes: string[], isVisible: boolean }
 >;
 
 /* export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
@@ -38,15 +38,24 @@ type AboveEachNodeConfig = PluginConfig<
 
 export const TopBarPlugin = createTPlatePlugin<AboveEachNodeConfig>({
   key: "aboveEachNode",
-  options: { excludeTypes: [] },
+  options: { excludeTypes: [], isVisible: false },
 }).extend(({ editor, plugin }) => ({
   render: {
     aboveNodes:
       ({ element }) =>
       (elementProps) => {
         const { attributes} = elementProps
-        const { excludeTypes = [] } = editor.getOptions(plugin);
-        const type = (element as any)?.type as string | undefined;
+        // const { excludeTypes = [], isVisible } = editor.getOptions(plugin);
+        const type = (element)?.type as string | undefined;
+
+        // const { excludeTypes, isVisible } = useEditorPlugin(plugin).getOptions();
+
+        const isVisible = usePluginOption(plugin, "isVisible");
+        const excludeTypes = usePluginOption(plugin, "excludeTypes");
+
+        if (!isVisible) {
+          return elementProps.children;
+        }
 
         if (type && excludeTypes.includes(type)) {
           return elementProps.children;
